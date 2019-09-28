@@ -23,6 +23,10 @@ allprojects {
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
+        googleGuiceVersion = '4.2.2'
+        googleGuiceAssistVersion = '4.2.2'
+        lombokVersion = "1.18.10"
+        logbackVersion = "2.12.1"
     }
 
     repositories {
@@ -33,15 +37,21 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+}
 
-    /*dependencies {
-        compile "org.projectlombok:lombok:1.18.4"
-        annotationProcessor "org.projectlombok:lombok:1.18.4"
+project(":shared") {
+    apply plugin: "java-library"
 
-        compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
-        compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
+    dependencies {
+        api "com.google.inject:guice:$googleGuiceVersion"
+        api "com.google.inject.extensions:guice-assistedinject:$googleGuiceAssistVersion"
 
-    }*/
+        api "org.projectlombok:lombok:$lombokVersion"
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+        api "org.apache.logging.log4j:log4j-api:$logbackVersion"
+        api "org.apache.logging.log4j:log4j-core:$logbackVersion"
+    }
 }
 
 project(":desktop") {
@@ -69,6 +79,7 @@ project(":core") {
 
 
     dependencies {
+        implementation project(":shared")
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
