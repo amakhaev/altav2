@@ -1,41 +1,44 @@
 package com.alta_v2.game.screen;
 
+import com.alta_v2.game.MyTestActor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.google.inject.Inject;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
+
 /**
- * The game screenshot that based on the tiled map.
+ * The screen that based on the tiled map.
  */
 @Log4j2
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class TiledMapScreen extends ScreenAdapter {
 
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-    private Texture texture;
-
-    @Setter
-    private int color;
+    private Stage stage;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void show () {
-        this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.camera.position.x  = this.camera.viewportWidth / 2f;
-        this.camera.position.y  = this.camera.viewportHeight / 2f;
+        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.position.x  = camera.viewportWidth / 2f;
+        camera.position.y  = camera.viewportHeight / 2f;
 
-        this.batch = new SpriteBatch();
-        this.texture = new Texture(Gdx.files.internal("badlogic.jpg"));
+        this.stage = new Stage(new ScreenViewport(camera));
+
+        this.stage.addActor(new MyTestActor());
+        this.stage.getRoot().getColor().a = 0f;
+        this.stage.addAction(Actions.fadeIn(3f));
     }
 
     /**
@@ -46,10 +49,8 @@ public class TiledMapScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        this.batch.begin();
-        this.batch.draw(this.texture, 10, this.color);
-        this.camera.update();
-        this.batch.end();
+        this.stage.draw();
+        this.stage.act(Gdx.graphics.getDeltaTime());
     }
 
     /**
@@ -57,8 +58,14 @@ public class TiledMapScreen extends ScreenAdapter {
      */
     @Override
     public void dispose () {
-        this.batch.dispose();
-        this.texture.dispose();
+        this.stage.dispose();
     }
 
+    public void fadeOutScreen(Runnable postAction) {
+        this.stage.getRoot().getColor().a = 1;
+        SequenceAction sequenceAction = new SequenceAction();
+        sequenceAction.addAction(fadeOut(0.5f));
+        sequenceAction.addAction(run(postAction));
+        this.stage.getRoot().addAction(sequenceAction);
+    }
 }

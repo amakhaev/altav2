@@ -9,6 +9,7 @@ buildscript {
         jcenter()
         google()
     }
+
     dependencies {
     }
 }
@@ -39,21 +40,6 @@ allprojects {
     }
 }
 
-project(":shared") {
-    apply plugin: "java-library"
-
-    dependencies {
-        api "com.google.inject:guice:$googleGuiceVersion"
-        api "com.google.inject.extensions:guice-assistedinject:$googleGuiceAssistVersion"
-
-        api "org.projectlombok:lombok:$lombokVersion"
-        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
-
-        api "org.apache.logging.log4j:log4j-api:$logbackVersion"
-        api "org.apache.logging.log4j:log4j-core:$logbackVersion"
-    }
-}
-
 project(":desktop") {
     apply plugin: "java-library"
 
@@ -70,13 +56,12 @@ project(":desktop") {
         }
         api "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
-        
+
     }
 }
 
 project(":core") {
     apply plugin: "java-library"
-
 
     dependencies {
         implementation project(":shared")
@@ -87,6 +72,23 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         api "com.badlogicgames.ashley:ashley:$ashleyVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-        
+
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        api "com.google.inject.extensions:guice-assistedinject:$googleGuiceAssistVersion"
+        api "org.apache.logging.log4j:log4j-api:$logbackVersion"
+        api "org.apache.logging.log4j:log4j-core:$logbackVersion"
+    }
+}
+
+project(":shared") {
+    apply plugin: "java-library"
+
+    dependencies {
+        api "com.google.inject:guice:$googleGuiceVersion"
+
+        api "org.projectlombok:lombok:$lombokVersion"
+
+        api "org.apache.logging.log4j:log4j-api:$logbackVersion"
+        api "org.apache.logging.log4j:log4j-core:$logbackVersion"
     }
 }

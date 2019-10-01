@@ -35,19 +35,14 @@ public class GameManager implements ScreenSwitcher {
     @Override
     public void changeTiledMap() {
         Screen oldScreen = this.game.getScreen();
-
         TiledMapScreen newTiledMapScreen = this.screenFactory.createTiledMapScreen();
-        if (i++ % 2 == 0) {
-            newTiledMapScreen.setColor(10);
-        } else {
-            newTiledMapScreen.setColor(200);
-        }
 
-        this.game.setScreen(newTiledMapScreen);
-
-        if (oldScreen != null) {
-            oldScreen.dispose();
-        }
+        ((TiledMapScreen) this.game.getScreen()).fadeOutScreen(() -> {
+            this.game.setScreen(newTiledMapScreen);
+            if (oldScreen != null) {
+                oldScreen.dispose();
+            }
+        });
     }
 
     /**
@@ -56,7 +51,6 @@ public class GameManager implements ScreenSwitcher {
     @Override
     public void setInitialScreen() {
         TiledMapScreen tiledMapScreen = this.screenFactory.createTiledMapScreen();
-        tiledMapScreen.setColor(50);
         this.game.setScreen(tiledMapScreen);
     }
 }
