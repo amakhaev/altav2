@@ -1,14 +1,11 @@
 package com.alta_v2.game;
 
-import com.alta_v2.game.inputProcessor.InputProcessorFactory;
 import com.alta_v2.game.screen.ScreenFactory;
-import com.alta_v2.game.screen.TiledMapScreen;
-import com.badlogic.gdx.InputProcessor;
+import com.alta_v2.game.screen.TiledMapScreenImpl;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.google.inject.Inject;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Provides the manager of screens.
@@ -37,16 +34,15 @@ public class GameManager implements ScreenSwitcher {
      */
     @Override
     public void changeTiledMap() {
-        Screen oldScreen = this.game.getScreen();
-        TiledMapScreen newTiledMapScreen = this.screenFactory.createTiledMapScreen(this.inputListener);
+        TiledMapScreenImpl oldScreen = this.getScreenAsType(TiledMapScreenImpl.class);
 
-        if (!this.isInstanceOf(TiledMapScreen.class, oldScreen)) {
+        if (!this.isInstanceOf(TiledMapScreenImpl.class, oldScreen)) {
             throw new RuntimeException("Game screen has invalid type");
         }
 
-        TiledMapScreen tiledMapScreen = (TiledMapScreen) oldScreen;
-        tiledMapScreen.fadeOutScreen(() -> {
-            this.game.setScreen(newTiledMapScreen);
+        oldScreen.fadeOutScreen(() -> {
+            TiledMapScreenImpl newTiledMapScreenImpl = this.screenFactory.createTiledMapScreen(this.inputListener);
+            this.game.setScreen(newTiledMapScreenImpl);
             oldScreen.dispose();
         });
     }
@@ -56,8 +52,23 @@ public class GameManager implements ScreenSwitcher {
      */
     @Override
     public void setInitialScreen() {
-        TiledMapScreen tiledMapScreen = this.screenFactory.createTiledMapScreen(this.inputListener);
-        this.game.setScreen(tiledMapScreen);
+        TiledMapScreenImpl tiledMapScreenImpl = this.screenFactory.createTiledMapScreen(this.inputListener);
+        this.game.setScreen(tiledMapScreenImpl);
+    }
+
+    /**
+     * Gets the screen as one of child type.
+     *
+     * @param resultType - the type that will returns.
+     * @return the resultType instance or null;
+     */
+    public <T extends Screen> T getScreenAsType(Class<T> resultType) {
+        Screen screen = this.game.getScreen();
+        if (!this.isInstanceOf(TiledMapScreenImpl.class, screen)) {
+            return null;
+        }
+
+        return resultType.cast(screen);
     }
 
     /**
@@ -68,17 +79,16 @@ public class GameManager implements ScreenSwitcher {
     public void setInputListener(InputListener inputListener) {
         this.inputListener = inputListener;
 
-        Screen screen = this.game.getScreen();
+        TiledMapScreenImpl screen = this.getScreenAsType(TiledMapScreenImpl.class);;
         if (screen == null) {
             return;
         }
 
-        if (!this.isInstanceOf(TiledMapScreen.class, screen)) {
+        if (!this.isInstanceOf(TiledMapScreenImpl.class, screen)) {
             throw new RuntimeException("Game screen has invalid type");
         }
 
-        TiledMapScreen tiledMapScreen = (TiledMapScreen) screen;
-        tiledMapScreen.setInputListener(inputListener);
+        screen.setInputListener(inputListener);
     }
 
     private <T> boolean isInstanceOf(Class<T> clazz, Screen screen) {

@@ -6,8 +6,11 @@ package com.alta_v2.game.controller;
 public interface TiledMapController {
 
     /**
-     * Loads the new screen.
+     * Moves stage by given target point.
+     *
+     * @param x - the target X by be moved.
+     * @param y - the target Y by be moved.
      */
-    void loadScreen();
+    void moveBy(float x, float y);
 
 }

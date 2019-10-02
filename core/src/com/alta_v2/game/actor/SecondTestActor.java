@@ -1,17 +1,19 @@
 package com.alta_v2.game.actor;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.google.inject.assistedinject.AssistedInject;
 
 public class SecondTestActor extends Actor {
 
     private Texture texture;
 
-    public SecondTestActor() {
-        this.texture = new Texture(Gdx.files.internal("test.png"));
+    @AssistedInject
+    public SecondTestActor(AssetManager assetManager) {
+        this.texture = assetManager.get("test.png", Texture.class);
     }
 
     /**

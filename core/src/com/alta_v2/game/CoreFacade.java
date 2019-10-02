@@ -1,9 +1,11 @@
 package com.alta_v2.game;
 
 import com.alta_v2.game.controller.InputController;
+import com.alta_v2.game.controller.ScreenController;
 import com.alta_v2.game.controller.TiledMapController;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -26,6 +28,9 @@ public class CoreFacade {
     @Getter
     private final TiledMapController tiledMapController;
 
+    @Getter
+    private final ScreenController screenController;
+
     /**
      * Initialize new instance of {@link CoreFacade}.
      */
@@ -35,6 +40,7 @@ public class CoreFacade {
         this.gameManager = coreInjector.getInstance(GameManager.class);
         this.inputController = coreInjector.getInstance(InputController.class);
         this.tiledMapController = coreInjector.getInstance(TiledMapController.class);
+        this.screenController = coreInjector.getInstance(ScreenController.class);
 
         this.inputController.setInputListener(this.createInputListener());
     }
@@ -51,6 +57,30 @@ public class CoreFacade {
     private InputListener createInputListener() {
 
         return new InputListener() {
+
+            public boolean keyDown (InputEvent event, int keycode) {
+                float x = 0f;
+                float y = 0f;
+                switch (keycode) {
+                    case Input.Keys.DOWN:
+                        y = -32f;
+                        break;
+                    case Input.Keys.UP:
+                        y = 32f;
+                        break;
+                    case Input.Keys.LEFT:
+                        x = -32f;
+                        break;
+                    case Input.Keys.RIGHT:
+                        x = 32f;
+                        break;
+                }
+
+                tiledMapController.moveBy(x, y);
+
+                return false;
+            }
+
             public boolean keyTyped (InputEvent event, char character) {
                 if (character == 'm') {
                     log.info("Java heap size: " + Gdx.app.getJavaHeap() / 1024 / 1024 + " MB");
@@ -58,7 +88,7 @@ public class CoreFacade {
                 }
 
                 if (character == 'c') {
-                    tiledMapController.loadScreen();
+                    screenController.loadScreen();
                 }
                 return false;
             }

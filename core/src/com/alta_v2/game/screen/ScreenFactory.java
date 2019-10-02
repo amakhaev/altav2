@@ -12,6 +12,6 @@ public interface ScreenFactory {
      *
      * @return created {@link InputListener} instance.
      */
-    TiledMapScreen createTiledMapScreen(InputListener inputListener);
+    TiledMapScreenImpl createTiledMapScreen(InputListener inputListener);
 
 }
