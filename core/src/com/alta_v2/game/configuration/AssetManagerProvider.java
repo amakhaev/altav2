@@ -1,5 +1,6 @@
 package com.alta_v2.game.configuration;
 
+import com.alta_v2.game.utils.Resources;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -27,9 +28,11 @@ public class AssetManagerProvider implements Provider<AssetManager> {
 
         AssetManager assetManager = new AssetManager();
         assetManager.setLoader(TiledMap.class, new TmxMapLoader());
-        assetManager.load("maps/test/map.tmx", TiledMap.class);
-        assetManager.load("badlogic.jpg", Texture.class);
-        assetManager.load("test.png", Texture.class);
+
+        assetManager.load(Resources.ACTOR_PERSON_12, Texture.class);
+        assetManager.load(Resources.MAP_TEST, TiledMap.class);
+        assetManager.load(Resources.TEXTURE_BLACK_SQUARE, Texture.class);
+
         assetManager.finishLoading();
 
         log.info(

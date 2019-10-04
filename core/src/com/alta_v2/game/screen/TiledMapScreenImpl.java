@@ -1,6 +1,9 @@
 package com.alta_v2.game.screen;
 
 import com.alta_v2.game.actor.ActorFactory;
+import com.alta_v2.game.actor.overlay.OverlayActor;
+import com.alta_v2.game.actor.overlay.OverlayAnimationType;
+import com.alta_v2.game.actor.tiledMap.TiledMapActor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,14 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import lombok.extern.log4j.Log4j2;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 
 /**
  * The screen that based on the tiled map.
@@ -31,9 +30,11 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
     private InputListener inputListener;
     private Stage stage;
 
+    private TiledMapActor tiledMapActor;
+    private OverlayActor overlayActor;
+
     /**
      * Initialize new instance of {@link TiledMapScreenImpl}.
-     *
      * @param actorFactory  - the {@link ActorFactory} instance.
      * @param inputListener - the {@link InputListener} instance.
      */
@@ -52,12 +53,16 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
         camera.position.x  = camera.viewportWidth / 2f;
         camera.position.y  = camera.viewportHeight / 2f;
 
+        this.tiledMapActor = this.actorFactory.createTiledMapActor();
+        this.tiledMapActor.create();
+
+        this.overlayActor = this.actorFactory.createOverlayActor();
+        this.overlayActor.show(FADE_DURATION);
+
         this.stage = new Stage(new ScreenViewport(camera));
 
         Group group = new Group();
-        group.addActor(this.actorFactory.createMyTestActor());
-        group.addActor(this.actorFactory.createSecondTestActor());
-        group.setTransform(false);
+        group.addActor(this.actorFactory.createPlayerActor());
         this.stage.addActor(group);
 
         this.stage.getRoot().getColor().a = 0f;
@@ -73,8 +78,13 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        this.tiledMapActor.render();
+
         this.stage.draw();
-        this.stage.act(Gdx.graphics.getDeltaTime());
+        this.stage.act(delta);
+
+        this.overlayActor.act(delta);
+        this.overlayActor.render(this.stage.getCamera().viewportWidth, this.stage.getCamera().viewportHeight);
     }
 
     /**
@@ -83,6 +93,8 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
     @Override
     public void dispose () {
         this.stage.dispose();
+        this.tiledMapActor.dispose();
+        this.overlayActor.dispose();
     }
 
     /**
@@ -99,11 +111,7 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
      */
     @Override
     public void fadeOutScreen(Runnable postAction) {
-        this.stage.getRoot().getColor().a = 1;
-        SequenceAction sequenceAction = new SequenceAction();
-        sequenceAction.addAction(fadeOut(FADE_DURATION));
-        sequenceAction.addAction(run(postAction));
-        this.stage.getRoot().addAction(sequenceAction);
+        this.overlayActor.hide(FADE_DURATION, postAction);
         Gdx.input.setInputProcessor(null);
     }
 
@@ -113,5 +121,6 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
     @Override
     public void moveAllBy(float x, float y) {
         this.stage.addAction(Actions.moveBy(x, y, 0.5f));
+        // this.camera.translate(x, y);
     }
 }
