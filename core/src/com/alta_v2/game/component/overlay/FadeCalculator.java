@@ -1,4 +1,4 @@
-package com.alta_v2.game.actor.overlay;
+package com.alta_v2.game.component.overlay;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.alta_v2.game.configuration;
+package com.alta_v2.configuration;
 
 import com.alta_v2.game.utils.Resources;
 import com.badlogic.gdx.assets.AssetManager;
@@ -31,6 +31,8 @@ public class AssetManagerProvider implements Provider<AssetManager> {
 
         assetManager.load(Resources.ACTOR_PERSON_12, Texture.class);
         assetManager.load(Resources.MAP_TEST, TiledMap.class);
+
+        assetManager.load(Resources.TEXTURE_MENU_BACKGROUND, Texture.class);
         assetManager.load(Resources.TEXTURE_BLACK_SQUARE, Texture.class);
 
         assetManager.finishLoading();

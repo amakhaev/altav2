@@ -1,4 +1,4 @@
-package com.alta_v2.game;
+package com.alta_v2.game.screen;
 
 /**
  * Provides the switcher between screens.

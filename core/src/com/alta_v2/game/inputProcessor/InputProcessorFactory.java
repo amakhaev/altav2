@@ -1,6 +1,6 @@
 package com.alta_v2.game.inputProcessor;
 
-import com.alta_v2.game.ScreenSwitcher;
+import com.alta_v2.mediatorModule.ProcessMediator;
 
 /**
  * Provides the factory for input processors.
@@ -10,9 +10,9 @@ public interface InputProcessorFactory {
     /**
      * Creates the default input processor.
      *
-     * @param screenSwitcher - the scenario switcher.
+     * @param processMediator - the {@link ProcessMediator} instance.
      * @return created {@link DefaultInputProcessor} instance.
      */
-    DefaultInputProcessor createDefaultInputProcessor(ScreenSwitcher screenSwitcher);
+    DefaultInputProcessor createDefaultInputProcessor(ProcessMediator processMediator);
 
 }

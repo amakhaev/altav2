@@ -1,4 +1,4 @@
-package com.alta_v2.game.actor.player;
+package com.alta_v2.game.component.player;
 
 /**
  * Provides the actor that describes the player.

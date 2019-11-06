@@ -1,6 +1,6 @@
 package com.alta_v2.game.controller;
 
-import com.alta_v2.game.GameManager;
+import com.alta_v2.game.screen.GameManager;
 import com.google.inject.Inject;
 import lombok.RequiredArgsConstructor;
 

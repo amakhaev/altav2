@@ -1,6 +1,7 @@
-package com.alta_v2.game.actor.overlay;
+package com.alta_v2.game.component.overlay;
 
-import com.alta_v2.game.actor.tiledMap.TiledMapActorImpl;
+import com.alta_v2.aop.dynamicAssetLoader.DynamicAssetLoader;
+import com.alta_v2.game.component.tiledMap.TiledMapActorImpl;
 import com.alta_v2.game.utils.Resources;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,7 +12,9 @@ import com.google.inject.assistedinject.AssistedInject;
 /**
  * Provides the actor that will draw black overlay on full screen.
  */
-public class OverlayActorImpl implements OverlayActor {
+public class OverlayComponentImpl implements OverlayComponent {
+
+    private final AssetManager assetManager;
 
     private Runnable postAction;
 
@@ -21,12 +24,11 @@ public class OverlayActorImpl implements OverlayActor {
 
     /**
      * Initialize new instance of {@link TiledMapActorImpl}.
-     *
-     * @param assetManager - the {@link AssetManager} instance.
      */
     @AssistedInject
-    public OverlayActorImpl(AssetManager assetManager) {
-        this.blackSquareTexture = assetManager.get(Resources.TEXTURE_BLACK_SQUARE, Texture.class);
+    public OverlayComponentImpl() {
+        this.assetManager = this.createAssets();
+        this.blackSquareTexture = this.assetManager.get(Resources.TEXTURE_BLACK_SQUARE, Texture.class);
         this.batch = new SpriteBatch();
     }
 
@@ -80,5 +82,12 @@ public class OverlayActorImpl implements OverlayActor {
     public void dispose() {
         this.batch.dispose();
         this.blackSquareTexture.dispose();
+        this.assetManager.dispose();
+
+    }
+
+    @DynamicAssetLoader(textures = Resources.TEXTURE_BLACK_SQUARE)
+    protected AssetManager createAssets() {
+        return new AssetManager();
     }
 }

@@ -1,4 +1,4 @@
-package com.alta_v2.game.actor.player;
+package com.alta_v2.game.component.player;
 
 import com.alta_v2.game.utils.AnimationTextureParser;
 import com.alta_v2.game.utils.Resources;

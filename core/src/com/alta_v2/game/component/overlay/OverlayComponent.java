@@ -1,11 +1,11 @@
-package com.alta_v2.game.actor.overlay;
+package com.alta_v2.game.component.overlay;
 
 import com.badlogic.gdx.utils.Disposable;
 
 /**
  * Provides the actor that will draw black overlay on full screen.
  */
-public interface OverlayActor extends Disposable {
+public interface OverlayComponent extends Disposable {
 
     /**
      * Acts the calculation of overlays panel.

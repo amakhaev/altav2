@@ -15,6 +15,7 @@ public class Resources {
     public static final String MAP_TEST = "maps/test/map.tmx";
 
     // Textures
+    public static final String TEXTURE_MENU_BACKGROUND = "textures/menu_background.jpg";
     public static final String TEXTURE_BLACK_SQUARE = "textures/black_square.png";
 
 }

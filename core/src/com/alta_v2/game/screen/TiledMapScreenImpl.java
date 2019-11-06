@@ -1,9 +1,8 @@
 package com.alta_v2.game.screen;
 
-import com.alta_v2.game.actor.ActorFactory;
-import com.alta_v2.game.actor.overlay.OverlayActor;
-import com.alta_v2.game.actor.overlay.OverlayAnimationType;
-import com.alta_v2.game.actor.tiledMap.TiledMapActor;
+import com.alta_v2.game.component.ActorFactory;
+import com.alta_v2.game.component.overlay.OverlayComponent;
+import com.alta_v2.game.component.tiledMap.TiledMapActor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -31,7 +30,7 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
     private Stage stage;
 
     private TiledMapActor tiledMapActor;
-    private OverlayActor overlayActor;
+    private OverlayComponent overlayComponent;
 
     /**
      * Initialize new instance of {@link TiledMapScreenImpl}.
@@ -56,8 +55,8 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
         this.tiledMapActor = this.actorFactory.createTiledMapActor();
         this.tiledMapActor.create();
 
-        this.overlayActor = this.actorFactory.createOverlayActor();
-        this.overlayActor.show(FADE_DURATION);
+        this.overlayComponent = this.actorFactory.createOverlayActor();
+        this.overlayComponent.show(FADE_DURATION);
 
         this.stage = new Stage(new ScreenViewport(camera));
 
@@ -83,8 +82,8 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
         this.stage.draw();
         this.stage.act(delta);
 
-        this.overlayActor.act(delta);
-        this.overlayActor.render(this.stage.getCamera().viewportWidth, this.stage.getCamera().viewportHeight);
+        this.overlayComponent.act(delta);
+        this.overlayComponent.render(this.stage.getCamera().viewportWidth, this.stage.getCamera().viewportHeight);
     }
 
     /**
@@ -94,7 +93,7 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
     public void dispose () {
         this.stage.dispose();
         this.tiledMapActor.dispose();
-        this.overlayActor.dispose();
+        this.overlayComponent.dispose();
     }
 
     /**
@@ -111,7 +110,7 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
      */
     @Override
     public void fadeOutScreen(Runnable postAction) {
-        this.overlayActor.hide(FADE_DURATION, postAction);
+        this.overlayComponent.hide(FADE_DURATION, postAction);
         Gdx.input.setInputProcessor(null);
     }
 

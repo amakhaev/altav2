@@ -1,7 +1,6 @@
-package com.alta_v2.game;
+package com.alta_v2.game.screen;
 
-import com.alta_v2.game.screen.ScreenFactory;
-import com.alta_v2.game.screen.TiledMapScreenImpl;
+import com.alta_v2.game.AltaV2;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.google.inject.Inject;
@@ -13,8 +12,8 @@ import lombok.Getter;
 public class GameManager implements ScreenSwitcher {
 
     @Getter
-    private final AltaV2 game;
-    private final ScreenFactory screenFactory;
+    private AltaV2 game;
+    // private final ScreenFactory screenFactory;
 
     private InputListener inputListener;
 
@@ -23,11 +22,11 @@ public class GameManager implements ScreenSwitcher {
      *
      * @param screenFactory - the {@link ScreenFactory} instance.
      */
-    @Inject
+    /*@Inject
     public GameManager(ScreenFactory screenFactory) {
         this.screenFactory = screenFactory;
-        this.game = new AltaV2(this);
-    }
+        this.game = new AltaV2();
+    }*/
 
     /**
      * {@inheritDoc}
@@ -41,8 +40,8 @@ public class GameManager implements ScreenSwitcher {
         }
 
         oldScreen.fadeOutScreen(() -> {
-            TiledMapScreenImpl newTiledMapScreenImpl = this.screenFactory.createTiledMapScreen(this.inputListener);
-            this.game.setScreen(newTiledMapScreenImpl);
+            //TiledMapScreenImpl newTiledMapScreenImpl = this.screenFactory.createTiledMapScreen(this.inputListener);
+            //this.game.setScreen(newTiledMapScreenImpl);
             oldScreen.dispose();
         });
     }
@@ -52,8 +51,8 @@ public class GameManager implements ScreenSwitcher {
      */
     @Override
     public void setInitialScreen() {
-        TiledMapScreenImpl tiledMapScreenImpl = this.screenFactory.createTiledMapScreen(this.inputListener);
-        this.game.setScreen(tiledMapScreenImpl);
+        //TiledMapScreenImpl tiledMapScreenImpl = this.screenFactory.createTiledMapScreen(this.inputListener);
+        //this.game.setScreen(tiledMapScreenImpl);
     }
 
     /**

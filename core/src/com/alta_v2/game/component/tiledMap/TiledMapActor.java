@@ -1,4 +1,4 @@
-package com.alta_v2.game.actor.tiledMap;
+package com.alta_v2.game.component.tiledMap;
 
 import com.badlogic.gdx.utils.Disposable;
 

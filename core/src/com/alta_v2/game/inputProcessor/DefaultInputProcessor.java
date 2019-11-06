@@ -1,6 +1,7 @@
 package com.alta_v2.game.inputProcessor;
 
-import com.alta_v2.game.ScreenSwitcher;
+import com.alta_v2.game.screen.ScreenSwitcher;
+import com.alta_v2.mediatorModule.ProcessMediator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.google.inject.assistedinject.Assisted;
@@ -13,16 +14,16 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class DefaultInputProcessor extends InputAdapter {
 
-    private final ScreenSwitcher screenSwitcher;
+    private final ProcessMediator processMediator;
 
     /**
      * Initialize new instance of {@link DefaultInputProcessor}.
      *
-     * @param screenSwitcher - the {@link ScreenSwitcher} instance.
+     * @param processMediator - the {@link ProcessMediator} instance.
      */
     @AssistedInject
-    public DefaultInputProcessor(@Assisted ScreenSwitcher screenSwitcher) {
-        this.screenSwitcher = screenSwitcher;
+    public DefaultInputProcessor(@Assisted ProcessMediator processMediator) {
+        this.processMediator = processMediator;
     }
 
     @Override
@@ -33,7 +34,7 @@ public class DefaultInputProcessor extends InputAdapter {
         }
 
         if (character == 'c') {
-            this.screenSwitcher.changeTiledMap();
+            this.processMediator.loadMenuScreen();
         }
         return false;
     }
