@@ -10,4 +10,8 @@ public interface ProcessMediator {
      */
     void loadMenuScreen();
 
+    /**
+     * Loads a tiled map screen.
+     */
+    void loadTiledMapScreen();
 }

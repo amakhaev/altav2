@@ -1,6 +1,5 @@
 package com.alta_v2.game.inputProcessor;
 
-import com.alta_v2.game.screen.ScreenSwitcher;
 import com.alta_v2.mediatorModule.ProcessMediator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -33,8 +32,10 @@ public class DefaultInputProcessor extends InputAdapter {
             log.info("Native heap size: " + Gdx.app.getNativeHeap() / 1024 / 1024 + " MB");
         }
 
-        if (character == 'c') {
+        if (character == '1') {
             this.processMediator.loadMenuScreen();
+        } else if (character == '2') {
+            this.processMediator.loadTiledMapScreen();
         }
         return false;
     }

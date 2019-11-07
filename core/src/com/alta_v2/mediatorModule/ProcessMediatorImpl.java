@@ -32,4 +32,12 @@ public class ProcessMediatorImpl implements ProcessMediator {
     public void loadMenuScreen() {
         this.screenManager.changeScreen(this.screenFactory.createMenuScreen());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void loadTiledMapScreen() {
+        this.screenManager.changeScreen(this.screenFactory.createTiledMapScreen());
+    }
 }
