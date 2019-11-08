@@ -2,7 +2,7 @@ package com.alta_v2.renderingModule.tiledMapScreen;
 
 import com.alta_v2.aop.dynamicAssetLoader.DynamicAssetLoader;
 import com.alta_v2.game.utils.Resources;
-import com.alta_v2.renderingModule.Renderable;
+import com.alta_v2.renderingModule.Renderer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,7 +14,7 @@ import com.google.inject.assistedinject.AssistedInject;
 /**
  * Provides the screen that shows a tiled map.
  */
-public class TiledMapScreen implements Renderable {
+public class TiledMapScreen implements Renderer {
 
     private final AssetManager assetManager;
 
@@ -41,14 +41,6 @@ public class TiledMapScreen implements Renderable {
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.camera.position.x  = this.camera.viewportWidth / 2f;
         this.camera.position.y  = this.camera.viewportHeight / 2f;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void update(float delta) {
-
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.alta_v2.mediatorModule;
 
 import com.alta_v2.game.ScreenManager;
+import com.alta_v2.mediatorModule.updater.UpdaterFactory;
 import com.alta_v2.renderingModule.ScreenFactory;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -12,17 +13,19 @@ public class ProcessMediatorImpl implements ProcessMediator {
 
     private final ScreenManager screenManager;
     private final ScreenFactory screenFactory;
+    private final UpdaterFactory updaterFactory;
 
     /**
      * Initialize new instance of {@link ProcessMediatorImpl}.
-     *
-     * @param screenFactory - the {@link ScreenFactory} instance.
-     * @param screenManager - the {@link ScreenManager} instance.
+     * @param screenFactory     - the {@link ScreenFactory} instance.
+     * @param screenManager     - the {@link ScreenManager} instance.
+     * @param updaterFactory    - the {@link UpdaterFactory} instance.
      */
     @AssistedInject
-    public ProcessMediatorImpl(ScreenFactory screenFactory, @Assisted ScreenManager screenManager) {
+    public ProcessMediatorImpl(ScreenFactory screenFactory, UpdaterFactory updaterFactory, @Assisted ScreenManager screenManager) {
         this.screenManager = screenManager;
         this.screenFactory = screenFactory;
+        this.updaterFactory = updaterFactory;
     }
 
     /**
@@ -30,7 +33,9 @@ public class ProcessMediatorImpl implements ProcessMediator {
      */
     @Override
     public void loadMenuScreen() {
-        this.screenManager.changeScreen(this.screenFactory.createMenuScreen());
+        this.screenManager.changeScreen(
+                this.screenFactory.createMenuScreen(), this.updaterFactory.createMenuScreenUpdater()
+        );
     }
 
     /**
@@ -38,6 +43,8 @@ public class ProcessMediatorImpl implements ProcessMediator {
      */
     @Override
     public void loadTiledMapScreen() {
-        this.screenManager.changeScreen(this.screenFactory.createTiledMapScreen());
+        this.screenManager.changeScreen(
+                this.screenFactory.createTiledMapScreen(), this.updaterFactory.createTiledMapScreenUpdater()
+        );
     }
 }

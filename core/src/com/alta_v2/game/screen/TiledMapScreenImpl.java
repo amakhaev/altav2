@@ -1,6 +1,6 @@
 package com.alta_v2.game.screen;
 
-import com.alta_v2.game.component.ActorFactory;
+import com.alta_v2.game.component.ComponentFactory;
 import com.alta_v2.game.component.overlay.OverlayComponent;
 import com.alta_v2.game.component.tiledMap.TiledMapActor;
 import com.badlogic.gdx.Gdx;
@@ -24,7 +24,7 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
 
     private final static float FADE_DURATION = 0.25f;
 
-    private final ActorFactory actorFactory;
+    private final ComponentFactory componentFactory;
 
     private InputListener inputListener;
     private Stage stage;
@@ -34,13 +34,13 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
 
     /**
      * Initialize new instance of {@link TiledMapScreenImpl}.
-     * @param actorFactory  - the {@link ActorFactory} instance.
+     * @param componentFactory  - the {@link ComponentFactory} instance.
      * @param inputListener - the {@link InputListener} instance.
      */
     @AssistedInject
-    public TiledMapScreenImpl(ActorFactory actorFactory, @Assisted InputListener inputListener) {
+    public TiledMapScreenImpl(ComponentFactory componentFactory, @Assisted InputListener inputListener) {
         this.inputListener = inputListener;
-        this.actorFactory = actorFactory;
+        this.componentFactory = componentFactory;
     }
 
     /**
@@ -52,16 +52,16 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
         camera.position.x  = camera.viewportWidth / 2f;
         camera.position.y  = camera.viewportHeight / 2f;
 
-        this.tiledMapActor = this.actorFactory.createTiledMapActor();
+        this.tiledMapActor = this.componentFactory.createTiledMapActor();
         this.tiledMapActor.create();
 
-        this.overlayComponent = this.actorFactory.createOverlayActor();
+        this.overlayComponent = this.componentFactory.createOverlayActor();
         this.overlayComponent.show(FADE_DURATION);
 
         this.stage = new Stage(new ScreenViewport(camera));
 
         Group group = new Group();
-        group.addActor(this.actorFactory.createPlayerActor());
+        group.addActor(this.componentFactory.createPlayerActor());
         this.stage.addActor(group);
 
         this.stage.getRoot().getColor().a = 0f;

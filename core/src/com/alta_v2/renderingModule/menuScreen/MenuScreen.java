@@ -2,7 +2,7 @@ package com.alta_v2.renderingModule.menuScreen;
 
 import com.alta_v2.aop.dynamicAssetLoader.DynamicAssetLoader;
 import com.alta_v2.game.utils.Resources;
-import com.alta_v2.renderingModule.Renderable;
+import com.alta_v2.renderingModule.Renderer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,7 +15,7 @@ import lombok.extern.log4j.Log4j2;
  * Provides the menu screen.
  */
 @Log4j2
-public class MenuScreen implements Renderable {
+public class MenuScreen implements Renderer {
 
     private final AssetManager assetManager;
 
@@ -38,14 +38,6 @@ public class MenuScreen implements Renderable {
     public void init() {
         this.backgroundTexture = this.assetManager.get(Resources.TEXTURE_MENU_BACKGROUND, Texture.class);
         this.batch = new SpriteBatch();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void update(float delta) {
-
     }
 
     /**

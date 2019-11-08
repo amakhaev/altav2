@@ -24,14 +24,13 @@ public class DynamicAssetHandler implements MethodInterceptor {
         Instant start = Instant.now();
 
         AssetManager assetManager = new AssetManager();
-        assetManager.setLoader(TiledMap.class, new TmxMapLoader());
 
         this.loadTextures(assetManager, method.getAnnotation(DynamicAssetLoader.class).textures());
         this.loadTiledMap(assetManager, method.getAnnotation(DynamicAssetLoader.class).tiledMap());
 
         assetManager.finishLoading();
 
-        log.info(
+        log.debug(
                 "Asset manager initialized for class {}. Total time: {} ms.",
                 method.getDeclaringClass().getSimpleName(),
                 Duration.between(start, Instant.now()).toMillis()
@@ -44,6 +43,7 @@ public class DynamicAssetHandler implements MethodInterceptor {
     }
 
     private void loadTiledMap(AssetManager assetManager, String[] textures) {
+        assetManager.setLoader(TiledMap.class, new TmxMapLoader());
         this.load(assetManager, textures, TiledMap.class);
     }
 

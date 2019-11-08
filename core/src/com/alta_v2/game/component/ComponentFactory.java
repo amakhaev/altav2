@@ -7,7 +7,7 @@ import com.alta_v2.game.component.tiledMap.TiledMapActorImpl;
 /**
  * Provides the factory to create actors.
  */
-public interface ActorFactory {
+public interface ComponentFactory {
 
     /**
      * Creates the tiled map actor.
