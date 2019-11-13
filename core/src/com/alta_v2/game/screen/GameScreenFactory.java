@@ -1,7 +1,6 @@
 package com.alta_v2.game.screen;
 
-import com.alta_v2.mediatorModule.updater.Updater;
-import com.alta_v2.renderingModule.Renderer;
+import com.alta_v2.mediatorModule.ScreenContext;
 
 /**
  * Provides the factory to generate screen.
@@ -11,10 +10,9 @@ public interface GameScreenFactory {
     /**
      * Creates the game screen to render all UI components.
      *
-     * @param renderer  - the renderable component to be rendered.
-     * @param updater   - the {@link Updater} instance.
+     * @param screenContext     - the {@link ScreenContext} instance.
      * @return created {@link GameScreen} instance.
      */
-    GameScreen createGameScreen(Renderer renderer, Updater updater);
+    GameScreen createGameScreen(ScreenContext screenContext);
 
 }

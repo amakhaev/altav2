@@ -6,6 +6,7 @@ import com.alta_v2.game.component.ComponentFactory;
 import com.alta_v2.game.inputProcessor.InputProcessorFactory;
 import com.alta_v2.game.screen.GameScreenFactory;
 import com.alta_v2.mediatorModule.ProcessMediatorFactory;
+import com.alta_v2.mediatorModule.actionController.ActionControllerFactory;
 import com.alta_v2.mediatorModule.updater.UpdaterFactory;
 import com.alta_v2.renderingModule.ScreenFactory;
 import com.google.inject.AbstractModule;
@@ -22,6 +23,7 @@ public class CoreInjector extends AbstractModule {
         install(new FactoryModuleBuilder().build(ProcessMediatorFactory.class));
         install(new FactoryModuleBuilder().build(GameScreenFactory.class));
         install(new FactoryModuleBuilder().build(UpdaterFactory.class));
+        install(new FactoryModuleBuilder().build(ActionControllerFactory.class));
 
         // AOP
         bindInterceptor(Matchers.any(), Matchers.annotatedWith(DynamicAssetLoader.class), new DynamicAssetHandler());

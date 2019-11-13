@@ -1,7 +1,7 @@
 package com.alta_v2.mediatorModule.updater;
 
-import com.alta_v2.mediatorModule.updater.menuScreenUpdater.MenuScreenUpdater;
-import com.alta_v2.mediatorModule.updater.tiledMapScreenUpdater.TiledMapScreenUpdater;
+import com.alta_v2.mediatorModule.updater.menu.MenuScreenUpdater;
+import com.alta_v2.mediatorModule.updater.tiledMap.TiledMapScreenUpdater;
 
 /**
  * Provides the factory for creating of screen updaters.

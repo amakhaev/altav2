@@ -2,6 +2,7 @@ package com.alta_v2.game;
 
 import com.alta_v2.game.screen.GameScreen;
 import com.alta_v2.game.screen.GameScreenFactory;
+import com.alta_v2.mediatorModule.ScreenContext;
 import com.alta_v2.mediatorModule.updater.Updater;
 import com.alta_v2.renderingModule.Renderer;
 import com.badlogic.gdx.Screen;
@@ -34,10 +35,9 @@ public class ScreenManager {
     /**
      * Changes the screen.
      *
-     * @param renderer  - the component to be rendered.
-     * @param updater   - the {@link Updater} instance.
+     * @param screenContext - the {@link ScreenContext} instance.
      */
-    public void changeScreen(Renderer renderer, Updater updater) {
+    public void changeScreen(ScreenContext screenContext) {
         if (this.screenChangeIsLocked.get()) {
             log.warn("Screen changing is not available because another change operation in progress.");
             return;
@@ -46,7 +46,7 @@ public class ScreenManager {
         try {
             this.screenChangeIsLocked.set(true);;
             GameScreen oldScreen = this.getScreenAsType(GameScreen.class);
-            GameScreen newGameScreen = this.screenFactory.createGameScreen(renderer, updater);
+            GameScreen newGameScreen = this.screenFactory.createGameScreen(screenContext);
 
             if (oldScreen == null) {
                 this.game.setScreen(newGameScreen);

@@ -1,4 +1,4 @@
-package com.alta_v2.mediatorModule.updater.menuScreenUpdater;
+package com.alta_v2.mediatorModule.updater.menu;
 
 import com.alta_v2.mediatorModule.updater.Updater;
 

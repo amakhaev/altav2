@@ -1,6 +1,7 @@
 package com.alta_v2.game.inputProcessor;
 
 import com.alta_v2.mediatorModule.ProcessMediator;
+import com.alta_v2.mediatorModule.actionController.ActionController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.google.inject.assistedinject.Assisted;
@@ -25,19 +26,44 @@ public class DefaultInputProcessor extends InputAdapter {
         this.processMediator = processMediator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean keyTyped (char character) {
-        if (character == 'm') {
+    public boolean keyDown (int keycode) {
+        ActionController.ActionType actionType = ActionController.resolveAction(keycode);
+        if (actionType == null) {
+            log.warn("Unknown type of action by key code {}", keycode);
+            return false;
+        }
+
+        this.processMediator.getCurrentContext().getActionController().onActionBegin(actionType);
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean keyUp (int keycode) {
+        if (keycode == 41) { // M
             log.info("Java heap size: " + Gdx.app.getJavaHeap() / 1024 / 1024 + " MB");
             log.info("Native heap size: " + Gdx.app.getNativeHeap() / 1024 / 1024 + " MB");
         }
 
-        if (character == '1') {
+        if (keycode == 8) { // 1
             this.processMediator.loadMenuScreen();
-        } else if (character == '2') {
+        } else if (keycode == 9) { // 2
             this.processMediator.loadTiledMapScreen();
         }
-        return false;
-    }
 
+        ActionController.ActionType actionType = ActionController.resolveAction(keycode);
+        if (actionType == null) {
+            log.debug("Unknown type of action by key code {}", keycode);
+            return false;
+        }
+
+        this.processMediator.getCurrentContext().getActionController().onActionFinish(actionType);
+        return true;
+    }
 }

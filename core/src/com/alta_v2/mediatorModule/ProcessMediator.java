@@ -14,4 +14,11 @@ public interface ProcessMediator {
      * Loads a tiled map screen.
      */
     void loadTiledMapScreen();
+
+    /**
+     * Gets the context of current loaded screen.
+     *
+     * @return the {@link ScreenContext} instance.
+     */
+    ScreenContext getCurrentContext();
 }

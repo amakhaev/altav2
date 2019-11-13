@@ -1,4 +1,4 @@
-package com.alta_v2.mediatorModule.updater.tiledMapScreenUpdater;
+package com.alta_v2.mediatorModule.updater.tiledMap;
 
 import com.alta_v2.mediatorModule.updater.Updater;
 
