@@ -1,6 +1,7 @@
 package com.alta_v2.renderingModule;
 
 import com.alta_v2.renderingModule.menuScreen.MenuScreen;
+import com.alta_v2.renderingModule.tiledMapScreen.TiledMapMetadata;
 import com.alta_v2.renderingModule.tiledMapScreen.TiledMapScreen;
 
 /**
@@ -20,6 +21,6 @@ public interface ScreenFactory {
      *
      * @return created {@link TiledMapScreen} instance.
      */
-    TiledMapScreen createTiledMapScreen();
+    TiledMapScreen createTiledMapScreen(TiledMapMetadata metadata);
 
 }

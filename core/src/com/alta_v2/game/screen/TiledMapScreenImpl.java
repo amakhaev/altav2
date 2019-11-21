@@ -61,7 +61,7 @@ public class TiledMapScreenImpl extends ScreenAdapter implements TiledMapScreen 
         this.stage = new Stage(new ScreenViewport(camera));
 
         Group group = new Group();
-        group.addActor(this.componentFactory.createPlayerActor());
+        // group.addActor(this.componentFactory.createPlayerActor());
         this.stage.addActor(group);
 
         this.stage.getRoot().getColor().a = 0f;

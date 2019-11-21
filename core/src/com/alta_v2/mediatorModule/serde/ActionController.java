@@ -1,4 +1,4 @@
-package com.alta_v2.mediatorModule.actionController;
+package com.alta_v2.mediatorModule.serde;
 
 /**
  * Provides the handler of input actions.

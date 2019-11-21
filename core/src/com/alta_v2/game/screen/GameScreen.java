@@ -41,7 +41,8 @@ public class GameScreen extends ScreenAdapter {
     public void show () {
         this.overlayComponent = this.componentFactory.createOverlayActor();
         this.overlayComponent.show(FADE_DURATION);
-        this.context.getScreenRender().init();
+        this.context.getScreenUpdater().init(this.context.getScreenState());
+        this.context.getScreenRender().init(this.context.getScreenState());
     }
 
     /**
@@ -52,8 +53,8 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        this.context.getScreenUpdater().update(delta);
-        this.context.getScreenRender().render(delta);
+        this.context.getScreenUpdater().update(delta, this.context.getScreenState());
+        this.context.getScreenRender().render(delta, this.context.getScreenState());
 
         this.overlayComponent.act(delta);
         this.overlayComponent.render(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

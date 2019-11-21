@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-down" width="80" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="18" nextobjectid="1">
+<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="left-down" compressionlevel="0" width="80" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="19" nextobjectid="1">
  <tileset firstgid="1" source="2.tsx"/>
- <layer id="15" name="under" width="80" height="80">
+ <layer id="16" name="down_free1" width="80" height="80">
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20Hb6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA1wBkAAAB
+   eAHt0jERAAAMhDDev+l66JwBA1xWTR4wwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwww8DJw3z4ZAQ==
   </data>
  </layer>
- <layer id="16" name="middle" width="80" height="80">
+ <layer id="18" name="down_free2" width="80" height="80">
   <data encoding="base64" compression="zlib">
-   eJzt18sOQDAQQNGKpP//ybYiQVHpY87ihJWay6JdUkoLAAAAAAAAAAAAAAAAAAAAAAAAAFXlDt5hZPp976ehfi377a8R5EL6nXer1ThCv6f/1NPnRug3wxr6jUm//mfTr/81Wvb7e76Z+93NV2N/E7XfcQ/3pkOUM3A+3Jc0/fJtRrZezFnS580ZeBYbGVUaiQ==
+   eAHt0kENACAMBEFcgAPwrxAskEs/zSCgpNMdwyNAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAr0F5ltv9V6xdLv9pp/SH3oP1192X/1lfvrL/PSX+ekv89Nf5qe/zE9//34XyagCdw==
   </data>
  </layer>
- <layer id="17" name="over" width="80" height="80">
+ <layer id="15" name="over_free" width="80" height="80">
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20Hb6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA1wBkAAAB
+   eAHt0EENADAIBEE8FwetcDDBo2FOwCY3EUaAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQILBF4PTR3HJ24Oft5hvoShIgQIAAAQIECBAgQIAAAQJ/CxTHGAHv
+  </data>
+ </layer>
+ <layer id="17" name="over_barrier" width="80" height="80">
+  <data encoding="base64" compression="zlib">
+   eAHt0MENhDAMBEAk+q+C6+AokORhabFcAZpIEWtnP8xxOAQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBA4LsCZ/xa5WvtfuvWNypiEyizva78X/let777zZkFymy/Zp7btl0gzTL3nnkWSLPMc9u2C6RZ5t4zzwJplnlu23aBNMvce+ZZIM0yz23bLpBmmXvP/BZ4AMc4BZk=
   </data>
  </layer>
 </map>

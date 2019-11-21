@@ -1,7 +1,7 @@
 package com.alta_v2.game.inputProcessor;
 
 import com.alta_v2.mediatorModule.ProcessMediator;
-import com.alta_v2.mediatorModule.actionController.ActionController;
+import com.alta_v2.mediatorModule.serde.ActionController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.google.inject.assistedinject.Assisted;
@@ -33,7 +33,7 @@ public class DefaultInputProcessor extends InputAdapter {
     public boolean keyDown (int keycode) {
         ActionController.ActionType actionType = ActionController.resolveAction(keycode);
         if (actionType == null) {
-            log.warn("Unknown type of action by key code {}", keycode);
+            log.debug("Unknown type of action by key code {}", keycode);
             return false;
         }
 

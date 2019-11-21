@@ -3,6 +3,7 @@ package com.alta_v2.renderingModule.menuScreen;
 import com.alta_v2.aop.dynamicAssetLoader.DynamicAssetLoader;
 import com.alta_v2.game.utils.Resources;
 import com.alta_v2.renderingModule.Renderer;
+import com.alta_v2.renderingModule.ScreenState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -35,7 +36,7 @@ public class MenuScreen implements Renderer {
      * {@inheritDoc}
      */
     @Override
-    public void init() {
+    public void init(ScreenState state) {
         this.backgroundTexture = this.assetManager.get(Resources.TEXTURE_MENU_BACKGROUND, Texture.class);
         this.batch = new SpriteBatch();
     }
@@ -44,7 +45,7 @@ public class MenuScreen implements Renderer {
      * {@inheritDoc}
      */
     @Override
-    public void render(float delta) {
+    public void render(float delta, ScreenState state) {
         this.batch.begin();
         this.batch.draw(this.backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.batch.end();

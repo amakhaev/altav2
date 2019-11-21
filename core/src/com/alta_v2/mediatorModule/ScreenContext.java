@@ -1,8 +1,9 @@
 package com.alta_v2.mediatorModule;
 
-import com.alta_v2.mediatorModule.actionController.ActionController;
-import com.alta_v2.mediatorModule.updater.Updater;
+import com.alta_v2.mediatorModule.serde.ActionController;
+import com.alta_v2.mediatorModule.serde.Updater;
 import com.alta_v2.renderingModule.Renderer;
+import com.alta_v2.renderingModule.ScreenState;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,9 @@ public final class ScreenContext {
 
     @Getter
     private final ActionController actionController;
+
+    @Getter
+    private final ScreenState screenState;
 
     /**
      * Destroys the context.

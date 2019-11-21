@@ -1,6 +1,6 @@
-package com.alta_v2.mediatorModule.actionController.tiledMap;
+package com.alta_v2.mediatorModule.tiledMap;
 
-import com.alta_v2.mediatorModule.actionController.ActionController;
+import com.alta_v2.mediatorModule.serde.ActionController;
 import lombok.extern.log4j.Log4j2;
 
 /**

@@ -8,14 +8,14 @@ public interface Renderer {
     /**
      * Initializes the renderable component.
      */
-    void init();
+    void init(ScreenState state);
 
     /**
      * Renders the component.
      *
      * @param delta - the time in seconds since the last render
      */
-    void render(float delta);
+    void render(float delta, ScreenState state);
 
     /**
      * Disposes the component.

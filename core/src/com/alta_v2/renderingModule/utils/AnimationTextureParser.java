@@ -1,4 +1,4 @@
-package com.alta_v2.game.utils;
+package com.alta_v2.renderingModule.utils;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
