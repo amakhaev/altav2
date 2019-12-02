@@ -1,5 +1,6 @@
-package com.alta_v2.physicsModule;
+package com.alta_v2.physicsModule.utils;
 
+import com.alta_v2.physicsModule.executionContext.AltitudeMap;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;

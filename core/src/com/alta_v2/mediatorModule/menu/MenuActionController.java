@@ -24,4 +24,9 @@ public class MenuActionController implements ActionController {
     public void onActionFinish(ActionType action) {
         log.info("MenuActionController: Finish action isn't implemented yet");
     }
+
+    @Override
+    public void destroy() {
+        log.debug("Nothing to destroy");
+    }
 }

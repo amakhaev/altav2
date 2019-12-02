@@ -1,4 +1,4 @@
-package com.alta_v2.physicsModule;
+package com.alta_v2.physicsModule.executionContext;
 
 import lombok.Builder;
 import lombok.Getter;

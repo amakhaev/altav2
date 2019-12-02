@@ -1,5 +1,7 @@
 package com.alta_v2.mediatorModule.serde;
 
+import com.alta_v2.physicsModule.task.computation.MovementDirection;
+
 /**
  * Provides the handler of input actions.
  */
@@ -18,6 +20,11 @@ public interface ActionController {
      * @param action - the actions to be handled.
      */
     void onActionFinish(ActionType action);
+
+    /**
+     * Destroys the controller.
+     */
+    void destroy();
 
     /**
      * Resolves the input to game action.
@@ -53,6 +60,21 @@ public interface ActionController {
         MOVE_DOWN,
         MOVE_LEFT,
         NEXT,
-        BACK
+        BACK;
+
+        public static MovementDirection getMovementDirection(ActionType type) {
+            switch (type) {
+                case MOVE_UP:
+                    return MovementDirection.HIGHER;
+                case MOVE_DOWN:
+                    return MovementDirection.LOWER;
+                case MOVE_LEFT:
+                    return MovementDirection.LEFT;
+                case MOVE_RIGHT:
+                    return MovementDirection.RIGHT;
+                default:
+                    return null;
+            }
+        }
     }
 }

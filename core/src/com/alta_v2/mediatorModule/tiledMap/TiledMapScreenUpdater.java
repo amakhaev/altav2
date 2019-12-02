@@ -44,6 +44,7 @@ public class TiledMapScreenUpdater implements Updater {
             return;
         }
 
+        this.engine.act(delta);
         this.engine.updateState(state);
     }
 

@@ -74,7 +74,7 @@ public class ProcessMediatorImpl implements ProcessMediator {
         this.currentContext = new ScreenContext(
                 this.updaterFactory.createTiledMapScreenUpdater(physicEngine),
                 this.screenFactory.createTiledMapScreen(metadata),
-                this.controllerFactory.createTiledMapActionController(),
+                this.controllerFactory.createTiledMapActionController(physicEngine),
                 this.screenStateFactory.createTiledMapState()
         );
 

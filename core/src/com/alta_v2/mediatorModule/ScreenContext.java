@@ -30,6 +30,7 @@ public final class ScreenContext {
      */
     public void destroy() {
         this.screenUpdater.destroy();
+        this.actionController.destroy();
         this.screenRender.dispose();
     }
 }
