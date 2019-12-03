@@ -1,6 +1,6 @@
 package com.alta_v2.mediatorModule.serde;
 
-import com.alta_v2.physicsModule.task.computation.MovementDirection;
+import com.alta_v2.physicsModule.task.MovementDirection;
 
 /**
  * Provides the handler of input actions.

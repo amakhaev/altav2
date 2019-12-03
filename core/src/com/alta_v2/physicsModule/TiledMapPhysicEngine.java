@@ -1,9 +1,9 @@
 package com.alta_v2.physicsModule;
 
 import com.alta_v2.physicsModule.executionContext.TiledMapEngineContext;
-import com.alta_v2.physicsModule.task.MoveFocusPointTask;
+import com.alta_v2.physicsModule.task.MovePlayerTask;
+import com.alta_v2.physicsModule.task.MovementDirection;
 import com.alta_v2.physicsModule.task.TiledMapTask;
-import com.alta_v2.physicsModule.task.computation.MovementDirection;
 import com.alta_v2.physicsModule.utils.TiledMapParser;
 import com.alta_v2.physicsModule.utils.TiledMapPhysicCalculator;
 import com.alta_v2.renderingModule.tiledMapScreen.TiledMapState;
@@ -84,6 +84,9 @@ public class TiledMapPhysicEngine {
         state.updateActorCoordinates(
                 this.context.getActorPointGlobal().getX(), this.context.getActorPointGlobal().getY()
         );
+
+        state.setPersonView(this.context.getPlayerView().getValue());
+        state.setPlayerAnimationEnabled(this.context.getIsPlayerMoving().getValue());
     }
 
     public synchronized void performFocusPointMovement(MovementDirection direction) {
@@ -97,13 +100,15 @@ public class TiledMapPhysicEngine {
             return;
         }
 
-        this.tasks.add(
-                new MoveFocusPointTask(
-                        direction,
-                        this.context.getFocusPointLocal(),
-                        this.context.getFocusPointGlobal(),
-                        this.context.getAltitudeMap()
-                )
-        );
+        TiledMapTask task = MovePlayerTask.builder()
+                .altitudeMap(this.context.getAltitudeMap())
+                .direction(direction)
+                .focusPointGlobal(this.context.getFocusPointGlobal())
+                .focusPointLocal(this.context.getFocusPointLocal())
+                .playerView(this.context.getPlayerView())
+                .isPlayerMoving(this.context.getIsPlayerMoving())
+                .build();
+
+        this.tasks.add(task);
     }
 }

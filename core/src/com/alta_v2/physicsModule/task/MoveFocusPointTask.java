@@ -2,7 +2,6 @@ package com.alta_v2.physicsModule.task;
 
 import com.alta_v2.physicsModule.executionContext.AltitudeMap;
 import com.alta_v2.physicsModule.executionContext.ReservablePoint;
-import com.alta_v2.physicsModule.task.computation.MovementDirection;
 import com.alta_v2.physicsModule.utils.TiledMapPhysicCalculator;
 import com.badlogic.gdx.math.Vector2;
 import lombok.extern.log4j.Log4j2;

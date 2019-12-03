@@ -28,7 +28,7 @@ public class PlayerLayout implements Layout {
     @Override
     public void init(ScreenState state) {
         this.batch = new SpriteBatch();
-        this.playerActor = new PlayerActor(this.assetManager.get(this.texturePath, Texture.class));
+        this.playerActor = new PlayerActor(this.assetManager.get(this.texturePath, Texture.class), 32, 32);
     }
 
     /**
@@ -42,7 +42,14 @@ public class PlayerLayout implements Layout {
         }
 
         this.batch.begin();
-        this.playerActor.draw(this.batch, delta, s.getActorCoordinates().x, s.getActorCoordinates().y);
+        this.playerActor.draw(
+                this.batch,
+                delta,
+                s.getActorCoordinates().x,
+                s.getActorCoordinates().y,
+                s.getPersonView(),
+                s.isPlayerAnimationEnabled()
+        );
         this.batch.end();
     }
 
