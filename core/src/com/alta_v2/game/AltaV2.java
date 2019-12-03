@@ -34,4 +34,12 @@ public class AltaV2 extends Game {
 		Gdx.input.setInputProcessor(this.inputProcessor);
 		this.processMediator.loadMenuScreen();
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
+		System.exit(0);
+	}
 }

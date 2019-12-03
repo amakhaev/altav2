@@ -45,6 +45,11 @@ public class GameScreen extends ScreenAdapter {
         this.context.getScreenRender().init(this.context.getScreenState());
     }
 
+    @Override
+    public void hide() {
+
+    }
+
     /**
      * {@inheritDoc}
      */

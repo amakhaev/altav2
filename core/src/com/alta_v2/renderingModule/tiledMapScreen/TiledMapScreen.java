@@ -6,6 +6,7 @@ import com.alta_v2.renderingModule.Renderer;
 import com.alta_v2.renderingModule.ScreenState;
 import com.alta_v2.renderingModule.tiledMapScreen.layout.Layout;
 import com.alta_v2.renderingModule.tiledMapScreen.layout.MapLayout;
+import com.alta_v2.renderingModule.tiledMapScreen.layout.MapLayoutImpl;
 import com.alta_v2.renderingModule.tiledMapScreen.layout.PlayerLayout;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.assistedinject.Assisted;
@@ -22,6 +23,7 @@ import java.util.List;
 public class TiledMapScreen implements Renderer {
 
     private final AssetManager assetManager;
+    private final MapLayout mapLayout;
 
     private List<Layout> layouts;
 
@@ -31,8 +33,8 @@ public class TiledMapScreen implements Renderer {
     @AssistedInject
     public TiledMapScreen(@Assisted TiledMapMetadata metadata) {
         this.assetManager = this.createAssets();
+        this.mapLayout = new MapLayoutImpl(this.assetManager, metadata.getMapPath());
         this.layouts = Arrays.asList(
-                new MapLayout(this.assetManager, metadata.getMapPath()),
                 new PlayerLayout(this.assetManager, metadata.getActorTexturePath())
         );
     }
@@ -42,6 +44,7 @@ public class TiledMapScreen implements Renderer {
      */
     @Override
     public void init(ScreenState state) {
+        this.mapLayout.init(state);
         this.layouts.forEach(layout -> layout.init(state));
     }
 
@@ -50,7 +53,12 @@ public class TiledMapScreen implements Renderer {
      */
     @Override
     public void render(float delta, ScreenState state) {
+        this.mapLayout.applyState(state);
+        this.mapLayout.renderBottomPart();
+
         this.layouts.forEach(layout -> layout.render(delta, state));
+
+        this.mapLayout.renderTopPart();
     }
 
     /**
@@ -59,6 +67,7 @@ public class TiledMapScreen implements Renderer {
     @Override
     public void dispose() {
         this.layouts.forEach(Renderer::dispose);
+        this.mapLayout.dispose();
         this.assetManager.dispose();
     }
 

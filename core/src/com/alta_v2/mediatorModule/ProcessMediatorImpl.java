@@ -69,7 +69,7 @@ public class ProcessMediatorImpl implements ProcessMediator {
     @Override
     public void loadTiledMapScreen() {
         TiledMapMetadata metadata = new TiledMapMetadata(Resources.MAP_TEST, Resources.ACTOR_PERSON_12);
-        TiledMapPhysicEngine physicEngine = new TiledMapPhysicEngine(new Vector2(2f, 1f), Resources.MAP_TEST);
+        TiledMapPhysicEngine physicEngine = new TiledMapPhysicEngine(new Vector2(3f, 1f), Resources.MAP_TEST);
 
         this.currentContext = new ScreenContext(
                 this.updaterFactory.createTiledMapScreenUpdater(physicEngine),

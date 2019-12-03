@@ -8,13 +8,22 @@ import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 /**
  * {@inheritDoc}
  */
 @Log4j2
 public class TiledMapScreenUpdater implements Updater {
 
+    private static final String UPDATER_THREAD_NAME = "tiledmap-listener";
+
     private final TiledMapPhysicEngine engine;
+    private final ExecutorService executorService;
+
+    private byte threadCounter = 0;
 
     /**
      * Initialize new instance of {@link TiledMapScreenUpdater}.
@@ -24,6 +33,10 @@ public class TiledMapScreenUpdater implements Updater {
     @AssistedInject
     public TiledMapScreenUpdater(@Assisted TiledMapPhysicEngine engine) {
         this.engine = engine;
+        this.executorService = Executors.newScheduledThreadPool(
+                1,
+                runnable -> new Thread(runnable, UPDATER_THREAD_NAME + this.threadCounter++)
+        );
     }
 
     /**
@@ -44,8 +57,16 @@ public class TiledMapScreenUpdater implements Updater {
             return;
         }
 
-        this.engine.act(delta);
-        this.engine.updateState(state);
+        try {
+            Future<?> result = this.executorService.submit(() -> {
+                this.engine.act(delta);
+                this.engine.updateState(state);
+            });
+            // wait for result.
+            result.get();
+        } catch (Exception e) {
+            log.error(e);
+        }
     }
 
     /**
@@ -53,6 +74,13 @@ public class TiledMapScreenUpdater implements Updater {
      */
     @Override
     public void destroy() {
+        try {
+            this.executorService.shutdown();
+        } catch (Exception e) {
+            log.error(e);
+        } finally {
+            this.executorService.shutdownNow();
+        }
     }
 
     private TiledMapState resolveClass(ScreenState screenState) {
