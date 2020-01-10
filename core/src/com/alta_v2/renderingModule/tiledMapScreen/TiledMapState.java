@@ -25,6 +25,10 @@ public class TiledMapState implements ScreenState {
     @Setter
     private boolean isPlayerAnimationEnabled = false;
 
+    @Getter
+    @Setter
+    private long playerAnimationChangeTime;
+
     public void updateMapCoordinates(float x, float y) {
         this.mapCoordinates.x = x;
         this.mapCoordinates.y = y;

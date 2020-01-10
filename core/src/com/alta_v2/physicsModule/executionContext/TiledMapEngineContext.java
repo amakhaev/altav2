@@ -1,6 +1,5 @@
 package com.alta_v2.physicsModule.executionContext;
 
-import com.alta_v2.renderingModule.actors.PersonView;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
 

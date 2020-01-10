@@ -21,11 +21,11 @@ public class PlayerActor extends PersonActor {
     /**
      * {@inheritDoc}
      */
-    public void draw (Batch batch, float delta, float x, float y, PersonView view, boolean isAnimated) {
+    public void draw (Batch batch, float delta, float x, float y, PersonView view, boolean isAnimated, long changeTime) {
         this.stateTime += delta;
 
         TextureRegion currentFrame;
-        if (isAnimated) {
+        if (isAnimated || System.currentTimeMillis() - changeTime < 50L) {
             currentFrame = this.animations.get(view).getKeyFrame(this.stateTime, true);
         } else {
             currentFrame = this.animations.get(view).getKeyFrames()[0];

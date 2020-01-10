@@ -43,16 +43,16 @@ public class TiledMapParser {
         return tiledMap;
     }
 
-    private int[][] getAltitudes(TiledMap tiledMap, int countX, int countY) {
+    private AltitudeMap.PointAvailability[][] getAltitudes(TiledMap tiledMap, int countX, int countY) {
         TiledMapTileLayer barrierLayer = (TiledMapTileLayer) tiledMap.getLayers().get("over_barrier");
-        int[][] altitudes = new int[countX][countY];
+        AltitudeMap.PointAvailability[][] altitudes = new AltitudeMap.PointAvailability[countX][countY];
 
         for (int i = 0; i < countX; i++) {
             for (int j = 0; j < countY; j++) {
                 if (barrierLayer.getCell(i, j) == null) {
-                    altitudes[i][j] = 0;
+                    altitudes[i][j] = AltitudeMap.PointAvailability.FREE;
                 } else {
-                    altitudes[i][j] = 1;
+                    altitudes[i][j] = AltitudeMap.PointAvailability.BARRIER;
                 }
             }
         }

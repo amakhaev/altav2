@@ -18,7 +18,7 @@ import java.util.concurrent.Future;
 @Log4j2
 public class TiledMapScreenUpdater implements Updater {
 
-    private static final String UPDATER_THREAD_NAME = "tiledmap-listener";
+    private static final String UPDATER_THREAD_NAME = "tiledmap-updater";
 
     private final TiledMapPhysicEngine engine;
     private final ExecutorService executorService;

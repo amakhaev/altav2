@@ -1,0 +1,69 @@
+package com.alta_v2.physicsModule.task;
+
+import com.alta_v2.physicsModule.executionContext.TiledMapEngineContext;
+import com.alta_v2.physicsModule.task.moveFocusPoint.MoveFocusPointChecker;
+import com.alta_v2.physicsModule.task.movePlayer.MovePlayerChecker;
+import com.alta_v2.physicsModule.task.movePlayer.MovePlayerTask;
+import com.alta_v2.physicsModule.task.rotatePlayer.RotatePlayerChecker;
+import com.alta_v2.physicsModule.task.rotatePlayer.RotatePlayerTask;
+import com.alta_v2.physicsModule.utils.MovementCalculator;
+import com.alta_v2.renderingModule.actors.PersonView;
+import com.badlogic.gdx.math.Vector2;
+import lombok.experimental.UtilityClass;
+import lombok.extern.log4j.Log4j2;
+
+/**
+ * Provides mediator to tasks creation manage.
+ */
+@Log4j2
+@UtilityClass
+public final class TaskCreationManager {
+
+    /**
+     * Creates the task that calculates movement of player.
+     *
+     * @param direction - the direction of movement.
+     * @param context   - the engine execution context.
+     * @return crated {@link TiledMapTask} instance or {@code}null{@code} if failed creation.
+     */
+    public TiledMapTask createPlayerMoveTask(MovementDirection direction, TiledMapEngineContext context) {
+        MovePlayerChecker checker = new MovePlayerChecker();
+
+        if (!checker.canTaskBeExecuted(context)) {
+            log.trace("Failed to perform movement of focus point on the {} because process is blocked", direction);
+            return null;
+        }
+
+        Vector2 targetPoint = MovementCalculator.getTargetPointLocal(
+                direction, context.getFocusPointLocal().getX(), context.getFocusPointLocal().getY()
+        );
+        if (!MovementCalculator.canMoveTo(targetPoint.x, targetPoint.y, context.getAltitudeMap())) {
+            log.debug("Failed to run player moving since [{}: {}] is blocked", targetPoint.x, targetPoint.y);
+            return null;
+        }
+
+        return MovePlayerTask.builder()
+                .altitudeMap(context.getAltitudeMap())
+                .direction(direction)
+                .focusPointGlobal(context.getFocusPointGlobal())
+                .focusPointLocal(context.getFocusPointLocal())
+                .playerView(context.getPlayerView())
+                .isPlayerMoving(context.getIsPlayerMoving())
+                .targetPointLocal(targetPoint)
+                .build();
+    }
+
+    /**
+     * Creates the task to rotate player.
+     *
+     * @param direction - the direction of movement.
+     * @param context   - the engine execution context.
+     * @return crated {@link TiledMapTask} instance or {@code}null{@code} if failed creation.
+     */
+    public TiledMapTask createRotatePlayerTask(MovementDirection direction, TiledMapEngineContext context) {
+        PersonView currentView = MovementDirection.getPersonView(direction);
+        return new RotatePlayerChecker().canTaskBeExecuted(context) && context.getPlayerView().getValue() != currentView ?
+                new RotatePlayerTask(direction, context.getPlayerView()) : null;
+    }
+
+}

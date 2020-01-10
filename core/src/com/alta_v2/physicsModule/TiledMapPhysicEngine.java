@@ -1,9 +1,11 @@
 package com.alta_v2.physicsModule;
 
 import com.alta_v2.physicsModule.executionContext.TiledMapEngineContext;
-import com.alta_v2.physicsModule.task.MovePlayerTask;
+import com.alta_v2.physicsModule.task.TaskCreationManager;
+import com.alta_v2.physicsModule.task.movePlayer.MovePlayerTask;
 import com.alta_v2.physicsModule.task.MovementDirection;
 import com.alta_v2.physicsModule.task.TiledMapTask;
+import com.alta_v2.physicsModule.utils.MovementCalculator;
 import com.alta_v2.physicsModule.utils.TiledMapParser;
 import com.alta_v2.physicsModule.utils.TiledMapPhysicCalculator;
 import com.alta_v2.renderingModule.tiledMapScreen.TiledMapState;
@@ -33,13 +35,6 @@ public class TiledMapPhysicEngine {
         this.context = new TiledMapEngineContext(TiledMapParser.parse(mapPath));
         this.context.writeFocusPointLocal(focusPointCoordinates, this.hashCode());
         this.tasks = new CopyOnWriteArrayList<>();
-    }
-
-    /**
-     * Indicates if focus point can be moved to new coordinates on tiled map.
-     */
-    public boolean canMoveFocusPoint() {
-        return !this.context.getFocusPointLocal().isReserved() && !this.context.getFocusPointGlobal().isReserved();
     }
 
     /**
@@ -87,28 +82,22 @@ public class TiledMapPhysicEngine {
 
         state.setPersonView(this.context.getPlayerView().getValue());
         state.setPlayerAnimationEnabled(this.context.getIsPlayerMoving().getValue());
+        state.setPlayerAnimationChangeTime(this.context.getIsPlayerMoving().getChangeTime());
     }
 
-    public synchronized void performFocusPointMovement(MovementDirection direction) {
+    public synchronized void performPlayerMovement(MovementDirection direction) {
         if (direction == null) {
             log.warn("Given direction is null");
             return;
         }
 
-        if (!this.canMoveFocusPoint()) {
-            log.warn("Failed to perform movement of focus point on the {} because process is blocked", direction);
-            return;
+        TiledMapTask task = TaskCreationManager.createPlayerMoveTask(direction, this.context);
+        if (task == null) {
+            task = TaskCreationManager.createRotatePlayerTask(direction, this.context);
         }
 
-        TiledMapTask task = MovePlayerTask.builder()
-                .altitudeMap(this.context.getAltitudeMap())
-                .direction(direction)
-                .focusPointGlobal(this.context.getFocusPointGlobal())
-                .focusPointLocal(this.context.getFocusPointLocal())
-                .playerView(this.context.getPlayerView())
-                .isPlayerMoving(this.context.getIsPlayerMoving())
-                .build();
-
-        this.tasks.add(task);
+        if (task != null) {
+            this.tasks.add(task);
+        }
     }
 }

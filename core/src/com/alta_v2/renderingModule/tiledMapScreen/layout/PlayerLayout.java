@@ -48,7 +48,8 @@ public class PlayerLayout implements Layout {
                 s.getActorCoordinates().x,
                 s.getActorCoordinates().y,
                 s.getPersonView(),
-                s.isPlayerAnimationEnabled()
+                s.isPlayerAnimationEnabled(),
+                s.getPlayerAnimationChangeTime()
         );
         this.batch.end();
     }

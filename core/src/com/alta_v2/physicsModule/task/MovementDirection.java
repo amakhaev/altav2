@@ -1,6 +1,5 @@
 package com.alta_v2.physicsModule.task;
 
-import com.alta_v2.mediatorModule.serde.ActionController;
 import com.alta_v2.renderingModule.actors.PersonView;
 
 /**

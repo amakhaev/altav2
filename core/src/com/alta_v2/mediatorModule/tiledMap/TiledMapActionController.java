@@ -89,8 +89,6 @@ public class TiledMapActionController implements ActionController {
     }
 
     private void runMovement(ActionType type) {
-        if (this.physicEngine.canMoveFocusPoint()) {
-            this.physicEngine.performFocusPointMovement(ActionType.getMovementDirection(type));
-        }
+        this.physicEngine.performPlayerMovement(ActionType.getMovementDirection(type));
     }
 }
