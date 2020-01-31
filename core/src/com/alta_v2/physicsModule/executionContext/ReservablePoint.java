@@ -7,7 +7,7 @@ import lombok.extern.log4j.Log4j2;
  * Describes value that is distributable for read/write access.
  */
 @Log4j2
-public final class ReservablePoint extends Reservable<Vector2> {
+public final class ReservablePoint extends SimpleReservable<Vector2> {
 
     /**
      * Initialize new instance of {@link ReservablePoint}.

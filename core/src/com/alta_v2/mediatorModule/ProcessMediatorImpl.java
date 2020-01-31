@@ -4,6 +4,8 @@ import com.alta_v2.game.ScreenManager;
 import com.alta_v2.game.utils.Resources;
 import com.alta_v2.mediatorModule.serde.ActionControllerFactory;
 import com.alta_v2.mediatorModule.serde.UpdaterFactory;
+import com.alta_v2.model.NpcModel;
+import com.alta_v2.model.PlayerModel;
 import com.alta_v2.physicsModule.TiledMapPhysicEngine;
 import com.alta_v2.renderingModule.ScreenFactory;
 import com.alta_v2.renderingModule.ScreenStateFactory;
@@ -12,6 +14,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Provides the mediator that responsible for orchestration of game.
@@ -68,8 +75,17 @@ public class ProcessMediatorImpl implements ProcessMediator {
      */
     @Override
     public void loadTiledMapScreen() {
-        TiledMapMetadata metadata = new TiledMapMetadata(Resources.MAP_TEST, Resources.ACTOR_PERSON_12);
-        TiledMapPhysicEngine physicEngine = new TiledMapPhysicEngine(new Vector2(3f, 1f), Resources.MAP_TEST);
+        PlayerModel playerModel = this.createMockPlayer();
+        List<NpcModel> npcList = this.createMockNpcList();
+
+        TiledMapMetadata metadata = new TiledMapMetadata(
+                Resources.MAP_TEST,
+                playerModel.texturePath,
+                npcList.stream().collect(Collectors.toMap(n -> n.id, n -> n.texturePath))
+        );
+        TiledMapPhysicEngine physicEngine = new TiledMapPhysicEngine(
+                new Vector2(playerModel.x, playerModel.y), Resources.MAP_TEST, playerModel.id
+        );
 
         this.currentContext = new ScreenContext(
                 this.updaterFactory.createTiledMapScreenUpdater(physicEngine),
@@ -79,5 +95,33 @@ public class ProcessMediatorImpl implements ProcessMediator {
         );
 
         this.screenManager.changeScreen(this.currentContext);
+    }
+
+    private PlayerModel createMockPlayer() {
+        PlayerModel playerModel = new PlayerModel();
+        playerModel.id = UUID.randomUUID().toString();
+        playerModel.texturePath = Resources.ACTOR_PERSON_12;
+        playerModel.x = 3f;
+        playerModel.y = 1f;
+        return playerModel;
+    }
+
+    private List<NpcModel> createMockNpcList() {
+        List<NpcModel> npcList = new ArrayList<>();
+        NpcModel npcModel1 = new NpcModel();
+        npcModel1.id = UUID.randomUUID().toString();
+        npcModel1.texturePath = Resources.CHILD_1;
+        npcModel1.x = 3f;
+        npcModel1.y = 10f;
+
+        NpcModel npcModel2 = new NpcModel();
+        npcModel2.id = UUID.randomUUID().toString();
+        npcModel2.texturePath = Resources.CHILD_2;
+        npcModel2.x = 8f;
+        npcModel2.y = 10f;
+
+        npcList.add(npcModel1);
+        npcList.add(npcModel2);
+        return npcList;
     }
 }

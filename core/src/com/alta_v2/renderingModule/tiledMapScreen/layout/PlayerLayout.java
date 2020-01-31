@@ -1,7 +1,7 @@
 package com.alta_v2.renderingModule.tiledMapScreen.layout;
 
 import com.alta_v2.renderingModule.ScreenState;
-import com.alta_v2.renderingModule.actors.PlayerActor;
+import com.alta_v2.renderingModule.actors.player.PlayerActor;
 import com.alta_v2.renderingModule.tiledMapScreen.TiledMapState;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,7 +28,11 @@ public class PlayerLayout implements Layout {
     @Override
     public void init(ScreenState state) {
         this.batch = new SpriteBatch();
-        this.playerActor = new PlayerActor(this.assetManager.get(this.texturePath, Texture.class), 32, 32);
+        this.playerActor = new PlayerActor(
+                this.assetManager.get(this.texturePath, Texture.class),
+                this.defaultTileWidth(),
+                this.defaultTileHeight()
+        );
     }
 
     /**
@@ -42,15 +46,7 @@ public class PlayerLayout implements Layout {
         }
 
         this.batch.begin();
-        this.playerActor.draw(
-                this.batch,
-                delta,
-                s.getActorCoordinates().x,
-                s.getActorCoordinates().y,
-                s.getPersonView(),
-                s.isPlayerAnimationEnabled(),
-                s.getPlayerAnimationChangeTime()
-        );
+        this.playerActor.draw(this.batch, delta, s.getPlayer());
         this.batch.end();
     }
 
@@ -60,14 +56,5 @@ public class PlayerLayout implements Layout {
     @Override
     public void dispose() {
         this.batch.dispose();
-    }
-
-    private TiledMapState resolveClass(ScreenState screenState) {
-        try {
-            return ScreenState.resolveState(screenState, TiledMapState.class);
-        } catch (ClassCastException e) {
-            log.error(e);
-            return null;
-        }
     }
 }

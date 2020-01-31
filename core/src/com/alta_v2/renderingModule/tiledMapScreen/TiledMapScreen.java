@@ -4,10 +4,7 @@ import com.alta_v2.aop.dynamicAssetLoader.DynamicAssetLoader;
 import com.alta_v2.game.utils.Resources;
 import com.alta_v2.renderingModule.Renderer;
 import com.alta_v2.renderingModule.ScreenState;
-import com.alta_v2.renderingModule.tiledMapScreen.layout.Layout;
-import com.alta_v2.renderingModule.tiledMapScreen.layout.MapLayout;
-import com.alta_v2.renderingModule.tiledMapScreen.layout.MapLayoutImpl;
-import com.alta_v2.renderingModule.tiledMapScreen.layout.PlayerLayout;
+import com.alta_v2.renderingModule.tiledMapScreen.layout.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -35,7 +32,8 @@ public class TiledMapScreen implements Renderer {
         this.assetManager = this.createAssets();
         this.mapLayout = new MapLayoutImpl(this.assetManager, metadata.getMapPath());
         this.layouts = Arrays.asList(
-                new PlayerLayout(this.assetManager, metadata.getActorTexturePath())
+                new PlayerLayout(this.assetManager, metadata.getActorTexturePath()),
+                new NpcLayout(this.assetManager, metadata.getNpcTextures())
         );
     }
 
@@ -71,7 +69,8 @@ public class TiledMapScreen implements Renderer {
         this.assetManager.dispose();
     }
 
-    @DynamicAssetLoader(tiledMap = Resources.MAP_TEST, textures = Resources.ACTOR_PERSON_12)
+    @DynamicAssetLoader(tiledMap = Resources.MAP_TEST,
+            textures = { Resources.ACTOR_PERSON_12, Resources.CHILD_1 })
     protected AssetManager createAssets() {
         return new AssetManager();
     }

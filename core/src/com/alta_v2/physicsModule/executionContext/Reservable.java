@@ -22,7 +22,7 @@ public abstract class Reservable<T> {
      */
     public synchronized void reserve(int hashCode) {
         if (this.occupantHash != null) {
-            log.error("Value has reserved by another occupant with hash {}", this.occupantHash);
+            log.trace("Value has reserved by another occupant with hash {}", this.occupantHash);
             return;
         }
 
@@ -36,17 +36,7 @@ public abstract class Reservable<T> {
      * @param hashCode - the hash code of current occupant.
      */
     public synchronized void release(int hashCode) {
-        if (this.occupantHash == null) {
-            log.warn("Value already free");
-            return;
-        }
-
-        if (this.occupantHash != hashCode) {
-            log.error(
-                    "Reserved value could be released by occupant only. Current occupant hash code: {}, trying to release by : {}",
-                    this.occupantHash,
-                    hashCode
-            );
+        if (!this.isAvailableToChange(hashCode)) {
             return;
         }
 
@@ -61,16 +51,40 @@ public abstract class Reservable<T> {
      * @param hashCode      - the hash code of occupant who is trying to make change.
      */
     public void setValue(T value, int hashCode) {
-        if (this.occupantHash == null) {
-            log.warn("The value must be reserved before writing.");
-            return;
+        if (this.isAvailableToChange(hashCode)) {
+            this.value = value;
+        }
+    }
+
+    /**
+     * Indicates when object is occupied.
+     */
+    protected final boolean isOccupied() {
+        return this.occupantHash != null;
+    }
+
+    /**
+     * Indicates when object is occupied by given hashCode.
+     */
+    protected final boolean isOccupiedBy(int hashCode) {
+        return this.occupantHash == hashCode;
+    }
+
+    protected final boolean isAvailableToChange(int hashCode) {
+        if (!this.isOccupied()) {
+            log.trace("Value already free");
+            return false;
         }
 
-        if (this.occupantHash != hashCode) {
-            log.error("Attempt to write value by {} but occupant is {}", hashCode, this.occupantHash);
-            return;
+        if (!this.isOccupiedBy(hashCode)) {
+            log.error(
+                    "Reserved value could be released by occupant only. Current occupant hash code: {}, trying to release by : {}",
+                    this.occupantHash,
+                    hashCode
+            );
+            return false;
         }
 
-        this.value = value;
+        return true;
     }
 }

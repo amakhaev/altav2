@@ -1,16 +1,15 @@
 package com.alta_v2.physicsModule;
 
 import com.alta_v2.physicsModule.executionContext.TiledMapEngineContext;
-import com.alta_v2.physicsModule.task.TaskCreationManager;
-import com.alta_v2.physicsModule.task.movePlayer.MovePlayerTask;
 import com.alta_v2.physicsModule.task.MovementDirection;
+import com.alta_v2.physicsModule.task.TaskCreationManager;
 import com.alta_v2.physicsModule.task.TiledMapTask;
-import com.alta_v2.physicsModule.utils.MovementCalculator;
 import com.alta_v2.physicsModule.utils.TiledMapParser;
 import com.alta_v2.physicsModule.utils.TiledMapPhysicCalculator;
 import com.alta_v2.renderingModule.tiledMapScreen.TiledMapState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import lombok.Builder;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.List;
@@ -22,6 +21,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Log4j2
 public class TiledMapPhysicEngine {
 
+    /*@Builder
+    private static TiledMapPhysicEngine createInstance() {
+
+    }*/
+
     private final TiledMapEngineContext context;
     private final List<TiledMapTask> tasks;
 
@@ -31,8 +35,8 @@ public class TiledMapPhysicEngine {
      * @param focusPointCoordinates - the coordinates of focus point on tiled map.
      * @param mapPath               - the path to tiled map in assets.
      */
-    public TiledMapPhysicEngine(Vector2 focusPointCoordinates, String mapPath) {
-        this.context = new TiledMapEngineContext(TiledMapParser.parse(mapPath));
+    public TiledMapPhysicEngine(Vector2 focusPointCoordinates, String mapPath, String playerId) {
+        this.context = new TiledMapEngineContext(TiledMapParser.parse(mapPath), playerId);
         this.context.writeFocusPointLocal(focusPointCoordinates, this.hashCode());
         this.tasks = new CopyOnWriteArrayList<>();
     }
@@ -47,7 +51,7 @@ public class TiledMapPhysicEngine {
                 this.hashCode()
         );
 
-        this.context.writeActorPointGlobal(
+        this.context.writePlayerPointGlobal(
                 TiledMapPhysicCalculator.playerCoordinate(this.context.getAltitudeMap().getTileWidth(), Gdx.graphics.getWidth()),
                 TiledMapPhysicCalculator.playerCoordinate(this.context.getAltitudeMap().getTileWidth(), Gdx.graphics.getHeight()),
                 this.hashCode()
@@ -73,16 +77,7 @@ public class TiledMapPhysicEngine {
      * @param state - the state to be used in rendering.
      */
     public void updateState(TiledMapState state) {
-        state.updateMapCoordinates(
-                this.context.getFocusPointGlobal().getX(), this.context.getFocusPointGlobal().getY()
-        );
-        state.updateActorCoordinates(
-                this.context.getActorPointGlobal().getX(), this.context.getActorPointGlobal().getY()
-        );
-
-        state.setPersonView(this.context.getPlayerView().getValue());
-        state.setPlayerAnimationEnabled(this.context.getIsPlayerMoving().getValue());
-        state.setPlayerAnimationChangeTime(this.context.getIsPlayerMoving().getChangeTime());
+        StateUpdater.updateAll(state, this.context);
     }
 
     public synchronized void performPlayerMovement(MovementDirection direction) {

@@ -1,7 +1,6 @@
 package com.alta_v2.physicsModule.task;
 
 import com.alta_v2.physicsModule.executionContext.TiledMapEngineContext;
-import com.alta_v2.physicsModule.task.moveFocusPoint.MoveFocusPointChecker;
 import com.alta_v2.physicsModule.task.movePlayer.MovePlayerChecker;
 import com.alta_v2.physicsModule.task.movePlayer.MovePlayerTask;
 import com.alta_v2.physicsModule.task.rotatePlayer.RotatePlayerChecker;
@@ -47,8 +46,8 @@ public final class TaskCreationManager {
                 .direction(direction)
                 .focusPointGlobal(context.getFocusPointGlobal())
                 .focusPointLocal(context.getFocusPointLocal())
-                .playerView(context.getPlayerView())
-                .isPlayerMoving(context.getIsPlayerMoving())
+                .playerView(context.getPlayer().getView())
+                .isPlayerMoving(context.getPlayer().getIsMoving())
                 .targetPointLocal(targetPoint)
                 .build();
     }
@@ -62,8 +61,9 @@ public final class TaskCreationManager {
      */
     public TiledMapTask createRotatePlayerTask(MovementDirection direction, TiledMapEngineContext context) {
         PersonView currentView = MovementDirection.getPersonView(direction);
-        return new RotatePlayerChecker().canTaskBeExecuted(context) && context.getPlayerView().getValue() != currentView ?
-                new RotatePlayerTask(direction, context.getPlayerView()) : null;
+        return new RotatePlayerChecker().canTaskBeExecuted(context) &&
+                context.getPlayer().getView().getValue() != currentView ?
+                new RotatePlayerTask(direction, context.getPlayer().getView()) : null;
     }
 
 }

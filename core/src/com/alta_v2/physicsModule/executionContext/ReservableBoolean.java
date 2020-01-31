@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * Provides the reservable object for boolean value.
  */
-public class ReservableBoolean extends Reservable<Boolean> {
+public class ReservableBoolean extends SimpleReservable<Boolean> {
 
     @Getter
     private long changeTime;
