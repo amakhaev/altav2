@@ -46,6 +46,7 @@ public final class TaskCreationManager {
                 .direction(direction)
                 .focusPointGlobal(context.getFocusPointGlobal())
                 .focusPointLocal(context.getFocusPointLocal())
+                .playerPointLocal(context.getPlayer().getLocalPoint())
                 .playerView(context.getPlayer().getView())
                 .isPlayerMoving(context.getPlayer().getIsMoving())
                 .targetPointLocal(targetPoint)

@@ -2,7 +2,7 @@ package com.alta_v2.game;
 
 import com.alta_v2.game.screen.GameScreen;
 import com.alta_v2.game.screen.GameScreenFactory;
-import com.alta_v2.mediatorModule.ScreenContext;
+import com.alta_v2.mediatorModule.screen.ScreenContext;
 import com.badlogic.gdx.Screen;
 import lombok.extern.log4j.Log4j2;
 

@@ -1,4 +1,4 @@
-package com.alta_v2.mediatorModule;
+package com.alta_v2.mediatorModule.screen;
 
 import com.alta_v2.mediatorModule.serde.ActionController;
 import com.alta_v2.mediatorModule.serde.Updater;

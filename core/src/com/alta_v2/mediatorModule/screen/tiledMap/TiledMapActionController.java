@@ -1,4 +1,4 @@
-package com.alta_v2.mediatorModule.tiledMap;
+package com.alta_v2.mediatorModule.screen.tiledMap;
 
 import com.alta_v2.mediatorModule.serde.ActionController;
 import com.alta_v2.physicsModule.TiledMapPhysicEngine;

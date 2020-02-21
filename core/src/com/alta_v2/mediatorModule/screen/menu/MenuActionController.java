@@ -1,4 +1,4 @@
-package com.alta_v2.mediatorModule.menu;
+package com.alta_v2.mediatorModule.screen.menu;
 
 import com.alta_v2.mediatorModule.serde.ActionController;
 import lombok.extern.log4j.Log4j2;

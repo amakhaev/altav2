@@ -1,11 +1,13 @@
-package com.alta_v2.physicsModule.executionContext;
+package com.alta_v2.physicsModule.executionContext.reserveData;
 
+import com.alta_v2.physicsModule.executionContext.Reservable;
+import com.alta_v2.physicsModule.executionContext.Tenant;
 import lombok.Getter;
 
 /**
  * Provides the reservable object for boolean value.
  */
-public class ReservableBoolean extends SimpleReservable<Boolean> {
+public class ReservableBoolean extends Reservable<Boolean> {
 
     @Getter
     private long changeTime;
@@ -24,14 +26,9 @@ public class ReservableBoolean extends SimpleReservable<Boolean> {
         return this.value;
     }
 
-    /**
-     * Sets the boolean value.
-     *
-     * @param value         - the new value.
-     * @param hashCode      - the hash code of occupant who is trying to make change.
-     */
-    public void setValue(boolean value, int hashCode) {
-        super.setValue(value, hashCode);
+    public ReservableBoolean setValue(boolean value, Tenant tenant) {
+        super.setValue(value, tenant);
         this.changeTime = System.currentTimeMillis();
+        return this;
     }
 }

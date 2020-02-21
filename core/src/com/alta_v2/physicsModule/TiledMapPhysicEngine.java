@@ -1,5 +1,6 @@
 package com.alta_v2.physicsModule;
 
+import com.alta_v2.physicsModule.executionContext.Tenant;
 import com.alta_v2.physicsModule.executionContext.TiledMapEngineContext;
 import com.alta_v2.physicsModule.task.MovementDirection;
 import com.alta_v2.physicsModule.task.TaskCreationManager;
@@ -13,6 +14,7 @@ import lombok.Builder;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -21,10 +23,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Log4j2
 public class TiledMapPhysicEngine {
 
-    /*@Builder
-    private static TiledMapPhysicEngine createInstance() {
-
-    }*/
+    @Builder
+    private static TiledMapPhysicEngine createInstance(Vector2 focusPointCoordinates,
+                                                       String mapPath,
+                                                       String playerId,
+                                                       Map<String, Vector2> npcList) {
+        TiledMapPhysicEngine engine = new TiledMapPhysicEngine(focusPointCoordinates, mapPath, playerId);
+        if (npcList != null) {
+            npcList.forEach((key, value) -> engine.context.addNpc(key, value.x, value.y));
+        }
+        return engine;
+    }
 
     private final TiledMapEngineContext context;
     private final List<TiledMapTask> tasks;
@@ -35,9 +44,9 @@ public class TiledMapPhysicEngine {
      * @param focusPointCoordinates - the coordinates of focus point on tiled map.
      * @param mapPath               - the path to tiled map in assets.
      */
-    public TiledMapPhysicEngine(Vector2 focusPointCoordinates, String mapPath, String playerId) {
+    private TiledMapPhysicEngine(Vector2 focusPointCoordinates, String mapPath, String playerId) {
         this.context = new TiledMapEngineContext(TiledMapParser.parse(mapPath), playerId);
-        this.context.writeFocusPointLocal(focusPointCoordinates, this.hashCode());
+        this.context.writeFocusPointLocal(focusPointCoordinates);
         this.tasks = new CopyOnWriteArrayList<>();
     }
 
@@ -47,15 +56,24 @@ public class TiledMapPhysicEngine {
     public void init() {
         this.context.writeFocusPointGlobal(
                 TiledMapPhysicCalculator.centerTileCoordinateX(this.context),
-                TiledMapPhysicCalculator.centerTileCoordinateY(this.context),
-                this.hashCode()
+                TiledMapPhysicCalculator.centerTileCoordinateY(this.context)
         );
 
         this.context.writePlayerPointGlobal(
+                this.context.getFocusPointLocal().getX(),
+                this.context.getFocusPointLocal().getY(),
                 TiledMapPhysicCalculator.playerCoordinate(this.context.getAltitudeMap().getTileWidth(), Gdx.graphics.getWidth()),
-                TiledMapPhysicCalculator.playerCoordinate(this.context.getAltitudeMap().getTileWidth(), Gdx.graphics.getHeight()),
-                this.hashCode()
+                TiledMapPhysicCalculator.playerCoordinate(this.context.getAltitudeMap().getTileWidth(), Gdx.graphics.getHeight())
         );
+
+        Tenant temporary = new Tenant("temporary-npc");
+        this.context.getNpcMap().values().forEach(npc -> {
+            npc.getGlobalPoint().reserve(temporary).setValue(
+                    400 + npc.getLocalPoint().getX() * 32 - this.context.getFocusPointLocal().getX() * 32 - 16,
+                    300 + npc.getLocalPoint().getY() * 32 - this.context.getFocusPointLocal().getY() * 32 - 16,
+                    temporary
+            ).release(temporary);
+        });
     }
 
     /**

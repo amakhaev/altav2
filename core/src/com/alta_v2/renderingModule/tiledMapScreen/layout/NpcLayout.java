@@ -30,10 +30,6 @@ public class NpcLayout implements Layout {
      */
     @Override
     public void init(ScreenState state) {
-        if (!this.isNpcMapAvailable()) {
-            return;
-        }
-
         if (this.npcTextures == null || this.npcTextures.isEmpty()) {
             return;
         }
@@ -43,7 +39,7 @@ public class NpcLayout implements Layout {
         this.npcTextures.forEach((key, value) -> this.npcActorMap.put(
                 key,
                 new NpcActor(
-                        this.assetManager.get(key, Texture.class),
+                        this.assetManager.get(value, Texture.class),
                         this.defaultTileWidth(),
                         this.defaultTileHeight()
                 )
@@ -67,7 +63,9 @@ public class NpcLayout implements Layout {
 
         s.getNpcStateList().forEach(npcState -> {
             if (this.npcActorMap.containsKey(npcState.getId())) {
+                this.batch.begin();
                 this.npcActorMap.get(npcState.getId()).draw(this.batch, delta, npcState);
+                this.batch.end();
             } else {
                 log.debug("Npc with given Id {} not found", npcState.getId());
             }

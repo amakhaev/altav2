@@ -70,7 +70,7 @@ public class TiledMapScreen implements Renderer {
     }
 
     @DynamicAssetLoader(tiledMap = Resources.MAP_TEST,
-            textures = { Resources.ACTOR_PERSON_12, Resources.CHILD_1 })
+            textures = { Resources.ACTOR_PERSON_12, Resources.CHILD_1, Resources.CHILD_2 })
     protected AssetManager createAssets() {
         return new AssetManager();
     }

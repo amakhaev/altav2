@@ -1,5 +1,7 @@
 package com.alta_v2.mediatorModule;
 
+import com.alta_v2.mediatorModule.screen.ScreenContext;
+
 /**
  * Provides the mediator that responsible for orchestration of game.
  */

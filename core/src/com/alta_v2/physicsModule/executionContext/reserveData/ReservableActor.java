@@ -1,4 +1,4 @@
-package com.alta_v2.physicsModule.executionContext;
+package com.alta_v2.physicsModule.executionContext.reserveData;
 
 import lombok.Getter;
 
@@ -12,6 +12,9 @@ public class ReservableActor {
 
     @Getter
     private final ReservablePoint globalPoint;
+
+    @Getter
+    private final ReservablePoint localPoint;
 
     @Getter
     private final ReservablePersonView view;
@@ -28,5 +31,6 @@ public class ReservableActor {
         this.globalPoint = new ReservablePoint();
         this.view = new ReservablePersonView();
         this.isMoving = new ReservableBoolean();
+        this.localPoint = new ReservablePoint();
     }
 }

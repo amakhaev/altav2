@@ -10,7 +10,7 @@ import lombok.extern.log4j.Log4j2;
 public abstract class Reservable<T> {
 
     protected T value;
-    protected Integer occupantHash;
+    protected Tenant tenant;
 
     @Getter
     protected boolean isReserved = false;
@@ -18,69 +18,105 @@ public abstract class Reservable<T> {
     /**
      * Reserves the value for permanent write access.
      *
-     * @param hashCode - the hash code of occupant.
+     * @param tenant - the tenant of reservable variable.
      */
-    public synchronized void reserve(int hashCode) {
-        if (this.occupantHash != null) {
-            log.trace("Value has reserved by another occupant with hash {}", this.occupantHash);
-            return;
+    public synchronized Reservable<T> reserve(Tenant tenant) {
+        if (tenant == null) {
+            log.error("Given tenant is null");
+            return this;
         }
 
-        this.occupantHash = hashCode;
+        if (this.tenant != null) {
+            log.warn("It already reserved by tenant with ID '{}'", this.tenant.getId());
+            return this;
+        }
+
+        this.tenant = tenant;
         this.isReserved = true;
+        return this;
     }
 
     /**
      * Releases the current value, then value can be used for write by another occupants.
      *
-     * @param hashCode - the hash code of current occupant.
+     * @param tenant - the tenant of reservable variable.
      */
-    public synchronized void release(int hashCode) {
-        if (!this.isAvailableToChange(hashCode)) {
-            return;
+    public synchronized Reservable<T> release(Tenant tenant) {
+        if (tenant == null) {
+            log.error("Given tenant is null");
+            return this;
         }
 
-        this.occupantHash = null;
+        if (this.tenant == null) {
+            log.warn("Variable is not reserved by any tenant");
+            return this;
+        }
+
+        if (!this.tenant.getId().equals(tenant.getId())) {
+            log.debug("Reserved value can be released by tenant '{}' only. Attempt to release by : '{}'",
+                    this.tenant.getId(), tenant.getId()
+            );
+            return this;
+        }
+
+        this.tenant = null;
         this.isReserved = false;
+        return this;
     }
 
     /**
      * Sets the value of point.
      *
-     * @param value         - the new value.
-     * @param hashCode      - the hash code of occupant who is trying to make change.
+     * @param value - the new value.
+     * @param tenant - the tenant of reservable variable.
      */
-    public void setValue(T value, int hashCode) {
-        if (this.isAvailableToChange(hashCode)) {
-            this.value = value;
+    public Reservable<T> setValue(T value, Tenant tenant) {
+        if (tenant == null) {
+            log.error("Given tenant is null");
+            return this;
         }
+
+        if (this.tenant == null) {
+            log.warn("Variable is not reserved by any tenant");
+            return this;
+        }
+
+        if (!this.tenant.getId().equals(tenant.getId())) {
+            log.debug("Reserved value can be changed by tenant '{}' only. Attempt to change by : '{}'",
+                    this.tenant.getId(), tenant.getId()
+            );
+            return this;
+        }
+
+        this.value = value;
+        return this;
     }
 
     /**
      * Indicates when object is occupied.
      */
     protected final boolean isOccupied() {
-        return this.occupantHash != null;
+        return this.tenant != null;
     }
 
     /**
      * Indicates when object is occupied by given hashCode.
      */
-    protected final boolean isOccupiedBy(int hashCode) {
-        return this.occupantHash == hashCode;
+    protected final boolean isOccupiedBy(Tenant tenant) {
+        return this.tenant.getId().equals(tenant.getId());
     }
 
-    protected final boolean isAvailableToChange(int hashCode) {
+    protected final boolean isAvailableToChange(Tenant tenant) {
         if (!this.isOccupied()) {
             log.trace("Value already free");
             return false;
         }
 
-        if (!this.isOccupiedBy(hashCode)) {
+        if (!this.isOccupiedBy(tenant)) {
             log.error(
-                    "Reserved value could be released by occupant only. Current occupant hash code: {}, trying to release by : {}",
-                    this.occupantHash,
-                    hashCode
+                    "Reserved value can be changed by tenant '{}' only. Attempt to release by : '{}'",
+                    this.tenant.getId(),
+                    tenant.getId()
             );
             return false;
         }

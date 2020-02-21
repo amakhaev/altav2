@@ -1,7 +1,8 @@
 package com.alta_v2.physicsModule.task.moveFocusPoint;
 
 import com.alta_v2.physicsModule.executionContext.AltitudeMap;
-import com.alta_v2.physicsModule.executionContext.ReservablePoint;
+import com.alta_v2.physicsModule.executionContext.Tenant;
+import com.alta_v2.physicsModule.executionContext.reserveData.ReservablePoint;
 import com.alta_v2.physicsModule.task.MovementDirection;
 import com.alta_v2.physicsModule.task.TiledMapTask;
 import com.alta_v2.physicsModule.utils.TiledMapPhysicCalculator;
@@ -22,6 +23,7 @@ public class MoveFocusPointTask implements TiledMapTask {
     private final float distanceLengthY;
     private final Vector2 targetPointGlobal;
     private final Vector2 targetPointLocal;
+    private final Tenant tenant = new Tenant("move-focus-point-task");
 
     private float currentExecutionTime;
     private boolean isCompleted;
@@ -34,8 +36,8 @@ public class MoveFocusPointTask implements TiledMapTask {
         this.focusPointGlobal = focusPointGlobal;
         this.targetPointLocal = targetPointLocal;
 
-        this.focusPointLocal.reserve(this.hashCode());
-        this.focusPointGlobal.reserve(this.hashCode());
+        this.focusPointLocal.reserve(this.tenant);
+        this.focusPointGlobal.reserve(this.tenant);
 
         this.currentExecutionTime = 0;
         this.isCompleted = false;
@@ -65,7 +67,7 @@ public class MoveFocusPointTask implements TiledMapTask {
     public void act(float delta) {
         this.currentExecutionTime += delta;
         if (this.currentExecutionTime >= EXECUTION_TIME_SECONDS) {
-            this.focusPointGlobal.setValue(this.targetPointGlobal, this.hashCode());
+            this.focusPointGlobal.setValue(this.targetPointGlobal, this.tenant);
         } else {
             // calculates the percentage of current time
             float currentPercentage = this.currentExecutionTime / EXECUTION_TIME_SECONDS * 100;
@@ -80,7 +82,7 @@ public class MoveFocusPointTask implements TiledMapTask {
             float currentY = this.focusPointGlobal.getY() == this.targetPointGlobal.y ?
                     this.focusPointGlobal.getY() : this.targetPointGlobal.y - this.distanceLengthY + reduceValueY;
 
-            this.focusPointGlobal.setValue(currentX, currentY, this.hashCode());
+            this.focusPointGlobal.setValue(currentX, currentY, this.tenant);
         }
 
         this.postAct();
@@ -92,9 +94,8 @@ public class MoveFocusPointTask implements TiledMapTask {
             return;
         }
 
-        this.focusPointLocal.setValue(this.targetPointLocal, this.hashCode());
-        this.focusPointLocal.release(this.hashCode());
-        this.focusPointGlobal.release(this.hashCode());
+        this.focusPointLocal.setValue(this.targetPointLocal, this.tenant).release(this.tenant);
+        this.focusPointGlobal.release(this.tenant);
         this.isCompleted = true;
     }
 

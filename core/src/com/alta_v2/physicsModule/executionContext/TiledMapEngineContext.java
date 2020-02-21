@@ -1,5 +1,7 @@
 package com.alta_v2.physicsModule.executionContext;
 
+import com.alta_v2.physicsModule.executionContext.reserveData.ReservableActor;
+import com.alta_v2.physicsModule.executionContext.reserveData.ReservablePoint;
 import com.badlogic.gdx.math.Vector2;
 import com.google.common.collect.Maps;
 import lombok.Getter;
@@ -19,6 +21,7 @@ public final class TiledMapEngineContext {
     private final ReservablePoint focusPointGlobal;
     private final ReservableActor player;
     private final Map<String, ReservableActor> npcMap;
+    private final Tenant tenant = new Tenant("engine-context");
 
     /**
      * Initialize new instance of {@link TiledMapEngineContext}
@@ -33,34 +36,35 @@ public final class TiledMapEngineContext {
         this.npcMap = Maps.newHashMap();
     }
 
-    public void addNpc(String id, float x, float y) {
+    public void addNpc(String id, float localX, float localY) {
         if (this.npcMap.containsKey(id)) {
-            // log.warn();
+            log.warn("NPC with given id {} already exists", id);
             return;
         }
+
+        ReservableActor npc = new ReservableActor(id);
+        npc.getLocalPoint().reserve(this.tenant).setValue(localX, localY, tenant).release(this.tenant);
+        this.npcMap.put(id, npc);
     }
 
-    public void writeFocusPointLocal(Vector2 coordinates, int hashCode) {
-        this.writePointValue(this.focusPointLocal, coordinates, hashCode);
+    public void writeFocusPointLocal(Vector2 coordinates) {
+        this.writePointValue(this.focusPointLocal, coordinates);
     }
 
-    public void writeFocusPointGlobal(float x, float y, int hashCode) {
-        this.writePointValue(this.focusPointGlobal, x, y, hashCode);
+    public void writeFocusPointGlobal(float x, float y) {
+        this.writePointValue(this.focusPointGlobal, x, y);
     }
 
-    public void writePlayerPointGlobal(float x, float y, int hashCode) {
-        this.writePointValue(this.player.getGlobalPoint(), x, y, hashCode);
+    public void writePlayerPointGlobal(float localX, float localY, float globalX, float globalY) {
+        this.writePointValue(this.player.getLocalPoint(), localX, localY);
+        this.writePointValue(this.player.getGlobalPoint(), globalX, globalY);
     }
 
-    private void writePointValue(ReservablePoint point, Vector2 coordinates, int hashCode) {
-        point.reserve(hashCode);
-        point.setValue(coordinates, hashCode);
-        point.release(hashCode);
+    private void writePointValue(ReservablePoint point, Vector2 coordinates) {
+        point.reserve(this.tenant).setValue(coordinates, this.tenant).release(this.tenant);
     }
 
-    private void writePointValue(ReservablePoint point, float x, float y, int hashCode) {
-        point.reserve(hashCode);
-        point.setValue(x, y, hashCode);
-        point.release(hashCode);
+    private void writePointValue(ReservablePoint point, float x, float y) {
+        point.reserve(this.tenant).setValue(x, y, this.tenant).release(this.tenant);
     }
 }

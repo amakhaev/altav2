@@ -2,15 +2,11 @@ package com.alta_v2.mediatorModule;
 
 import com.alta_v2.game.ScreenManager;
 import com.alta_v2.game.utils.Resources;
-import com.alta_v2.mediatorModule.serde.ActionControllerFactory;
-import com.alta_v2.mediatorModule.serde.UpdaterFactory;
-import com.alta_v2.model.NpcModel;
-import com.alta_v2.model.PlayerModel;
-import com.alta_v2.physicsModule.TiledMapPhysicEngine;
-import com.alta_v2.renderingModule.ScreenFactory;
-import com.alta_v2.renderingModule.ScreenStateFactory;
-import com.alta_v2.renderingModule.tiledMapScreen.TiledMapMetadata;
-import com.badlogic.gdx.math.Vector2;
+import com.alta_v2.mediatorModule.screen.ContextFactory;
+import com.alta_v2.mediatorModule.screen.ContextFactoryImpl;
+import com.alta_v2.mediatorModule.screen.ScreenContext;
+import com.alta_v2.model.NpcDefinitionModel;
+import com.alta_v2.model.PlayerDefinitionModel;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import lombok.Getter;
@@ -18,7 +14,6 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Provides the mediator that responsible for orchestration of game.
@@ -26,33 +21,20 @@ import java.util.stream.Collectors;
 public class ProcessMediatorImpl implements ProcessMediator {
 
     private final ScreenManager screenManager;
-    private final ScreenFactory screenFactory;
-    private final UpdaterFactory updaterFactory;
-    private final ActionControllerFactory controllerFactory;
-    private final ScreenStateFactory screenStateFactory;
+    private final ContextFactory contextFactory;
 
     @Getter
     private ScreenContext currentContext;
 
     /**
      * Initialize new instance of {@link ProcessMediatorImpl}.
-     * @param screenFactory         - the {@link ScreenFactory} instance.
      * @param screenManager         - the {@link ScreenManager} instance.
-     * @param controllerFactory     - the {@link ActionControllerFactory} instance.
-     * @param updaterFactory        - the {@link UpdaterFactory} instance.
-     * @param screenStateFactory    - the {@link ScreenStateFactory} instance.
+     * @param contextFactory        - the {@link ContextFactoryImpl} instance.
      */
     @AssistedInject
-    public ProcessMediatorImpl(ScreenFactory screenFactory,
-                               UpdaterFactory updaterFactory,
-                               ActionControllerFactory controllerFactory,
-                               ScreenStateFactory screenStateFactory,
-                               @Assisted ScreenManager screenManager) {
+    public ProcessMediatorImpl(ContextFactory contextFactory, @Assisted ScreenManager screenManager) {
         this.screenManager = screenManager;
-        this.screenFactory = screenFactory;
-        this.updaterFactory = updaterFactory;
-        this.controllerFactory = controllerFactory;
-        this.screenStateFactory = screenStateFactory;
+        this.contextFactory = contextFactory;
     }
 
     /**
@@ -60,13 +42,7 @@ public class ProcessMediatorImpl implements ProcessMediator {
      */
     @Override
     public void loadMenuScreen() {
-        this.currentContext = new ScreenContext(
-                this.updaterFactory.createMenuScreenUpdater(),
-                this.screenFactory.createMenuScreen(),
-                this.controllerFactory.createMenuActionController(),
-                this.screenStateFactory.createMenuState()
-        );
-
+        this.currentContext = this.contextFactory.createMenuContext();
         this.screenManager.changeScreen(this.currentContext);
     }
 
@@ -75,53 +51,38 @@ public class ProcessMediatorImpl implements ProcessMediator {
      */
     @Override
     public void loadTiledMapScreen() {
-        PlayerModel playerModel = this.createMockPlayer();
-        List<NpcModel> npcList = this.createMockNpcList();
+        PlayerDefinitionModel playerDefinitionModel = this.createMockPlayer();
+        List<NpcDefinitionModel> npcList = this.createMockNpcList();
 
-        TiledMapMetadata metadata = new TiledMapMetadata(
-                Resources.MAP_TEST,
-                playerModel.texturePath,
-                npcList.stream().collect(Collectors.toMap(n -> n.id, n -> n.texturePath))
-        );
-        TiledMapPhysicEngine physicEngine = new TiledMapPhysicEngine(
-                new Vector2(playerModel.x, playerModel.y), Resources.MAP_TEST, playerModel.id
-        );
-
-        this.currentContext = new ScreenContext(
-                this.updaterFactory.createTiledMapScreenUpdater(physicEngine),
-                this.screenFactory.createTiledMapScreen(metadata),
-                this.controllerFactory.createTiledMapActionController(physicEngine),
-                this.screenStateFactory.createTiledMapState()
-        );
-
+        this.currentContext = this.contextFactory.createTiledMapContext(playerDefinitionModel, npcList);
         this.screenManager.changeScreen(this.currentContext);
     }
 
-    private PlayerModel createMockPlayer() {
-        PlayerModel playerModel = new PlayerModel();
-        playerModel.id = UUID.randomUUID().toString();
-        playerModel.texturePath = Resources.ACTOR_PERSON_12;
-        playerModel.x = 3f;
-        playerModel.y = 1f;
-        return playerModel;
+    private PlayerDefinitionModel createMockPlayer() {
+        PlayerDefinitionModel playerDefinitionModel = new PlayerDefinitionModel();
+        playerDefinitionModel.id = UUID.randomUUID().toString();
+        playerDefinitionModel.texturePath = Resources.ACTOR_PERSON_12;
+        playerDefinitionModel.x = 3f;
+        playerDefinitionModel.y = 1f;
+        return playerDefinitionModel;
     }
 
-    private List<NpcModel> createMockNpcList() {
-        List<NpcModel> npcList = new ArrayList<>();
-        NpcModel npcModel1 = new NpcModel();
-        npcModel1.id = UUID.randomUUID().toString();
-        npcModel1.texturePath = Resources.CHILD_1;
-        npcModel1.x = 3f;
-        npcModel1.y = 10f;
+    private List<NpcDefinitionModel> createMockNpcList() {
+        List<NpcDefinitionModel> npcList = new ArrayList<>();
+        NpcDefinitionModel npcDefinitionModel1 = new NpcDefinitionModel();
+        npcDefinitionModel1.id = UUID.randomUUID().toString();
+        npcDefinitionModel1.texturePath = Resources.CHILD_1;
+        npcDefinitionModel1.x = 1f;
+        npcDefinitionModel1.y = 2;
 
-        NpcModel npcModel2 = new NpcModel();
-        npcModel2.id = UUID.randomUUID().toString();
-        npcModel2.texturePath = Resources.CHILD_2;
-        npcModel2.x = 8f;
-        npcModel2.y = 10f;
+        NpcDefinitionModel npcDefinitionModel2 = new NpcDefinitionModel();
+        npcDefinitionModel2.id = UUID.randomUUID().toString();
+        npcDefinitionModel2.texturePath = Resources.CHILD_2;
+        npcDefinitionModel2.x = 8f;
+        npcDefinitionModel2.y = 10f;
 
-        npcList.add(npcModel1);
-        npcList.add(npcModel2);
+        npcList.add(npcDefinitionModel1);
+        npcList.add(npcDefinitionModel2);
         return npcList;
     }
 }

@@ -2,7 +2,7 @@ package com.alta_v2.game.screen;
 
 import com.alta_v2.game.component.ComponentFactory;
 import com.alta_v2.game.component.overlay.OverlayComponent;
-import com.alta_v2.mediatorModule.ScreenContext;
+import com.alta_v2.mediatorModule.screen.ScreenContext;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;

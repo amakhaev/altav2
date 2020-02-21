@@ -3,6 +3,8 @@ package com.alta_v2.renderingModule;
 import com.alta_v2.renderingModule.menuScreen.MenuState;
 import com.alta_v2.renderingModule.tiledMapScreen.TiledMapState;
 
+import java.util.List;
+
 /**
  * Provides the factory for state of screens.
  */
@@ -16,6 +18,6 @@ public interface ScreenStateFactory {
     /**
      * Creates the instance of {@link TiledMapState}.
      */
-    TiledMapState createTiledMapState();
+    TiledMapState createTiledMapState(List<String> npcIds);
 
 }

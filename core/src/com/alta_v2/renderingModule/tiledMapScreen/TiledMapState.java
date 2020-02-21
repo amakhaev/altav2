@@ -4,6 +4,8 @@ import com.alta_v2.renderingModule.ScreenState;
 import com.alta_v2.renderingModule.tiledMapScreen.state.NpcState;
 import com.alta_v2.renderingModule.tiledMapScreen.state.PlayerState;
 import com.badlogic.gdx.math.Vector2;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -22,6 +24,13 @@ public class TiledMapState implements ScreenState {
 
     @Getter
     private final List<NpcState> npcStateList = new ArrayList<>();
+
+    @AssistedInject
+    public TiledMapState(@Assisted List<String> npcIds) {
+        if (npcIds != null) {
+            npcIds.forEach(npcId -> npcStateList.add(new NpcState(npcId)));
+        }
+    }
 
     public void updateMapCoordinates(float x, float y) {
         this.mapCoordinates.x = x;

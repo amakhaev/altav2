@@ -1,7 +1,7 @@
 package com.alta_v2.mediatorModule.serde;
 
-import com.alta_v2.mediatorModule.menu.MenuActionController;
-import com.alta_v2.mediatorModule.tiledMap.TiledMapActionController;
+import com.alta_v2.mediatorModule.screen.menu.MenuActionController;
+import com.alta_v2.mediatorModule.screen.tiledMap.TiledMapActionController;
 import com.alta_v2.physicsModule.TiledMapPhysicEngine;
 
 /**
