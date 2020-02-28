@@ -8,6 +8,11 @@ import com.alta_v2.mediatorModule.screen.ScreenContext;
 public interface ProcessMediator {
 
     /**
+     * Gets context of current screen.
+     */
+    ScreenContext getCurrentContext();
+
+    /**
      * Loads the menu screen.
      */
     void loadMenuScreen();
@@ -16,11 +21,4 @@ public interface ProcessMediator {
      * Loads a tiled map screen.
      */
     void loadTiledMapScreen();
-
-    /**
-     * Gets the context of current loaded screen.
-     *
-     * @return the {@link ScreenContext} instance.
-     */
-    ScreenContext getCurrentContext();
 }

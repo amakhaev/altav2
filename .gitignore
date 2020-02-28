@@ -111,6 +111,7 @@ gradle-app.setting
 /ios/build/
 /ios-moe/build/
 /shared/build/
+/gamelogic/build/
 
 ## OS Specific
 .DS_Store

@@ -1,9 +1,7 @@
-package com.alta_v2.mediatorModule.screen.tiledMap;
+package com.alta_v2.game.gamelogic.stage;
 
-import com.alta_v2.mediatorModule.serde.ActionController;
-import com.alta_v2.physicsModule.TiledMapPhysicEngine;
+import com.alta_v2.facade.tiledMapApi.TiledMapApi;
 import com.google.common.collect.Sets;
-import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import lombok.extern.log4j.Log4j2;
 
@@ -12,28 +10,20 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Provides the controller of actions on tiled map.
- */
 @Log4j2
-public class TiledMapActionController implements ActionController {
+public class MapStage extends AbstractStage {
 
     private static final String LISTENER_THREAD_NAME = "tiledmap-listener";
 
     private final ScheduledExecutorService executorService;
     private final Set<ActionType> actionStatus;
-    private final TiledMapPhysicEngine physicEngine;
+    private final TiledMapApi tiledMapApi;
 
     private int threadCounter;
 
-    /**
-     * Initialize new instance of {@link TiledMapActionController}.
-     *
-     * @param physicEngine - the {@link TiledMapPhysicEngine} instance.
-     */
     @AssistedInject
-    public TiledMapActionController(@Assisted TiledMapPhysicEngine physicEngine) {
-        this.physicEngine = physicEngine;
+    public MapStage(TiledMapApi tiledMapApi) {
+        this.tiledMapApi = tiledMapApi;
         this.threadCounter = 0;
         this.actionStatus = Sets.newConcurrentHashSet();
         this.executorService = Executors.newScheduledThreadPool(
@@ -57,6 +47,10 @@ public class TiledMapActionController implements ActionController {
     @Override
     public void onActionFinish(ActionType action) {
         this.actionStatus.remove(action);
+
+        if (action == ActionType.BACK) {
+            this.changeScreen(StageType.MENU);
+        }
     }
 
     /**
@@ -64,6 +58,7 @@ public class TiledMapActionController implements ActionController {
      */
     @Override
     public void destroy() {
+        super.destroy();
         try {
             this.executorService.shutdown();
         } catch (Exception e) {
@@ -78,17 +73,12 @@ public class TiledMapActionController implements ActionController {
                 case MOVE_DOWN:
                 case MOVE_LEFT:
                 case MOVE_RIGHT:
-                    this.runMovement(status);
+                    this.tiledMapApi.performPlayerMovement(ActionType.getMovementDirection(status));
                     break;
                 case BACK:
                 case NEXT:
-                    log.info("Action not handled yet");
                     break;
             }
         });
-    }
-
-    private void runMovement(ActionType type) {
-        this.physicEngine.performPlayerMovement(ActionType.getMovementDirection(type));
     }
 }

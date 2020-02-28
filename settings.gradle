@@ -1,1 +1,2 @@
-include 'desktop', 'core', 'shared'
+include 'desktop', 'core', 'shared', 'gamelogic'
+

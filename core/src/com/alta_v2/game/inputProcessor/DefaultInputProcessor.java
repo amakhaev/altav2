@@ -1,7 +1,6 @@
 package com.alta_v2.game.inputProcessor;
 
-import com.alta_v2.mediatorModule.ProcessMediator;
-import com.alta_v2.mediatorModule.serde.ActionController;
+import com.alta_v2.mediatorModule.serde.ActionListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.google.inject.assistedinject.Assisted;
@@ -14,16 +13,14 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class DefaultInputProcessor extends InputAdapter {
 
-    private final ProcessMediator processMediator;
+    private final ActionListener actionListener;
 
     /**
      * Initialize new instance of {@link DefaultInputProcessor}.
-     *
-     * @param processMediator - the {@link ProcessMediator} instance.
      */
     @AssistedInject
-    public DefaultInputProcessor(@Assisted ProcessMediator processMediator) {
-        this.processMediator = processMediator;
+    public DefaultInputProcessor(@Assisted ActionListener actionListener) {
+        this.actionListener = actionListener;
     }
 
     /**
@@ -31,13 +28,13 @@ public class DefaultInputProcessor extends InputAdapter {
      */
     @Override
     public boolean keyDown (int keycode) {
-        ActionController.ActionType actionType = ActionController.resolveAction(keycode);
+        ActionListener.ActionType actionType = ActionListener.resolveAction(keycode);
         if (actionType == null) {
             log.debug("Unknown type of action by key code {}", keycode);
             return false;
         }
 
-        this.processMediator.getCurrentContext().getActionController().onActionBegin(actionType);
+        this.actionListener.onActionBegin(actionType);
         return true;
     }
 
@@ -51,19 +48,13 @@ public class DefaultInputProcessor extends InputAdapter {
             log.info("Native heap size: " + Gdx.app.getNativeHeap() / 1024 / 1024 + " MB");
         }
 
-        if (keycode == 8) { // 1
-            this.processMediator.loadMenuScreen();
-        } else if (keycode == 9) { // 2
-            this.processMediator.loadTiledMapScreen();
-        }
-
-        ActionController.ActionType actionType = ActionController.resolveAction(keycode);
+        ActionListener.ActionType actionType = ActionListener.resolveAction(keycode);
         if (actionType == null) {
             log.debug("Unknown type of action by key code {}", keycode);
             return false;
         }
 
-        this.processMediator.getCurrentContext().getActionController().onActionFinish(actionType);
+        this.actionListener.onActionFinish(actionType);
         return true;
     }
 }

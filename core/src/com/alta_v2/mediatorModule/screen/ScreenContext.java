@@ -1,7 +1,7 @@
 package com.alta_v2.mediatorModule.screen;
 
-import com.alta_v2.mediatorModule.serde.ActionController;
 import com.alta_v2.mediatorModule.serde.Updater;
+import com.alta_v2.physicsModule.PhysicEngine;
 import com.alta_v2.renderingModule.Renderer;
 import com.alta_v2.renderingModule.ScreenState;
 import lombok.Getter;
@@ -20,17 +20,16 @@ public final class ScreenContext {
     private final Renderer screenRender;
 
     @Getter
-    private final ActionController actionController;
+    private final ScreenState screenState;
 
     @Getter
-    private final ScreenState screenState;
+    private final PhysicEngine physicEngine;
 
     /**
      * Destroys the context.
      */
     public void destroy() {
         this.screenUpdater.destroy();
-        this.actionController.destroy();
         this.screenRender.dispose();
     }
 }

@@ -5,7 +5,7 @@ import com.alta_v2.physicsModule.task.MovementDirection;
 /**
  * Provides the handler of input actions.
  */
-public interface ActionController {
+public interface ActionListener {
 
     /**
      * Handles the action when it begins but not finished yet (like key pressed).

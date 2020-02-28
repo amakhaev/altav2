@@ -3,14 +3,13 @@ package com.alta_v2.mediatorModule;
 import com.alta_v2.game.ScreenManager;
 import com.alta_v2.game.utils.Resources;
 import com.alta_v2.mediatorModule.screen.ContextFactory;
-import com.alta_v2.mediatorModule.screen.ContextFactoryImpl;
 import com.alta_v2.mediatorModule.screen.ScreenContext;
 import com.alta_v2.model.NpcDefinitionModel;
 import com.alta_v2.model.PlayerDefinitionModel;
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -18,24 +17,14 @@ import java.util.UUID;
 /**
  * Provides the mediator that responsible for orchestration of game.
  */
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ProcessMediatorImpl implements ProcessMediator {
 
-    private final ScreenManager screenManager;
     private final ContextFactory contextFactory;
+    private final ScreenManager screenManager;
 
     @Getter
     private ScreenContext currentContext;
-
-    /**
-     * Initialize new instance of {@link ProcessMediatorImpl}.
-     * @param screenManager         - the {@link ScreenManager} instance.
-     * @param contextFactory        - the {@link ContextFactoryImpl} instance.
-     */
-    @AssistedInject
-    public ProcessMediatorImpl(ContextFactory contextFactory, @Assisted ScreenManager screenManager) {
-        this.screenManager = screenManager;
-        this.contextFactory = contextFactory;
-    }
 
     /**
      * {@inheritDoc}

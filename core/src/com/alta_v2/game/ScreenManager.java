@@ -4,6 +4,8 @@ import com.alta_v2.game.screen.GameScreen;
 import com.alta_v2.game.screen.GameScreenFactory;
 import com.alta_v2.mediatorModule.screen.ScreenContext;
 import com.badlogic.gdx.Screen;
+import com.google.inject.Inject;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,18 +16,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Log4j2
 public class ScreenManager {
 
-    private final AltaV2 game;
+    @Setter
+    private AltaV2 game;
+
     private final GameScreenFactory screenFactory;
     private final AtomicBoolean screenChangeIsLocked;
 
     /**
      * Initialize new instance of {@link ScreenManager}.
      *
-     * @param game          - the {@link AltaV2} instance.
      * @param screenFactory - the {@link GameScreenFactory} instance.
      */
-    public ScreenManager(AltaV2 game, GameScreenFactory screenFactory) {
-        this.game = game;
+    @Inject
+    public ScreenManager(GameScreenFactory screenFactory) {
         this.screenFactory = screenFactory;
         this.screenChangeIsLocked = new AtomicBoolean(false);
     }
@@ -36,6 +39,10 @@ public class ScreenManager {
      * @param screenContext - the {@link ScreenContext} instance.
      */
     public void changeScreen(ScreenContext screenContext) {
+        if (this.game == null) {
+            throw new NullPointerException("AltaV2 must not be null");
+        }
+
         if (this.screenChangeIsLocked.get()) {
             log.warn("Screen changing is not available because another change operation in progress.");
             return;
@@ -69,6 +76,10 @@ public class ScreenManager {
      * @return the resultType instance or null;
      */
     private  <T extends Screen> T getScreenAsType(Class<T> resultType) {
+        if (this.game == null) {
+            throw new NullPointerException("AltaV2 must not be null");
+        }
+
         Screen screen = this.game.getScreen();
         if (!this.isInstanceOf(resultType, screen)) {
             return null;

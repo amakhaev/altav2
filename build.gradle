@@ -1,5 +1,5 @@
 buildscript {
-    
+    apply plugin: "java-library"
 
     repositories {
         mavenLocal()
@@ -43,9 +43,9 @@ allprojects {
 project(":desktop") {
     apply plugin: "java-library"
 
-
     dependencies {
         implementation project(":core")
+        implementation project(":gamelogic")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
@@ -77,6 +77,22 @@ project(":core") {
         api "com.google.inject.extensions:guice-assistedinject:$googleGuiceAssistVersion"
         api "org.apache.logging.log4j:log4j-api:$logbackVersion"
         api "org.apache.logging.log4j:log4j-core:$logbackVersion"
+    }
+}
+
+project(":gamelogic") {
+    apply plugin: "java-library"
+
+    dependencies {
+        implementation project(":shared")
+        implementation project(":core")
+        implementation "com.google.inject:guice:$googleGuiceVersion"
+
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        implementation "org.projectlombok:lombok:$lombokVersion"
+
+        implementation "org.apache.logging.log4j:log4j-api:$logbackVersion"
+        implementation "org.apache.logging.log4j:log4j-core:$logbackVersion"
     }
 }
 

@@ -20,8 +20,8 @@ public class TiledMapScreenUpdater implements Updater {
 
     private static final String UPDATER_THREAD_NAME = "tiledmap-updater";
 
-    private final TiledMapPhysicEngine engine;
     private final ExecutorService executorService;
+    private final TiledMapPhysicEngine engine;
 
     private byte threadCounter = 0;
 

@@ -21,7 +21,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Provides the engine for calculation on tiled map.
  */
 @Log4j2
-public class TiledMapPhysicEngine {
+public class TiledMapPhysicEngine implements PhysicEngine {
 
     @Builder
     private static TiledMapPhysicEngine createInstance(Vector2 focusPointCoordinates,
