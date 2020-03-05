@@ -1,6 +1,6 @@
 package com.alta_v2.game.gamelogic.stage;
 
-import com.alta_v2.mediatorModule.serde.ActionListener;
+import com.alta_v2.mediator.serde.ActionListener;
 
 public interface StageManager {
 

@@ -1,6 +1,6 @@
 package com.alta_v2.game.inputProcessor;
 
-import com.alta_v2.mediatorModule.serde.ActionListener;
+import com.alta_v2.mediator.serde.ActionListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.google.inject.assistedinject.Assisted;

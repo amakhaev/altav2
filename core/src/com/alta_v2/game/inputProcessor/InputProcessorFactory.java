@@ -1,6 +1,6 @@
 package com.alta_v2.game.inputProcessor;
 
-import com.alta_v2.mediatorModule.serde.ActionListener;
+import com.alta_v2.mediator.serde.ActionListener;
 
 /**
  * Provides the factory for input processors.

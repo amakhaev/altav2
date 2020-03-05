@@ -1,8 +1,8 @@
 package com.alta_v2.facade.tiledMapApi;
 
-import com.alta_v2.mediatorModule.ProcessMediator;
-import com.alta_v2.physicsModule.TiledMapPhysicEngine;
-import com.alta_v2.physicsModule.task.MovementDirection;
+import com.alta_v2.mediator.ProcessMediator;
+import com.alta_v2.physics.TiledMapPhysicEngine;
+import com.alta_v2.physics.task.MovementDirection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 

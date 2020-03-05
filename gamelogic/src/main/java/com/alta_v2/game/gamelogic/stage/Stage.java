@@ -2,7 +2,7 @@ package com.alta_v2.game.gamelogic.stage;
 
 import com.alta_v2.game.gamelogic.stage.event.ChangeMapEventHandler;
 import com.alta_v2.game.gamelogic.stage.event.ChangeScreenHandler;
-import com.alta_v2.mediatorModule.serde.ActionListener;
+import com.alta_v2.mediator.serde.ActionListener;
 
 /**
  * Provides base entity for game logic.

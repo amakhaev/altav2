@@ -1,6 +1,6 @@
 package com.alta_v2.facade.coreApi;
 
-import com.alta_v2.mediatorModule.ProcessMediator;
+import com.alta_v2.mediator.ProcessMediator;
 import com.alta_v2.model.MenuDefinitionModel;
 import com.alta_v2.model.TiledMapDefinitionModel;
 import lombok.RequiredArgsConstructor;

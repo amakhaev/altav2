@@ -1,7 +1,7 @@
 package com.alta_v2.game.gamelogic;
 
 import com.alta_v2.game.gamelogic.stage.StageManager;
-import com.alta_v2.mediatorModule.serde.ActionListener;
+import com.alta_v2.mediator.serde.ActionListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 

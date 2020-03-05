@@ -4,7 +4,7 @@ import com.alta_v2.facade.coreApi.CoreApi;
 import com.alta_v2.game.gamelogic.stage.event.ChangeMapStageEvent;
 import com.alta_v2.game.gamelogic.stage.event.ChangeMenuStageEvent;
 import com.alta_v2.game.gamelogic.stage.event.ChangeStageEvent;
-import com.alta_v2.mediatorModule.serde.ActionListener;
+import com.alta_v2.mediator.serde.ActionListener;
 import com.google.inject.Inject;
 import lombok.extern.log4j.Log4j2;
 

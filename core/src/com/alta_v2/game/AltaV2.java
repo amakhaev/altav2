@@ -1,9 +1,9 @@
 package com.alta_v2.game;
 
 import com.alta_v2.game.inputProcessor.InputProcessorFactory;
-import com.alta_v2.mediatorModule.ProcessMediator;
+import com.alta_v2.mediator.ProcessMediator;
 import com.alta_v2.model.MenuDefinitionModel;
-import com.alta_v2.mediatorModule.serde.ActionListener;
+import com.alta_v2.mediator.serde.ActionListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;

@@ -1,6 +1,6 @@
 package com.alta_v2.game.screen;
 
-import com.alta_v2.mediatorModule.screen.context.ScreenContext;
+import com.alta_v2.mediator.screen.context.ScreenContext;
 
 /**
  * Provides the factory to generate screen.

@@ -1,6 +1,6 @@
 package com.alta_v2.facade.tiledMapApi;
 
-import com.alta_v2.physicsModule.task.MovementDirection;
+import com.alta_v2.physics.task.MovementDirection;
 
 public interface TiledMapApi {
 

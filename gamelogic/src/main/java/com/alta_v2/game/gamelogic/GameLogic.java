@@ -1,10 +1,7 @@
 package com.alta_v2.game.gamelogic;
 
-import com.alta_v2.CoreInjector;
 import com.alta_v2.game.AltaV2;
-import com.alta_v2.mediatorModule.serde.ActionListener;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.alta_v2.mediator.serde.ActionListener;
 import lombok.Getter;
 
 import javax.inject.Inject;
