@@ -1,7 +1,9 @@
 package com.alta_v2.game.gamelogic.stage;
 
 import com.alta_v2.facade.coreApi.CoreApi;
-import com.alta_v2.game.gamelogic.stage.event.ChangeScreenEvent;
+import com.alta_v2.game.gamelogic.stage.event.ChangeMapStageEvent;
+import com.alta_v2.game.gamelogic.stage.event.ChangeMenuStageEvent;
+import com.alta_v2.game.gamelogic.stage.event.ChangeStageEvent;
 import com.alta_v2.mediatorModule.serde.ActionListener;
 import com.google.inject.Inject;
 import lombok.extern.log4j.Log4j2;
@@ -29,38 +31,45 @@ public class StageManagerImpl implements StageManager {
         return this.currentStage;
     }
 
+    private void onMapScreenChange(ChangeStageEvent data) {
+        try {
+            ChangeMapStageEvent event = ChangeStageEvent.resolve(data, ChangeMapStageEvent.class);
+            this.currentStage.destroy();
+            this.currentStage = null;
+            this.coreApi.loadMenuScreen(event.getMapDefinition());
+            this.currentStage = createMenuStage();
+        } catch (NullPointerException | ClassCastException e) {
+            log.error("Failed to change map screen", e);
+        }
+    }
+
+    private void onMenuScreenChange(ChangeStageEvent data) {
+        try {
+            ChangeMenuStageEvent event = ChangeStageEvent.resolve(data, ChangeMenuStageEvent.class);
+            this.currentStage.destroy();
+            this.currentStage = null;
+            this.coreApi.loadTiledMapScreen(event.getMapDefinition());
+            this.currentStage = createMapStage();
+        } catch (NullPointerException | ClassCastException e) {
+            log.error("Failed to change menu screen", e);
+        }
+    }
+
+    private void onMapChange(Void data) {
+        log.info("Not implemented yet");
+    }
+
     private Stage createMenuStage() {
         Stage stage = this.stageFactory.createMenuStage();
-        stage.subscribeToChangeScreen(this::onScreenChange);
+        stage.subscribeToChangeScreen(this::onMenuScreenChange);
         stage.subscribeToChangeMap(this::onMapChange);
         return stage;
     }
 
     private Stage createMapStage() {
         Stage stage = this.stageFactory.createMapStage();
-        stage.subscribeToChangeScreen(this::onScreenChange);
+        stage.subscribeToChangeScreen(this::onMapScreenChange);
         stage.subscribeToChangeMap(this::onMapChange);
         return stage;
-    }
-
-    private void onScreenChange(ChangeScreenEvent data) {
-        this.currentStage.destroy();
-        this.currentStage = null;
-        switch (data.getTargetStageType()) {
-            case MENU:
-                this.coreApi.loadMenuScreen();
-                this.currentStage = createMenuStage();
-                break;
-            case MAP:
-                this.coreApi.loadTiledMapScreen();
-                this.currentStage = createMapStage();
-                break;
-            default:
-                log.error("Target stage has invalid value: {}", data.getTargetStageType());
-        }
-    }
-
-    private void onMapChange(Void data) {
-        log.info("Not implemented yet");
     }
 }

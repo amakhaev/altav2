@@ -2,6 +2,7 @@ package com.alta_v2.game;
 
 import com.alta_v2.game.inputProcessor.InputProcessorFactory;
 import com.alta_v2.mediatorModule.ProcessMediator;
+import com.alta_v2.model.MenuDefinitionModel;
 import com.alta_v2.mediatorModule.serde.ActionListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -32,7 +33,7 @@ public class AltaV2 extends Game {
     @Override
 	public void create () {
 		Gdx.input.setInputProcessor(this.inputProcessor);
-		this.processMediator.loadMenuScreen();
+		this.processMediator.loadMenuScreen(new MenuDefinitionModel());
 	}
 
 	/**

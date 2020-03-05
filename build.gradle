@@ -15,6 +15,7 @@ buildscript {
 }
 
 allprojects {
+    apply plugin: "java"
 
     version = '1.0'
     ext {
@@ -38,6 +39,17 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+
+    dependencies {
+        implementation "org.projectlombok:lombok:$lombokVersion"
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+        implementation "com.google.inject:guice:$googleGuiceVersion"
+        implementation "com.google.inject.extensions:guice-assistedinject:$googleGuiceAssistVersion"
+
+        implementation "org.apache.logging.log4j:log4j-api:$logbackVersion"
+        implementation "org.apache.logging.log4j:log4j-core:$logbackVersion"
+    }
 }
 
 project(":desktop") {
@@ -56,7 +68,6 @@ project(":desktop") {
         }
         api "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
-
     }
 }
 
@@ -72,11 +83,6 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         api "com.badlogicgames.ashley:ashley:$ashleyVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-
-        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
-        api "com.google.inject.extensions:guice-assistedinject:$googleGuiceAssistVersion"
-        api "org.apache.logging.log4j:log4j-api:$logbackVersion"
-        api "org.apache.logging.log4j:log4j-core:$logbackVersion"
     }
 }
 
@@ -86,25 +92,9 @@ project(":gamelogic") {
     dependencies {
         implementation project(":shared")
         implementation project(":core")
-        implementation "com.google.inject:guice:$googleGuiceVersion"
 
-        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
-        implementation "org.projectlombok:lombok:$lombokVersion"
-
-        implementation "org.apache.logging.log4j:log4j-api:$logbackVersion"
-        implementation "org.apache.logging.log4j:log4j-core:$logbackVersion"
     }
 }
 
 project(":shared") {
-    apply plugin: "java-library"
-
-    dependencies {
-        api "com.google.inject:guice:$googleGuiceVersion"
-
-        api "org.projectlombok:lombok:$lombokVersion"
-
-        api "org.apache.logging.log4j:log4j-api:$logbackVersion"
-        api "org.apache.logging.log4j:log4j-core:$logbackVersion"
-    }
 }

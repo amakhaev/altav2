@@ -1,4 +1,4 @@
-package com.alta_v2.mediatorModule.screen;
+package com.alta_v2.mediatorModule.screen.context;
 
 import com.alta_v2.mediatorModule.serde.Updater;
 import com.alta_v2.physicsModule.PhysicEngine;

@@ -1,7 +1,7 @@
 package com.alta_v2.game.gamelogic.stage;
 
 import com.alta_v2.game.gamelogic.stage.event.ChangeMapEventHandler;
-import com.alta_v2.game.gamelogic.stage.event.ChangeScreenEventHandler;
+import com.alta_v2.game.gamelogic.stage.event.ChangeScreenHandler;
 import com.alta_v2.mediatorModule.serde.ActionListener;
 
 /**
@@ -14,7 +14,7 @@ public interface Stage extends ActionListener {
      *
      * @param handler - the handler of screen changing.
      */
-    void subscribeToChangeScreen(ChangeScreenEventHandler handler);
+    void subscribeToChangeScreen(ChangeScreenHandler handler);
 
     /**
      * Subscribes for changing of map on stage.

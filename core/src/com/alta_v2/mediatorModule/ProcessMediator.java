@@ -1,6 +1,8 @@
 package com.alta_v2.mediatorModule;
 
-import com.alta_v2.mediatorModule.screen.ScreenContext;
+import com.alta_v2.mediatorModule.screen.context.ScreenContext;
+import com.alta_v2.model.MenuDefinitionModel;
+import com.alta_v2.model.TiledMapDefinitionModel;
 
 /**
  * Provides the mediator that responsible for orchestration of game.
@@ -15,10 +17,10 @@ public interface ProcessMediator {
     /**
      * Loads the menu screen.
      */
-    void loadMenuScreen();
+    void loadMenuScreen(MenuDefinitionModel definition);
 
     /**
      * Loads a tiled map screen.
      */
-    void loadTiledMapScreen();
+    void loadTiledMapScreen(TiledMapDefinitionModel definition);
 }

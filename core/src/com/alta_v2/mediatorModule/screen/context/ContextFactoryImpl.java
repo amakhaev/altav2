@@ -1,9 +1,8 @@
-package com.alta_v2.mediatorModule.screen;
+package com.alta_v2.mediatorModule.screen.context;
 
-import com.alta_v2.game.utils.Resources;
+import com.alta_v2.model.MenuDefinitionModel;
+import com.alta_v2.model.TiledMapDefinitionModel;
 import com.alta_v2.mediatorModule.serde.UpdaterFactory;
-import com.alta_v2.model.NpcDefinitionModel;
-import com.alta_v2.model.PlayerDefinitionModel;
 import com.alta_v2.physicsModule.TiledMapPhysicEngine;
 import com.alta_v2.renderingModule.ScreenFactory;
 import com.alta_v2.renderingModule.ScreenStateFactory;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.math.Vector2;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Inject;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
@@ -23,7 +21,7 @@ public class ContextFactoryImpl implements ContextFactory {
     private final ScreenStateFactory screenStateFactory;
 
     @Override
-    public ScreenContext createMenuContext() {
+    public ScreenContext createMenuContext(MenuDefinitionModel definition) {
         return new ScreenContext(
                 this.updaterFactory.createMenuScreenUpdater(),
                 this.screenFactory.createMenuScreen(),
@@ -33,23 +31,23 @@ public class ContextFactoryImpl implements ContextFactory {
     }
 
     @Override
-    public ScreenContext createTiledMapContext(PlayerDefinitionModel player, List<NpcDefinitionModel> npcList) {
+    public ScreenContext createTiledMapContext(TiledMapDefinitionModel definition) {
         TiledMapMetadata metadata = new TiledMapMetadata(
-                Resources.MAP_TEST,
-                player.texturePath,
-                npcList.stream().collect(Collectors.toMap(n -> n.id, n -> n.texturePath))
+                definition.getMapPath(),
+                definition.getPlayer().texturePath,
+                definition.getNpcList().stream().collect(Collectors.toMap(n -> n.id, n -> n.texturePath))
         );
         TiledMapPhysicEngine physicEngine = TiledMapPhysicEngine.builder()
-                .mapPath(Resources.MAP_TEST)
-                .playerId(player.id)
-                .focusPointCoordinates(new Vector2(player.x, player.y))
-                .npcList(npcList.stream().collect(Collectors.toMap(n -> n.id, n -> new Vector2(n.x, n.y))))
+                .mapPath(definition.getMapPath())
+                .playerId(definition.getPlayer().id)
+                .focusPointCoordinates(new Vector2(definition.getPlayer().x, definition.getPlayer().y))
+                .npcList(definition.getNpcList().stream().collect(Collectors.toMap(n -> n.id, n -> new Vector2(n.x, n.y))))
                 .build();
 
         return new ScreenContext(
                 this.updaterFactory.createTiledMapScreenUpdater(physicEngine),
                 this.screenFactory.createTiledMapScreen(metadata),
-                this.screenStateFactory.createTiledMapState(npcList.stream().map(n -> n.id).collect(Collectors.toList())),
+                this.screenStateFactory.createTiledMapState(definition.getNpcList().stream().map(n -> n.id).collect(Collectors.toList())),
                 physicEngine
         );
     }

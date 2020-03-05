@@ -1,6 +1,8 @@
 package com.alta_v2.game.gamelogic.stage;
 
 import com.alta_v2.facade.tiledMapApi.TiledMapApi;
+import com.alta_v2.game.gamelogic.stage.event.ChangeMapStageEvent;
+import com.alta_v2.game.gamelogic.stage.event.ChangeMenuStageEvent;
 import com.google.common.collect.Sets;
 import com.google.inject.assistedinject.AssistedInject;
 import lombok.extern.log4j.Log4j2;
@@ -49,7 +51,7 @@ public class MapStage extends AbstractStage {
         this.actionStatus.remove(action);
 
         if (action == ActionType.BACK) {
-            this.changeScreen(StageType.MENU);
+            this.changeStage(new ChangeMapStageEvent());
         }
     }
 

@@ -1,6 +1,8 @@
 package com.alta_v2.facade.coreApi;
 
 import com.alta_v2.mediatorModule.ProcessMediator;
+import com.alta_v2.model.MenuDefinitionModel;
+import com.alta_v2.model.TiledMapDefinitionModel;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Inject;
@@ -14,15 +16,15 @@ public class CoreApiImpl implements CoreApi {
      * {@inheritDoc}
      */
     @Override
-    public void loadMenuScreen() {
-        this.processMediator.loadMenuScreen();
+    public void loadMenuScreen(MenuDefinitionModel definition) {
+        this.processMediator.loadMenuScreen(definition);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void loadTiledMapScreen() {
-        this.processMediator.loadTiledMapScreen();
+    public void loadTiledMapScreen(TiledMapDefinitionModel definition) {
+        this.processMediator.loadTiledMapScreen(definition);
     }
 }
