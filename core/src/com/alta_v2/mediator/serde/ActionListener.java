@@ -1,11 +1,12 @@
 package com.alta_v2.mediator.serde;
 
+import com.alta_v2.common.Destroyable;
 import com.alta_v2.physics.task.MovementDirection;
 
 /**
  * Provides the handler of input actions.
  */
-public interface ActionListener {
+public interface ActionListener extends Destroyable {
 
     /**
      * Handles the action when it begins but not finished yet (like key pressed).

@@ -14,6 +14,9 @@ public class TiledMapApiImpl implements TiledMapApi {
 
     private final ProcessMediator processMediator;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void performPlayerMovement(MovementDirection direction) {
         TiledMapPhysicEngine physicEngine = this.getEngineFromContext();
@@ -23,6 +26,20 @@ public class TiledMapApiImpl implements TiledMapApi {
         }
 
         physicEngine.performPlayerMovement(direction);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performNpcMovement(String npcId, MovementDirection direction) {
+        TiledMapPhysicEngine physicEngine = this.getEngineFromContext();
+        if (physicEngine == null) {
+            log.error("Current screen is null or has invalid type, required TiledMapScreen");
+            return;
+        }
+
+        physicEngine.performNpcMovement(npcId, direction);
     }
 
     private TiledMapPhysicEngine getEngineFromContext() {

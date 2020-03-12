@@ -21,11 +21,6 @@ public final class AltitudeMap {
     private final int horizontalTilesCount;
     private final int verticalTilesCount;
 
-    public enum PointAvailability {
-        FREE,
-        BARRIER
-    }
-
     /**
      * Gets the status of point on map.
      */
@@ -44,5 +39,11 @@ public final class AltitudeMap {
         }
 
         this.altitudes[x][y] = availability;
+    }
+
+    public enum PointAvailability {
+        FREE,
+        BARRIER,
+        NPC
     }
 }

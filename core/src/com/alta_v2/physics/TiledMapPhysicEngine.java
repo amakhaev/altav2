@@ -1,7 +1,7 @@
 package com.alta_v2.physics;
 
-import com.alta_v2.physics.executionContext.Tenant;
 import com.alta_v2.physics.executionContext.TiledMapEngineContext;
+import com.alta_v2.physics.npc.NpcActProcessor;
 import com.alta_v2.physics.task.MovementDirection;
 import com.alta_v2.physics.task.TaskCreationManager;
 import com.alta_v2.physics.task.TiledMapTask;
@@ -37,6 +37,7 @@ public class TiledMapPhysicEngine implements PhysicEngine {
 
     private final TiledMapEngineContext context;
     private final List<TiledMapTask> tasks;
+    private final NpcActProcessor npcProcessor;
 
     /**
      * Initialize new instance of {@link TiledMapPhysicEngine}.
@@ -48,12 +49,13 @@ public class TiledMapPhysicEngine implements PhysicEngine {
         this.context = new TiledMapEngineContext(TiledMapParser.parse(mapPath), playerId);
         this.context.writeFocusPointLocal(focusPointCoordinates);
         this.tasks = new CopyOnWriteArrayList<>();
+        this.npcProcessor = new NpcActProcessor();
     }
 
     /**
      * Initializes coordinates before first rendering.
      */
-    public void init() {
+    public void processInit() {
         this.context.writeFocusPointGlobal(
                 TiledMapPhysicCalculator.centerTileCoordinateX(this.context),
                 TiledMapPhysicCalculator.centerTileCoordinateY(this.context)
@@ -63,17 +65,10 @@ public class TiledMapPhysicEngine implements PhysicEngine {
                 this.context.getFocusPointLocal().getX(),
                 this.context.getFocusPointLocal().getY(),
                 TiledMapPhysicCalculator.playerCoordinate(this.context.getAltitudeMap().getTileWidth(), Gdx.graphics.getWidth()),
-                TiledMapPhysicCalculator.playerCoordinate(this.context.getAltitudeMap().getTileWidth(), Gdx.graphics.getHeight())
+                TiledMapPhysicCalculator.playerCoordinate(this.context.getAltitudeMap().getTileHeight(), Gdx.graphics.getHeight())
         );
 
-        Tenant temporary = new Tenant("temporary-npc");
-        this.context.getNpcMap().values().forEach(npc -> {
-            npc.getGlobalPoint().reserve(temporary).setValue(
-                    400 + npc.getLocalPoint().getX() * 32 - this.context.getFocusPointLocal().getX() * 32 - 16,
-                    300 + npc.getLocalPoint().getY() * 32 - this.context.getFocusPointLocal().getY() * 32 - 16,
-                    temporary
-            ).release(temporary);
-        });
+        this.npcProcessor.processInit(this.context);
     }
 
     /**
@@ -81,12 +76,14 @@ public class TiledMapPhysicEngine implements PhysicEngine {
      *
      * @param delta - the time in seconds since the last render.
      */
-    public void act(float delta) {
+    public void processAct(float delta) {
         // tasks that were finished should be removed.
         this.tasks.removeIf(TiledMapTask::isCompleted);
 
         // execute one act of task
         this.tasks.forEach(task -> task.act(delta));
+
+        this.npcProcessor.processAct(this.context);
     }
 
     /**
@@ -112,5 +109,9 @@ public class TiledMapPhysicEngine implements PhysicEngine {
         if (task != null) {
             this.tasks.add(task);
         }
+    }
+
+    public synchronized void performNpcMovement(String npcId, MovementDirection direction) {
+        log.info("Move npc {} to {}", npcId, direction);
     }
 }

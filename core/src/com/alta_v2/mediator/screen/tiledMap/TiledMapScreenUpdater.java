@@ -44,7 +44,7 @@ public class TiledMapScreenUpdater implements Updater {
      */
     @Override
     public void init(ScreenState screenState) {
-        this.engine.init();
+        this.engine.processInit();
     }
 
     /**
@@ -59,7 +59,7 @@ public class TiledMapScreenUpdater implements Updater {
 
         try {
             Future<?> result = this.executorService.submit(() -> {
-                this.engine.act(delta);
+                this.engine.processAct(delta);
                 this.engine.updateState(state);
             });
             // wait for result.
