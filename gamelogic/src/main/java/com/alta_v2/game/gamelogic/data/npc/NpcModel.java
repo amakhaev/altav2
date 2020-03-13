@@ -11,7 +11,7 @@ public class NpcModel {
     private final String id;
     private final float localX;
     private final float localY;
-    private final int repeatMovementInterval = 5000;
+    private final int repeatMovementInterval;
 
     @Setter
     private long lastMovementMills;

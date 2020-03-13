@@ -4,6 +4,7 @@ import com.alta_v2.facade.tiledMapApi.TiledMapApi;
 import com.alta_v2.game.gamelogic.data.npc.NpcModel;
 import com.alta_v2.game.gamelogic.utils.LogicThreadFactory;
 import com.alta_v2.physics.task.MovementDirection;
+import com.alta_v2.physics.task.resultObserver.TaskResultObserver;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -58,12 +59,22 @@ public class RepeatableActionProcessorImpl implements RepeatableActionProcessor 
 
     private void doNpcMovement() {
         this.npcList.forEach(npc -> {
+            if (npc.isMovementRunning()) {
+                return;
+            }
+
             if (System.currentTimeMillis() - npc.getLastMovementMills() < npc.getRepeatMovementInterval()) {
                 return;
             }
 
-            tiledMapApi.performNpcMovement(npc.getId(), MovementDirection.randomDirection());
-            npc.setLastMovementMills(System.currentTimeMillis());
+            TaskResultObserver observer = tiledMapApi.performNpcMovement(npc.getId(), MovementDirection.randomDirection());
+            if (observer != null) {
+                npc.setMovementRunning(true);
+                observer.subscribeOnComplete(() -> {
+                    npc.setMovementRunning(false);
+                    npc.setLastMovementMills(System.currentTimeMillis());
+                });
+            }
         });
     }
 }

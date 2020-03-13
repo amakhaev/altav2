@@ -24,6 +24,7 @@ public class PlayerProcessorImpl implements PlayerProcessor {
 
     private final TiledMapApi tiledMapApi;
 
+
     @Inject
     public PlayerProcessorImpl(TiledMapApi tiledMapApi) {
         this.tiledMapApi = tiledMapApi;
@@ -50,18 +51,22 @@ public class PlayerProcessorImpl implements PlayerProcessor {
     }
 
     private void checkActions() {
-        this.actionStatus.forEach(status -> {
-            switch (status) {
-                case MOVE_UP:
-                case MOVE_DOWN:
-                case MOVE_LEFT:
-                case MOVE_RIGHT:
-                    this.tiledMapApi.performPlayerMovement(ActionListener.ActionType.getMovementDirection(status));
-                    break;
-                case BACK:
-                case NEXT:
-                    break;
-            }
-        });
+        try {
+            this.actionStatus.forEach(status -> {
+                switch (status) {
+                    case MOVE_UP:
+                    case MOVE_DOWN:
+                    case MOVE_LEFT:
+                    case MOVE_RIGHT:
+                        this.tiledMapApi.performPlayerMovement(ActionListener.ActionType.getMovementDirection(status));
+                        break;
+                    case BACK:
+                    case NEXT:
+                        break;
+                }
+            });
+        } catch (Exception e) {
+            log.error(e);
+        }
     }
 }

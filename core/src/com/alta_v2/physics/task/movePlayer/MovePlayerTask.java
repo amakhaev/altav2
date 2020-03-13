@@ -6,8 +6,10 @@ import com.alta_v2.physics.executionContext.reserveData.ReservableBoolean;
 import com.alta_v2.physics.executionContext.reserveData.ReservablePersonView;
 import com.alta_v2.physics.executionContext.reserveData.ReservablePoint;
 import com.alta_v2.physics.task.MovementDirection;
+import com.alta_v2.physics.task.ResultTiledMapTask;
 import com.alta_v2.physics.task.TiledMapTask;
 import com.alta_v2.physics.task.moveFocusPoint.MoveFocusPointTask;
+import com.alta_v2.physics.task.resultObserver.BaseTaskResultObserver;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +17,7 @@ import lombok.Getter;
 /**
  * Provides the logic related to movement of player.
  */
-public class MovePlayerTask implements TiledMapTask {
+public class MovePlayerTask implements ResultTiledMapTask {
 
     @Builder
     private static MovePlayerTask create(MovementDirection direction,
@@ -44,6 +46,9 @@ public class MovePlayerTask implements TiledMapTask {
 
     @Getter
     private boolean isCompleted;
+
+    @Getter
+    private final BaseTaskResultObserver result = new BaseTaskResultObserver();
 
     private MovePlayerTask(MovementDirection direction,
                            ReservablePoint focusPointLocal,
@@ -89,6 +94,12 @@ public class MovePlayerTask implements TiledMapTask {
 
             this.altitudeMap.setPointStatus(this.localStartX, this.localStartY, AltitudeMap.PointAvailability.FREE);
             this.isCompleted = true;
+            this.result.submitComplete();
         }
+    }
+
+    @Override
+    public void destroy() {
+        this.result.destroy();
     }
 }

@@ -3,6 +3,7 @@ package com.alta_v2.facade.tiledMapApi;
 import com.alta_v2.mediator.ProcessMediator;
 import com.alta_v2.physics.TiledMapPhysicEngine;
 import com.alta_v2.physics.task.MovementDirection;
+import com.alta_v2.physics.task.resultObserver.TaskResultObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -18,28 +19,28 @@ public class TiledMapApiImpl implements TiledMapApi {
      * {@inheritDoc}
      */
     @Override
-    public void performPlayerMovement(MovementDirection direction) {
+    public TaskResultObserver performPlayerMovement(MovementDirection direction) {
         TiledMapPhysicEngine physicEngine = this.getEngineFromContext();
         if (physicEngine == null) {
             log.error("Current screen is null or has invalid type, required TiledMapScreen");
-            return;
+            return null;
         }
 
-        physicEngine.performPlayerMovement(direction);
+        return physicEngine.performPlayerMovement(direction);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void performNpcMovement(String npcId, MovementDirection direction) {
+    public TaskResultObserver performNpcMovement(String npcId, MovementDirection direction) {
         TiledMapPhysicEngine physicEngine = this.getEngineFromContext();
         if (physicEngine == null) {
             log.error("Current screen is null or has invalid type, required TiledMapScreen");
-            return;
+            return null;
         }
 
-        physicEngine.performNpcMovement(npcId, direction);
+        return physicEngine.performNpcMovement(npcId, direction);
     }
 
     private TiledMapPhysicEngine getEngineFromContext() {

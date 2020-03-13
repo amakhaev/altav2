@@ -3,13 +3,16 @@ package com.alta_v2.physics;
 import com.alta_v2.physics.executionContext.TiledMapEngineContext;
 import com.alta_v2.physics.npc.NpcActProcessor;
 import com.alta_v2.physics.task.MovementDirection;
+import com.alta_v2.physics.task.ResultTiledMapTask;
 import com.alta_v2.physics.task.TaskCreationManager;
 import com.alta_v2.physics.task.TiledMapTask;
+import com.alta_v2.physics.task.resultObserver.TaskResultObserver;
 import com.alta_v2.physics.utils.TiledMapParser;
 import com.alta_v2.physics.utils.TiledMapPhysicCalculator;
 import com.alta_v2.rendering.tiledMapScreen.TiledMapState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.google.common.base.Strings;
 import lombok.Builder;
 import lombok.extern.log4j.Log4j2;
 
@@ -81,7 +84,12 @@ public class TiledMapPhysicEngine implements PhysicEngine {
         this.tasks.removeIf(TiledMapTask::isCompleted);
 
         // execute one act of task
-        this.tasks.forEach(task -> task.act(delta));
+        this.tasks.forEach(task -> {
+            task.act(delta);
+            if (task.isCompleted()) {
+                task.destroy();
+            }
+        });
 
         this.npcProcessor.processAct(this.context);
     }
@@ -95,23 +103,41 @@ public class TiledMapPhysicEngine implements PhysicEngine {
         StateUpdater.updateAll(state, this.context);
     }
 
-    public synchronized void performPlayerMovement(MovementDirection direction) {
+    public synchronized TaskResultObserver performPlayerMovement(MovementDirection direction) {
         if (direction == null) {
             log.warn("Given direction is null");
-            return;
+            return null;
         }
 
-        TiledMapTask task = TaskCreationManager.createPlayerMoveTask(direction, this.context);
+        ResultTiledMapTask task = TaskCreationManager.createPlayerMoveTask(direction, this.context);
         if (task == null) {
             task = TaskCreationManager.createRotatePlayerTask(direction, this.context);
         }
 
         if (task != null) {
             this.tasks.add(task);
+            return task.getResult();
+        } else {
+            return null;
         }
     }
 
-    public synchronized void performNpcMovement(String npcId, MovementDirection direction) {
-        log.info("Move npc {} to {}", npcId, direction);
+    public synchronized TaskResultObserver performNpcMovement(String npcId, MovementDirection direction) {
+        if (Strings.isNullOrEmpty(npcId) || direction == null) {
+            log.warn("Given params are invalid, npcId: {}, direction: {}", npcId, direction);
+            return null;
+        }
+
+        ResultTiledMapTask task = TaskCreationManager.createNpcMoveTask(direction, npcId, this.context);
+        if (task == null) {
+            task = TaskCreationManager.createRotateNpcTask(npcId, direction, this.context);
+        }
+
+        if (task != null) {
+            this.tasks.add(task);
+            return task.getResult();
+        } else {
+            return null;
+        }
     }
 }

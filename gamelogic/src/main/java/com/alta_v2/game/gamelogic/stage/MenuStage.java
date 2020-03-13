@@ -57,12 +57,14 @@ public class MenuStage extends AbstractStage {
         npcDefinitionModel1.texturePath = Resources.CHILD_1;
         npcDefinitionModel1.x = 1f;
         npcDefinitionModel1.y = 2f;
+        npcDefinitionModel1.repeatMovementInterval = 3000;
 
         NpcDefinitionModel npcDefinitionModel2 = new NpcDefinitionModel();
         npcDefinitionModel2.id = UUID.randomUUID().toString();
         npcDefinitionModel2.texturePath = Resources.CHILD_2;
         npcDefinitionModel2.x = 8f;
         npcDefinitionModel2.y = 10f;
+        npcDefinitionModel2.repeatMovementInterval = 5000;
 
         npcList.add(npcDefinitionModel1);
         npcList.add(npcDefinitionModel2);

@@ -1,11 +1,12 @@
 package com.alta_v2.physics.executionContext.reserveData;
 
+import com.alta_v2.physics.executionContext.Reservable;
 import lombok.Getter;
 
 /**
  * Describes value that is distributable for read/write access.
  */
-public class ReservableActor {
+public class ReservableActor extends Reservable<Boolean> {
 
     @Getter
     private final String id;
@@ -32,5 +33,6 @@ public class ReservableActor {
         this.view = new ReservablePersonView();
         this.isMoving = new ReservableBoolean();
         this.localPoint = new ReservablePoint();
+        this.value = false;
     }
 }

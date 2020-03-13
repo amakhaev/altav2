@@ -1,9 +1,11 @@
 package com.alta_v2.physics.task;
 
+import com.alta_v2.common.Destroyable;
+
 /**
  * Provides the task to be performed by physic engine.
  */
-public interface TiledMapTask {
+public interface TiledMapTask extends Destroyable {
 
     /**
      * Indicates if task is completed.

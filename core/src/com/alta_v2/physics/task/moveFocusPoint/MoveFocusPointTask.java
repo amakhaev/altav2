@@ -3,10 +3,10 @@ package com.alta_v2.physics.task.moveFocusPoint;
 import com.alta_v2.physics.executionContext.AltitudeMap;
 import com.alta_v2.physics.executionContext.Tenant;
 import com.alta_v2.physics.executionContext.reserveData.ReservablePoint;
-import com.alta_v2.physics.task.MovementDirection;
 import com.alta_v2.physics.task.TiledMapTask;
 import com.alta_v2.physics.utils.TiledMapPhysicCalculator;
 import com.badlogic.gdx.math.Vector2;
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -25,8 +25,10 @@ public class MoveFocusPointTask implements TiledMapTask {
     private final Vector2 targetPointLocal;
     private final Tenant tenant = new Tenant("move-focus-point-task");
 
-    private float currentExecutionTime;
-    private boolean isCompleted;
+    private float currentExecutionTime = 0;
+
+    @Getter
+    private boolean isCompleted = false;
 
     public MoveFocusPointTask(ReservablePoint focusPointLocal,
                               ReservablePoint focusPointGlobal,
@@ -39,23 +41,12 @@ public class MoveFocusPointTask implements TiledMapTask {
         this.focusPointLocal.reserve(this.tenant);
         this.focusPointGlobal.reserve(this.tenant);
 
-        this.currentExecutionTime = 0;
-        this.isCompleted = false;
-
         this.targetPointGlobal = new Vector2(
                 TiledMapPhysicCalculator.centerTileCoordinate(targetPointLocal.x, altitudeMap.getTileWidth()),
                 TiledMapPhysicCalculator.centerTileCoordinate(targetPointLocal.y, altitudeMap.getTileHeight())
         );
         this.distanceLengthX = this.targetPointGlobal.x - this.focusPointGlobal.getX();
         this.distanceLengthY = this.targetPointGlobal.y - this.focusPointGlobal.getY();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isCompleted() {
-        return this.isCompleted;
     }
 
     /**
@@ -99,18 +90,8 @@ public class MoveFocusPointTask implements TiledMapTask {
         this.isCompleted = true;
     }
 
-    private int getDistanceLength(MovementDirection direction, AltitudeMap altitudeMap) {
-        switch (direction) {
-            case LEFT:
-                return -altitudeMap.getTileWidth();
-            case RIGHT:
-                return altitudeMap.getTileWidth();
-            case HIGHER:
-                return altitudeMap.getTileHeight();
-            case LOWER:
-                return -altitudeMap.getTileHeight();
-        }
+    @Override
+    public void destroy() {
 
-        throw new RuntimeException("Unknown type of movement direction: " + direction);
     }
 }

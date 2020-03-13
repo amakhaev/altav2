@@ -1,6 +1,7 @@
 package com.alta_v2.facade.tiledMapApi;
 
 import com.alta_v2.physics.task.MovementDirection;
+import com.alta_v2.physics.task.resultObserver.TaskResultObserver;
 
 public interface TiledMapApi {
 
@@ -9,7 +10,7 @@ public interface TiledMapApi {
      *
      * @param direction - the direction of movement to be perform.
      */
-    void performPlayerMovement(MovementDirection direction);
+    TaskResultObserver performPlayerMovement(MovementDirection direction);
 
     /**
      * Tries to perform movement of NPC with given ID.
@@ -17,6 +18,6 @@ public interface TiledMapApi {
      * @param npcId     - the id of NPC to be moved.
      * @param direction - the direction of movement to be perform.
      */
-    void performNpcMovement(String npcId, MovementDirection direction);
+    TaskResultObserver performNpcMovement(String npcId, MovementDirection direction);
 
 }

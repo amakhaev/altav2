@@ -73,7 +73,14 @@ public class StageManagerImpl implements StageManager {
 
     private Stage createMapStage(List<NpcDefinitionModel> definitionNpcList) {
         List<NpcModel> npcModels = definitionNpcList.stream()
-                .map(npcDefinition -> NpcModel.builder().id(npcDefinition.id).localX(npcDefinition.x).localY(npcDefinition.y).build())
+                .map(npcDefinition ->
+                        NpcModel.builder()
+                                .id(npcDefinition.id)
+                                .localX(npcDefinition.x)
+                                .localY(npcDefinition.y)
+                                .repeatMovementInterval(npcDefinition.repeatMovementInterval)
+                                .build()
+                )
                 .collect(Collectors.toList());
 
         Stage stage = this.stageFactory.createMapStage(npcModels);

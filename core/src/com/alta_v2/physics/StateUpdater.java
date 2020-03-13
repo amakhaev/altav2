@@ -38,6 +38,7 @@ public class StateUpdater {
 
         npcState.getCoordinates().x = context.getNpcMap().get(npcState.getId()).getGlobalPoint().getX();
         npcState.getCoordinates().y = context.getNpcMap().get(npcState.getId()).getGlobalPoint().getY();
+        npcState.setView(context.getNpcMap().get(npcState.getId()).getView().getValue());
     }
 
 }
