@@ -1,4 +1,4 @@
-package com.alta_v2.game.dao.aop.executionTime;
+package com.alta_v2.aop.executionTime;
 
 import com.google.inject.BindingAnnotation;
 

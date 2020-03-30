@@ -1,6 +1,6 @@
 package com.alta_v2.game.dao.facade.definition;
 
-import com.alta_v2.game.dao.aop.executionTime.PrintExecutionTime;
+import com.alta_v2.aop.executionTime.PrintExecutionTime;
 import com.alta_v2.game.dao.data.map.MapEntity;
 import com.alta_v2.game.dao.domain.map.MapService;
 import com.alta_v2.game.dao.domain.person.PersonService;

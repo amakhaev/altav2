@@ -1,4 +1,4 @@
-package com.alta_v2.game.dao.aop.executionTime;
+package com.alta_v2.aop.executionTime;
 
 import com.google.common.base.Strings;
 import lombok.extern.log4j.Log4j2;
@@ -29,7 +29,7 @@ public class PrintExecutionTimeHandler implements MethodInterceptor {
             );
         } else {
             message = String.format(
-                    "Operation %s in method %s for class %s took %d ms",
+                    "Operation '%s' in method %s for class %s took %d ms",
                     operation, method.getName(), method.getDeclaringClass().getSimpleName(), executionTime
             );
         }

@@ -1,11 +1,11 @@
 package com.alta_v2.model;
 
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Value;
 
 import java.util.List;
 
-@Getter
+@Value
 @Builder
 public class TiledMapDefinitionModel {
 

@@ -1,8 +1,7 @@
 package com.alta_v2.game.component.overlay;
 
-import com.alta_v2.aop.dynamicAssetLoader.DynamicAssetLoader;
-import com.alta_v2.game.component.tiledMap.TiledMapActorImpl;
 import com.alta_v2.game.utils.Resources;
+import com.alta_v2.utils.AssetLoader;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -23,11 +22,11 @@ public class OverlayComponentImpl implements OverlayComponent {
     private FadeCalculator fadeCalculator;
 
     /**
-     * Initialize new instance of {@link TiledMapActorImpl}.
+     * Initialize new instance of {@link OverlayComponentImpl}.
      */
     @AssistedInject
     public OverlayComponentImpl() {
-        this.assetManager = this.createAssets();
+        this.assetManager = AssetLoader.load(Resources.TEXTURE_BLACK_SQUARE);
         this.blackSquareTexture = this.assetManager.get(Resources.TEXTURE_BLACK_SQUARE, Texture.class);
         this.batch = new SpriteBatch();
     }
@@ -84,10 +83,5 @@ public class OverlayComponentImpl implements OverlayComponent {
         this.blackSquareTexture.dispose();
         this.assetManager.dispose();
 
-    }
-
-    @DynamicAssetLoader(textures = Resources.TEXTURE_BLACK_SQUARE)
-    protected AssetManager createAssets() {
-        return new AssetManager();
     }
 }

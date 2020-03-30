@@ -1,7 +1,7 @@
 package com.alta_v2.game.dao;
 
-import com.alta_v2.game.dao.aop.executionTime.PrintExecutionTime;
-import com.alta_v2.game.dao.aop.executionTime.PrintExecutionTimeHandler;
+import com.alta_v2.aop.executionTime.PrintExecutionTime;
+import com.alta_v2.aop.executionTime.PrintExecutionTimeHandler;
 import com.alta_v2.game.dao.domain.map.MapService;
 import com.alta_v2.game.dao.domain.map.MapServiceImpl;
 import com.alta_v2.game.dao.domain.person.PersonService;
@@ -19,8 +19,6 @@ public class DaoInjector extends AbstractModule {
 
     @Override
     protected void configure() {
-        bindInterceptor(Matchers.any(), Matchers.annotatedWith(PrintExecutionTime.class), new PrintExecutionTimeHandler());
-
         bind(ConnectionSource.class).toProvider(ConnectionSourceProvider.class).in(Singleton.class);
 
         bind(MapService.class).to(MapServiceImpl.class).in(Singleton.class);

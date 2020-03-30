@@ -1,10 +1,9 @@
 package com.alta_v2.rendering.tiledMapScreen;
 
-import com.alta_v2.aop.dynamicAssetLoader.DynamicAssetLoader;
-import com.alta_v2.game.utils.Resources;
 import com.alta_v2.rendering.Renderer;
 import com.alta_v2.rendering.ScreenState;
 import com.alta_v2.rendering.tiledMapScreen.layout.*;
+import com.alta_v2.utils.AssetLoader;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -29,7 +28,8 @@ public class TiledMapScreen implements Renderer {
      */
     @AssistedInject
     public TiledMapScreen(@Assisted TiledMapMetadata metadata) {
-        this.assetManager = this.createAssets();
+        this.assetManager = AssetLoader.load(metadata.getMapPath(), metadata.getActorTextures());
+
         this.mapLayout = new MapLayoutImpl(this.assetManager, metadata.getMapPath());
         this.layouts = Arrays.asList(
                 new PlayerLayout(this.assetManager, metadata.getActorTexturePath()),
@@ -67,11 +67,5 @@ public class TiledMapScreen implements Renderer {
         this.layouts.forEach(Renderer::dispose);
         this.mapLayout.dispose();
         this.assetManager.dispose();
-    }
-
-    @DynamicAssetLoader(tiledMap = Resources.MAP_TEST,
-            textures = { Resources.ACTOR_PERSON_12, Resources.CHILD_1, Resources.CHILD_2 })
-    protected AssetManager createAssets() {
-        return new AssetManager();
     }
 }

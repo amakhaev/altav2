@@ -8,14 +8,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Resources {
 
-    // Tile sets
-    public static final String ACTOR_PERSON_12 = "actors/tile_sets/person12.png";
-    public static final String CHILD_1 = "actors/tile_sets/child1.png";
-    public static final String CHILD_2 = "actors/tile_sets/child2.png";
-
-    // Maps
-    public static final String MAP_TEST = "maps/test/map.tmx";
-
     // Textures
     public static final String TEXTURE_MENU_BACKGROUND = "textures/menu_background.jpg";
     public static final String TEXTURE_BLACK_SQUARE = "textures/black_square.png";

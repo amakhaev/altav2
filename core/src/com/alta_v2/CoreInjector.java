@@ -1,7 +1,5 @@
 package com.alta_v2;
 
-import com.alta_v2.aop.dynamicAssetLoader.DynamicAssetHandler;
-import com.alta_v2.aop.dynamicAssetLoader.DynamicAssetLoader;
 import com.alta_v2.facade.coreApi.CoreApi;
 import com.alta_v2.facade.coreApi.CoreApiImpl;
 import com.alta_v2.facade.tiledMapApi.TiledMapApi;
@@ -20,7 +18,6 @@ import com.alta_v2.rendering.ScreenStateFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.google.inject.matcher.Matchers;
 
 public class CoreInjector extends AbstractModule {
 
@@ -37,9 +34,6 @@ public class CoreInjector extends AbstractModule {
 
         bind(ContextFactory.class).to(ContextFactoryImpl.class).in(Singleton.class);
         bind(ProcessMediator.class).to(ProcessMediatorImpl.class).in(Singleton.class);
-
-        // AOP
-        bindInterceptor(Matchers.any(), Matchers.annotatedWith(DynamicAssetLoader.class), new DynamicAssetHandler());
 
         // API
         bind(CoreApi.class).to(CoreApiImpl.class).in(Singleton.class);

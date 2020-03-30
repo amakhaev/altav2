@@ -75,10 +75,10 @@ public class StageManagerImpl implements StageManager {
         List<NpcModel> npcModels = definitionNpcList.stream()
                 .map(npcDefinition ->
                         NpcModel.builder()
-                                .id(npcDefinition.id)
-                                .localX(npcDefinition.x)
-                                .localY(npcDefinition.y)
-                                .repeatMovementInterval(npcDefinition.repeatMovementInterval)
+                                .id(npcDefinition.getId())
+                                .localX(npcDefinition.getX())
+                                .localY(npcDefinition.getY())
+                                .repeatMovementInterval(npcDefinition.getRepeatMovementInterval())
                                 .build()
                 )
                 .collect(Collectors.toList());

@@ -1,9 +1,9 @@
 package com.alta_v2.rendering.menuScreen;
 
-import com.alta_v2.aop.dynamicAssetLoader.DynamicAssetLoader;
 import com.alta_v2.game.utils.Resources;
 import com.alta_v2.rendering.Renderer;
 import com.alta_v2.rendering.ScreenState;
+import com.alta_v2.utils.AssetLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,7 +29,7 @@ public class MenuScreen implements Renderer {
      */
     @AssistedInject
     public MenuScreen() {
-        this.assetManager = this.createAssets();
+        this.assetManager = AssetLoader.load(Resources.TEXTURE_MENU_BACKGROUND);
     }
 
     /**
@@ -59,10 +59,5 @@ public class MenuScreen implements Renderer {
         this.batch.dispose();
         this.backgroundTexture.dispose();
         this.assetManager.dispose();
-    }
-
-    @DynamicAssetLoader(textures = Resources.TEXTURE_MENU_BACKGROUND)
-    protected AssetManager createAssets() {
-        return new AssetManager();
     }
 }

@@ -1,5 +1,6 @@
 package com.alta_v2.mediator.screen.context;
 
+import com.alta_v2.model.ActorDefinitionModel;
 import com.alta_v2.model.MenuDefinitionModel;
 import com.alta_v2.model.TiledMapDefinitionModel;
 import com.alta_v2.mediator.serde.UpdaterFactory;
@@ -34,20 +35,20 @@ public class ContextFactoryImpl implements ContextFactory {
     public ScreenContext createTiledMapContext(TiledMapDefinitionModel definition) {
         TiledMapMetadata metadata = new TiledMapMetadata(
                 definition.getMapPath(),
-                definition.getPlayer().texturePath,
-                definition.getNpcList().stream().collect(Collectors.toMap(n -> n.id, n -> n.texturePath))
+                definition.getPlayer().getTexturePath(),
+                definition.getNpcList().stream().collect(Collectors.toMap(ActorDefinitionModel::getId, ActorDefinitionModel::getTexturePath))
         );
         TiledMapPhysicEngine physicEngine = TiledMapPhysicEngine.builder()
                 .mapPath(definition.getMapPath())
-                .playerId(definition.getPlayer().id)
-                .focusPointCoordinates(new Vector2(definition.getPlayer().x, definition.getPlayer().y))
-                .npcList(definition.getNpcList().stream().collect(Collectors.toMap(n -> n.id, n -> new Vector2(n.x, n.y))))
+                .playerId(definition.getPlayer().getId())
+                .focusPointCoordinates(new Vector2(definition.getPlayer().getX(), definition.getPlayer().getY()))
+                .npcList(definition.getNpcList().stream().collect(Collectors.toMap(ActorDefinitionModel::getId, n -> new Vector2(n.getX(), n.getY()))))
                 .build();
 
         return new ScreenContext(
                 this.updaterFactory.createTiledMapScreenUpdater(physicEngine),
                 this.screenFactory.createTiledMapScreen(metadata),
-                this.screenStateFactory.createTiledMapState(definition.getNpcList().stream().map(n -> n.id).collect(Collectors.toList())),
+                this.screenStateFactory.createTiledMapState(definition.getNpcList().stream().map(ActorDefinitionModel::getId).collect(Collectors.toList())),
                 physicEngine
         );
     }
