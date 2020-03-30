@@ -29,6 +29,9 @@ allprojects {
         googleGuiceAssistVersion = '4.2.2'
         lombokVersion = "1.18.10"
         logbackVersion = "2.12.1"
+        ormLiteVersion = "5.1"
+        sqliteJdbcVersion = "3.30.1"
+        mapstructVersion = "1.3.1.Final"
     }
 
     repositories {
@@ -58,6 +61,10 @@ project(":desktop") {
     dependencies {
         implementation project(":core")
         implementation project(":gamelogic")
+
+        api project(":shared")
+        api project(":dao")
+
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
@@ -68,6 +75,11 @@ project(":desktop") {
         }
         api "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
+
+        api "com.j256.ormlite:ormlite-core:$ormLiteVersion"
+        api "com.j256.ormlite:ormlite-jdbc:$ormLiteVersion"
+        api "org.xerial:sqlite-jdbc:$sqliteJdbcVersion"
+        api "org.mapstruct:mapstruct:${mapstructVersion}"
     }
 }
 
@@ -92,7 +104,23 @@ project(":gamelogic") {
     dependencies {
         implementation project(":shared")
         implementation project(":core")
+        implementation project(":dao")
+    }
+}
 
+project(":dao") {
+    apply plugin: "java-library"
+
+    dependencies {
+        implementation project(":shared")
+
+        implementation "com.j256.ormlite:ormlite-core:$ormLiteVersion"
+        implementation "com.j256.ormlite:ormlite-jdbc:$ormLiteVersion"
+        implementation "org.xerial:sqlite-jdbc:$sqliteJdbcVersion"
+
+        implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+        testImplementation "org.testng:testng:6.10", "org.easytesting:fest-assert:1.4"
+        annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
     }
 }
 

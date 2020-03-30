@@ -33,7 +33,7 @@ public class TiledMapApiImpl implements TiledMapApi {
      * {@inheritDoc}
      */
     @Override
-    public TaskResultObserver performNpcMovement(String npcId, MovementDirection direction) {
+    public TaskResultObserver performNpcMovement(int npcId, MovementDirection direction) {
         TiledMapPhysicEngine physicEngine = this.getEngineFromContext();
         if (physicEngine == null) {
             log.error("Current screen is null or has invalid type, required TiledMapScreen");

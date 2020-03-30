@@ -26,7 +26,7 @@ public class TiledMapState implements ScreenState {
     private final List<NpcState> npcStateList = new ArrayList<>();
 
     @AssistedInject
-    public TiledMapState(@Assisted List<String> npcIds) {
+    public TiledMapState(@Assisted List<Integer> npcIds) {
         if (npcIds != null) {
             npcIds.forEach(npcId -> npcStateList.add(new NpcState(npcId)));
         }

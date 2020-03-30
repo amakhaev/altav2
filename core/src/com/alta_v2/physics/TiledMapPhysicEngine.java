@@ -29,8 +29,8 @@ public class TiledMapPhysicEngine implements PhysicEngine {
     @Builder
     private static TiledMapPhysicEngine createInstance(Vector2 focusPointCoordinates,
                                                        String mapPath,
-                                                       String playerId,
-                                                       Map<String, Vector2> npcList) {
+                                                       int playerId,
+                                                       Map<Integer, Vector2> npcList) {
         TiledMapPhysicEngine engine = new TiledMapPhysicEngine(focusPointCoordinates, mapPath, playerId);
         if (npcList != null) {
             npcList.forEach((key, value) -> engine.context.addNpc(key, value.x, value.y));
@@ -48,7 +48,7 @@ public class TiledMapPhysicEngine implements PhysicEngine {
      * @param focusPointCoordinates - the coordinates of focus point on tiled map.
      * @param mapPath               - the path to tiled map in assets.
      */
-    private TiledMapPhysicEngine(Vector2 focusPointCoordinates, String mapPath, String playerId) {
+    private TiledMapPhysicEngine(Vector2 focusPointCoordinates, String mapPath, int playerId) {
         this.context = new TiledMapEngineContext(TiledMapParser.parse(mapPath), playerId);
         this.context.writeFocusPointLocal(focusPointCoordinates);
         this.tasks = new CopyOnWriteArrayList<>();
@@ -122,8 +122,8 @@ public class TiledMapPhysicEngine implements PhysicEngine {
         }
     }
 
-    public synchronized TaskResultObserver performNpcMovement(String npcId, MovementDirection direction) {
-        if (Strings.isNullOrEmpty(npcId) || direction == null) {
+    public synchronized TaskResultObserver performNpcMovement(int npcId, MovementDirection direction) {
+        if (direction == null) {
             log.warn("Given params are invalid, npcId: {}, direction: {}", npcId, direction);
             return null;
         }

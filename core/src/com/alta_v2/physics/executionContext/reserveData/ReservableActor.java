@@ -9,7 +9,7 @@ import lombok.Getter;
 public class ReservableActor extends Reservable<Boolean> {
 
     @Getter
-    private final String id;
+    private final int id;
 
     @Getter
     private final ReservablePoint globalPoint;
@@ -27,7 +27,7 @@ public class ReservableActor extends Reservable<Boolean> {
      * Initialize new instance of {@link ReservableActor}.
      * @param id - the identifier of actor.
      */
-    public ReservableActor(String id) {
+    public ReservableActor(int id) {
         this.id = id;
         this.globalPoint = new ReservablePoint();
         this.view = new ReservablePersonView();

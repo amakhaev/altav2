@@ -14,6 +14,6 @@ public final class TiledMapMetadata {
 
     private final String mapPath;
     private final String actorTexturePath;
-    private final Map<String, String> npcTextures;
+    private final Map<Integer, String> npcTextures;
 
 }

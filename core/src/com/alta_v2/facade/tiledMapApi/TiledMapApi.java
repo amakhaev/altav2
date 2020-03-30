@@ -18,6 +18,6 @@ public interface TiledMapApi {
      * @param npcId     - the id of NPC to be moved.
      * @param direction - the direction of movement to be perform.
      */
-    TaskResultObserver performNpcMovement(String npcId, MovementDirection direction);
+    TaskResultObserver performNpcMovement(int npcId, MovementDirection direction);
 
 }

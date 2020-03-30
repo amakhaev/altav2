@@ -18,6 +18,6 @@ public interface ScreenStateFactory {
     /**
      * Creates the instance of {@link TiledMapState}.
      */
-    TiledMapState createTiledMapState(List<String> npcIds);
+    TiledMapState createTiledMapState(List<Integer> npcIds);
 
 }

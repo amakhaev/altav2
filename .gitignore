@@ -112,6 +112,7 @@ gradle-app.setting
 /ios-moe/build/
 /shared/build/
 /gamelogic/build/
+/dao/build/
 
 ## OS Specific
 .DS_Store
@@ -129,3 +130,6 @@ Thumbs.db
 !/ios-moe/xcode/*.xcodeproj/xcshareddata
 !/ios-moe/xcode/*.xcodeproj/project.pbxproj
 /ios-moe/xcode/native/
+
+## custom
+data.db3

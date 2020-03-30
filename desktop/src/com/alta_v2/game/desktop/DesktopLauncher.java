@@ -2,6 +2,7 @@ package com.alta_v2.game.desktop;
 
 import com.alta_v2.CoreInjector;
 import com.alta_v2.game.AltaV2;
+import com.alta_v2.game.dao.DaoInjector;
 import com.alta_v2.game.gamelogic.GameLogic;
 import com.alta_v2.game.gamelogic.GameLogicInjector;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
@@ -17,7 +18,9 @@ public class DesktopLauncher {
 		config.setWindowedMode(800, 600);
 		config.setResizable(false);
 
-		Injector gameLogicInjector = Guice.createInjector(new CoreInjector(), new GameLogicInjector());
+		Injector gameLogicInjector = Guice.createInjector(
+				new CoreInjector(), new GameLogicInjector(), new DaoInjector()
+		);
 		AltaV2 altaV2 = gameLogicInjector.getInstance(GameLogic.class).getAltaV2();
 
 		new Lwjgl3Application(altaV2, config);

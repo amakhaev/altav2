@@ -20,9 +20,9 @@ import java.util.Map;
 public class NpcLayout implements Layout {
 
     private final AssetManager assetManager;
-    private final Map<String, String> npcTextures;
+    private final Map<Integer, String> npcTextures;
 
-    private Map<String, NpcActor> npcActorMap;
+    private Map<Integer, NpcActor> npcActorMap;
     private SpriteBatch batch;
 
     /**

@@ -78,7 +78,7 @@ public final class TaskCreationManager {
      * @param context   - the engine execution context.
      * @return created {@link ResultTiledMapTask} instance or {@code}null{@code} if creation failed.
      */
-    public ResultTiledMapTask createNpcMoveTask(MovementDirection direction, String npcId, TiledMapEngineContext context) {
+    public ResultTiledMapTask createNpcMoveTask(MovementDirection direction, int npcId, TiledMapEngineContext context) {
         MoveNpcChecker checker = new MoveNpcChecker(npcId);
         if (!checker.canTaskBeExecuted(context)) {
             log.trace("Failed to perform movement of Npc {} to the {} because process is blocked", npcId, direction);
@@ -111,7 +111,7 @@ public final class TaskCreationManager {
      * @param context   - the engine execution context.
      * @return crated {@link ResultTiledMapTask} instance or {@code}null{@code} if failed creation.
      */
-    public ResultTiledMapTask createRotateNpcTask(String npcId, MovementDirection direction, TiledMapEngineContext context) {
+    public ResultTiledMapTask createRotateNpcTask(int npcId, MovementDirection direction, TiledMapEngineContext context) {
         PersonView currentView = MovementDirection.getPersonView(direction);
         return new RotateNpcChecker(npcId, currentView).canTaskBeExecuted(context) ?
                 new RotatePersonTask(direction, context.getNpcMap().get(npcId).getView()) : null;

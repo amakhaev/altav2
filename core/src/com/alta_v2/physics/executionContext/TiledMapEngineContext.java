@@ -20,7 +20,7 @@ public final class TiledMapEngineContext {
     private final ReservablePoint focusPointLocal;
     private final ReservablePoint focusPointGlobal;
     private final ReservableActor player;
-    private final Map<String, ReservableActor> npcMap;
+    private final Map<Integer, ReservableActor> npcMap;
     private final Tenant tenant = new Tenant("engine-context");
 
     /**
@@ -28,7 +28,7 @@ public final class TiledMapEngineContext {
      *
      * @param altitudeMap - the {@link AltitudeMap} instance.
      */
-    public TiledMapEngineContext(AltitudeMap altitudeMap, String playerId) {
+    public TiledMapEngineContext(AltitudeMap altitudeMap, int playerId) {
         this.altitudeMap = altitudeMap;
         this.focusPointLocal = new ReservablePoint();
         this.focusPointGlobal = new ReservablePoint();
@@ -36,7 +36,7 @@ public final class TiledMapEngineContext {
         this.npcMap = Maps.newHashMap();
     }
 
-    public void addNpc(String id, float localX, float localY) {
+    public void addNpc(int id, float localX, float localY) {
         if (this.npcMap.containsKey(id)) {
             log.warn("NPC with given id {} already exists", id);
             return;

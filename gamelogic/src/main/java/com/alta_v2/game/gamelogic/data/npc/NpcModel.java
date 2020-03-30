@@ -8,7 +8,7 @@ import lombok.Setter;
 @Builder
 public class NpcModel {
 
-    private final String id;
+    private final int id;
     private final float localX;
     private final float localY;
     private final int repeatMovementInterval;

@@ -10,7 +10,7 @@ import lombok.Setter;
 public class NpcState {
 
     @Getter
-    private final String id;
+    private final Integer id;
 
     @Getter
     private Vector2 coordinates = new Vector2();

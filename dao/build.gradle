@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'com.alta_v2.game.dao'
+version '1.0'
+
+sourceCompatibility = 1.8
+project.ext.assetsDir = new File("../dao/database")
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs= ["src/main/resources"]
+        }
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

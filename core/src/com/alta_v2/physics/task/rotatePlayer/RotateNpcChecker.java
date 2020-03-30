@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RotateNpcChecker implements ExecutionChecker {
 
-    private final String npcId;
+    private final int npcId;
     private final PersonView currentView;
 
     @Override

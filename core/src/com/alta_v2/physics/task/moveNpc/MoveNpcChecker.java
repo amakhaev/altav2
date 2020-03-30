@@ -10,7 +10,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class MoveNpcChecker implements ExecutionChecker {
 
-    private final String npcId;
+    private final int npcId;
 
     @Override
     public boolean canTaskBeExecuted(TiledMapEngineContext context) {
