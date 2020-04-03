@@ -1,0 +1,12 @@
+titleBox:
+  boxWidthPercentage: 95
+  boxHeight: 30
+  hAlign: "CENTER"
+  vAlign: "TOP"
+  marginTop: 10
+  marginBottom: 0
+  marginRight: 0
+  marginLeft: 0
+  useBorder: true
+  borderThickness: 2
+

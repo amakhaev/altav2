@@ -1,4 +1,4 @@
-package com.alta_v2.rendering.tiledMapScreen.layout;
+package com.alta_v2.rendering.tiledMapScreen.layout.map;
 
 import com.alta_v2.rendering.ScreenState;
 import com.alta_v2.rendering.tiledMapScreen.TiledMapState;
@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -15,7 +17,6 @@ import lombok.extern.log4j.Log4j2;
  * Provides the implementation of map layout.
  */
 @Log4j2
-@RequiredArgsConstructor
 public class MapLayoutImpl implements MapLayout {
 
     private final static int[] BOTTOM_LAYERS = {0, 1};
@@ -27,6 +28,12 @@ public class MapLayoutImpl implements MapLayout {
     private TiledMap tiledMap;
     private TiledMapRenderer tiledMapRenderer;
     private OrthographicCamera camera;
+
+    @AssistedInject
+    public MapLayoutImpl(@Assisted AssetManager assetManager, @Assisted String mapPath) {
+        this.assetManager = assetManager;
+        this.mapPath = mapPath;
+    }
 
     /**
      * {@inheritDoc}
@@ -80,8 +87,8 @@ public class MapLayoutImpl implements MapLayout {
      * {@inheritDoc}
      */
     @Override
-    public void dispose() {
-        this.tiledMap.dispose();
+    public void destroy() {
+        tiledMap.dispose();
     }
 
     private TiledMapState resolveClass(ScreenState screenState) {

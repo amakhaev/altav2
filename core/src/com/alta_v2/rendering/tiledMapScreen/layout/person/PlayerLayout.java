@@ -1,19 +1,20 @@
-package com.alta_v2.rendering.tiledMapScreen.layout;
+package com.alta_v2.rendering.tiledMapScreen.layout.person;
 
 import com.alta_v2.rendering.ScreenState;
 import com.alta_v2.rendering.actors.player.PlayerActor;
 import com.alta_v2.rendering.tiledMapScreen.TiledMapState;
+import com.alta_v2.rendering.tiledMapScreen.layout.Layout;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import lombok.RequiredArgsConstructor;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import lombok.extern.log4j.Log4j2;
 
 /**
  * Provides the layout that responsible to render player layer.
  */
 @Log4j2
-@RequiredArgsConstructor
 public class PlayerLayout implements Layout {
 
     private final AssetManager assetManager;
@@ -21,6 +22,12 @@ public class PlayerLayout implements Layout {
 
     private SpriteBatch batch;
     private PlayerActor playerActor;
+
+    @AssistedInject
+    public PlayerLayout(@Assisted AssetManager assetManager, @Assisted String texturePath) {
+        this.assetManager = assetManager;
+        this.texturePath = texturePath;
+    }
 
     /**
      * {@inheritDoc}
@@ -50,11 +57,8 @@ public class PlayerLayout implements Layout {
         this.batch.end();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void dispose() {
-        this.batch.dispose();
+    public void destroy() {
+        batch.dispose();
     }
 }

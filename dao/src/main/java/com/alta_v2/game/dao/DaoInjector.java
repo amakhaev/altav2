@@ -1,7 +1,5 @@
 package com.alta_v2.game.dao;
 
-import com.alta_v2.aop.executionTime.PrintExecutionTime;
-import com.alta_v2.aop.executionTime.PrintExecutionTimeHandler;
 import com.alta_v2.game.dao.domain.map.MapService;
 import com.alta_v2.game.dao.domain.map.MapServiceImpl;
 import com.alta_v2.game.dao.domain.person.PersonService;
@@ -12,7 +10,6 @@ import com.alta_v2.game.dao.facade.definition.mapper.PersonMapper;
 import com.alta_v2.game.dao.provider.ConnectionSourceProvider;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-import com.google.inject.matcher.Matchers;
 import com.j256.ormlite.support.ConnectionSource;
 
 public class DaoInjector extends AbstractModule {

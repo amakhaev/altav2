@@ -1,12 +1,15 @@
-package com.alta_v2.rendering.tiledMapScreen.layout;
+package com.alta_v2.rendering.tiledMapScreen.layout.person;
 
 import com.alta_v2.rendering.ScreenState;
 import com.alta_v2.rendering.actors.npc.NpcActor;
 import com.alta_v2.rendering.tiledMapScreen.TiledMapState;
+import com.alta_v2.rendering.tiledMapScreen.layout.Layout;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.google.common.collect.Maps;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -16,7 +19,6 @@ import java.util.Map;
  * Provides the layout that responsible to render NPC layer.
  */
 @Log4j2
-@RequiredArgsConstructor
 public class NpcLayout implements Layout {
 
     private final AssetManager assetManager;
@@ -24,6 +26,12 @@ public class NpcLayout implements Layout {
 
     private Map<Integer, NpcActor> npcActorMap;
     private SpriteBatch batch;
+
+    @AssistedInject
+    public NpcLayout(@Assisted AssetManager assetManager, @Assisted Map<Integer, String> npcTextures) {
+        this.assetManager = assetManager;
+        this.npcTextures = npcTextures;
+    }
 
     /**
      * {@inheritDoc}
@@ -72,11 +80,8 @@ public class NpcLayout implements Layout {
         });
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void dispose() {
+    public void destroy() {
         if (this.isNpcMapAvailable()) {
             this.npcActorMap.clear();
         }

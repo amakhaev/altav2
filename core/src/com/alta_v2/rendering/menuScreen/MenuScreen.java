@@ -55,7 +55,7 @@ public class MenuScreen implements Renderer {
      * {@inheritDoc}
      */
     @Override
-    public void dispose() {
+    public void destroy() {
         this.batch.dispose();
         this.backgroundTexture.dispose();
         this.assetManager.dispose();
