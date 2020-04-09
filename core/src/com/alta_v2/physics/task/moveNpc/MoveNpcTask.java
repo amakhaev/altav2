@@ -9,7 +9,6 @@ import com.alta_v2.physics.task.ResultTiledMapTask;
 import com.alta_v2.physics.task.resultObserver.BaseTaskResultObserver;
 import com.alta_v2.physics.utils.NpcMovementCalculator;
 import com.alta_v2.physics.utils.TiledMapPhysicCalculator;
-import com.alta_v2.rendering.actors.PersonView;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,8 +1,8 @@
 package com.alta_v2.rendering.tiledMapScreen.layout.messageBox;
 
 import com.alta_v2.rendering.ScreenState;
-import com.alta_v2.rendering.component.ComponentFactory;
-import com.alta_v2.rendering.component.dialog.DialogComponent;
+import com.alta_v2.rendering.common.component.ComponentFactory;
+import com.alta_v2.rendering.common.component.dialog.DialogComponent;
 import com.alta_v2.rendering.tiledMapScreen.layout.Layout;
 import com.google.inject.assistedinject.AssistedInject;
 

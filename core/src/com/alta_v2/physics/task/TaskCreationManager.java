@@ -10,7 +10,7 @@ import com.alta_v2.physics.task.rotatePlayer.RotateNpcChecker;
 import com.alta_v2.physics.task.rotatePlayer.RotatePlayerChecker;
 import com.alta_v2.physics.task.rotatePlayer.RotatePersonTask;
 import com.alta_v2.physics.utils.MovementCalculator;
-import com.alta_v2.rendering.actors.PersonView;
+import com.alta_v2.rendering.tiledMapScreen.actors.PersonView;
 import com.badlogic.gdx.math.Vector2;
 import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;

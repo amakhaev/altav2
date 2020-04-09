@@ -1,12 +1,12 @@
 package com.alta_v2.rendering.tiledMapScreen.state;
 
-import com.alta_v2.rendering.actors.PersonView;
+import com.alta_v2.rendering.tiledMapScreen.actors.PersonView;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Provides the state of {@link com.alta_v2.rendering.actors.player.PlayerActor}
+ * Provides the state of {@link com.alta_v2.rendering.tiledMapScreen.actors.player.PlayerActor}
  */
 public class PlayerState {
 

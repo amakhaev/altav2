@@ -1,7 +1,7 @@
 package com.alta_v2.provider;
 
 import com.alta_v2.game.utils.Resources;
-import com.alta_v2.rendering.component.ComponentStyle;
+import com.alta_v2.rendering.common.component.ComponentStyle;
 import com.google.inject.Provider;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;

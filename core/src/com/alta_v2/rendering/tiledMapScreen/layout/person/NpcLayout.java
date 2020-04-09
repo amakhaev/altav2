@@ -1,7 +1,7 @@
 package com.alta_v2.rendering.tiledMapScreen.layout.person;
 
 import com.alta_v2.rendering.ScreenState;
-import com.alta_v2.rendering.actors.npc.NpcActor;
+import com.alta_v2.rendering.tiledMapScreen.actors.npc.NpcActor;
 import com.alta_v2.rendering.tiledMapScreen.TiledMapState;
 import com.alta_v2.rendering.tiledMapScreen.layout.Layout;
 import com.badlogic.gdx.assets.AssetManager;
@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.google.common.collect.Maps;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.Map;

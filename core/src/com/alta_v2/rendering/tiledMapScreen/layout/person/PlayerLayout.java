@@ -1,7 +1,7 @@
 package com.alta_v2.rendering.tiledMapScreen.layout.person;
 
 import com.alta_v2.rendering.ScreenState;
-import com.alta_v2.rendering.actors.player.PlayerActor;
+import com.alta_v2.rendering.tiledMapScreen.actors.player.PlayerActor;
 import com.alta_v2.rendering.tiledMapScreen.TiledMapState;
 import com.alta_v2.rendering.tiledMapScreen.layout.Layout;
 import com.badlogic.gdx.assets.AssetManager;

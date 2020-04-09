@@ -1,6 +1,6 @@
 package com.alta_v2.physics.task;
 
-import com.alta_v2.rendering.actors.PersonView;
+import com.alta_v2.rendering.tiledMapScreen.actors.PersonView;
 
 import java.util.Arrays;
 import java.util.Collections;

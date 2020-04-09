@@ -1,7 +1,7 @@
 package com.alta_v2.physics.executionContext.reserveData;
 
 import com.alta_v2.physics.executionContext.Reservable;
-import com.alta_v2.rendering.actors.PersonView;
+import com.alta_v2.rendering.tiledMapScreen.actors.PersonView;
 
 public class ReservablePersonView extends Reservable<PersonView> {
 
