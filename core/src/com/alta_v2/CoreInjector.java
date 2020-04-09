@@ -19,7 +19,8 @@ import com.alta_v2.rendering.ScreenFactory;
 import com.alta_v2.rendering.ScreenStateFactory;
 import com.alta_v2.rendering.component.ComponentFactory;
 import com.alta_v2.rendering.component.ComponentStyle;
-import com.alta_v2.rendering.component.box.BoxStyleProvider;
+import com.alta_v2.rendering.component.animation.AnimationFactory;
+import com.alta_v2.rendering.component.dialog.TitleDialogStyleProvider;
 import com.alta_v2.rendering.config.AppConfig;
 import com.alta_v2.rendering.config.Theme;
 import com.alta_v2.rendering.tiledMapScreen.layout.LayoutFactory;
@@ -57,8 +58,9 @@ public class CoreInjector extends AbstractModule {
         install(new FactoryModuleBuilder().build(ScreenStateFactory.class));
         install(new FactoryModuleBuilder().build(ComponentFactory.class));
         install(new FactoryModuleBuilder().build(LayoutFactory.class));
+        install(new FactoryModuleBuilder().build(AnimationFactory.class));
 
-        bind(BoxStyleProvider.class).in(Singleton.class);
+        bind(TitleDialogStyleProvider.class).in(Singleton.class);
 
         bind(Theme.class).toProvider(ThemeProvider.class).in(Singleton.class);
         bind(AppConfig.class).toProvider(AppConfigProvider.class).in(Singleton.class);

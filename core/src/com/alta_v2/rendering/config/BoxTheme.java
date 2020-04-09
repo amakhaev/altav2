@@ -5,7 +5,8 @@ import lombok.Data;
 @Data
 public class BoxTheme {
 
-    private int color;
-    private int borderColor;
+    private String color;
+    private String borderColor;
+    private String textColor;
 
 }

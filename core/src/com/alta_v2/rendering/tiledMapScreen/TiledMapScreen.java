@@ -2,7 +2,6 @@ package com.alta_v2.rendering.tiledMapScreen;
 
 import com.alta_v2.rendering.Renderer;
 import com.alta_v2.rendering.ScreenState;
-import com.alta_v2.rendering.component.box.BoxStyleProvider;
 import com.alta_v2.rendering.tiledMapScreen.layout.Layout;
 import com.alta_v2.rendering.tiledMapScreen.layout.LayoutFactory;
 import com.alta_v2.rendering.tiledMapScreen.layout.map.MapLayout;
@@ -31,9 +30,7 @@ public class TiledMapScreen implements Renderer {
      * Initialize new instance of {@link TiledMapScreen}
      */
     @AssistedInject
-    public TiledMapScreen(@Assisted TiledMapMetadata metadata,
-                          LayoutFactory layoutFactory,
-                          BoxStyleProvider styleProvider) {
+    public TiledMapScreen(@Assisted TiledMapMetadata metadata, LayoutFactory layoutFactory) {
         assetManager = AssetLoader.load(metadata.getMapPath(), metadata.getActorTextures());
 
         mapLayout = layoutFactory.createMapLayout(assetManager, metadata.getMapPath());
@@ -42,7 +39,7 @@ public class TiledMapScreen implements Renderer {
                 layoutFactory.createNpcLayout(assetManager, metadata.getNpcTextures())
         );
 
-        messageLayouts = Lists.newArrayList(layoutFactory.createMessageBoxLayout(styleProvider.getTitleBox()));
+        messageLayouts = Lists.newArrayList(layoutFactory.createMessageBoxLayout());
     }
 
     /**

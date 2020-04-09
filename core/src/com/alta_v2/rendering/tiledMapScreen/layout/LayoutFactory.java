@@ -1,6 +1,5 @@
 package com.alta_v2.rendering.tiledMapScreen.layout;
 
-import com.alta_v2.rendering.component.box.BoxStyle;
 import com.alta_v2.rendering.tiledMapScreen.layout.map.MapLayoutImpl;
 import com.alta_v2.rendering.tiledMapScreen.layout.messageBox.MessageBoxLayout;
 import com.alta_v2.rendering.tiledMapScreen.layout.person.NpcLayout;
@@ -17,5 +16,5 @@ public interface LayoutFactory {
 
     MapLayoutImpl createMapLayout(AssetManager assetManager, String mapPath);
 
-    MessageBoxLayout createMessageBoxLayout(BoxStyle style);
+    MessageBoxLayout createMessageBoxLayout();
 }

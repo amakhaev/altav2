@@ -2,7 +2,7 @@ package com.alta_v2.rendering.component.box;
 
 import lombok.Getter;
 
-class RendererCalculator {
+class BoxRenderCalculator {
 
     private final BoxStyle configuration;
 
@@ -13,16 +13,16 @@ class RendererCalculator {
     private int boxHeight;
 
     @Getter
-    private int boxX;
+    private float boxX;
 
     @Getter
-    private int boxY;
+    private float boxY;
 
     @Getter
-    private int borderX;
+    private float borderX;
 
     @Getter
-    private int borderY;
+    private float borderY;
 
     @Getter
     private int borderWidth;
@@ -33,7 +33,7 @@ class RendererCalculator {
     @Getter
     private byte borderThickness = 1;
 
-    RendererCalculator(BoxStyle configuration) {
+    BoxRenderCalculator(BoxStyle configuration) {
         this.configuration = configuration;
         boxX = configuration.getBoxX();
         boxY = configuration.getBoxY();
@@ -43,10 +43,16 @@ class RendererCalculator {
         calculateBorder();
     }
 
+    public void updatePosition(float x, float y) {
+        boxX = x;
+        boxY = y;
+        calculateBorder();
+    }
+
     private void calculateBorder() {
-        borderWidth = boxWidth + borderThickness * 2;
-        borderHeight = boxHeight + borderThickness * 2;
-        borderX = boxX - borderThickness;
-        borderY = boxY - borderThickness;
+        borderWidth = boxWidth + borderThickness;
+        borderHeight = boxHeight + borderThickness;
+        borderX = boxX - 1;
+        borderY = boxY - 1;
     }
 }

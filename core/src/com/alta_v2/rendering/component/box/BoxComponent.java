@@ -15,8 +15,8 @@ import java.util.List;
 
 public class BoxComponent implements Renderer {
 
-    private final RendererCalculator calculator;
-    private final BoxStyle configuration;
+    private final BoxRenderCalculator calculator;
+    private final BoxStyle style;
 
     private ShapeRenderer boxRenderer;
     private Rectangle box;
@@ -25,22 +25,22 @@ public class BoxComponent implements Renderer {
     private Rectangle border;
 
     @AssistedInject
-    public BoxComponent(@Assisted BoxStyle configuration) {
-        calculator = new RendererCalculator(configuration);
-        this.configuration = configuration;
+    public BoxComponent(@Assisted BoxStyle style) {
+        calculator = new BoxRenderCalculator(style);
+        this.style = style;
     }
 
     @Override
     public void init(ScreenState state) {
         boxRenderer = new ShapeRenderer();
         boxRenderer.setAutoShapeType(true);
-        boxRenderer.setColor(configuration.getBoxColor());
-        box = new Rectangle(calculator.getBoxX(), calculator.getBoxY(), calculator.getBoxWidth(), calculator.getBoxHeight());
+        boxRenderer.setColor(style.getBoxColor());
+        box = new Rectangle();
 
         borderRenderer = new ShapeRenderer();
         borderRenderer.setAutoShapeType(true);
-        borderRenderer.setColor(configuration.getBorderColor());
-        border = new Rectangle(calculator.getBorderX(),calculator.getBorderY(),calculator.getBorderWidth(),calculator.getBorderHeight());
+        borderRenderer.setColor(style.getBorderColor());
+        border = new Rectangle();
     }
 
     @Override
@@ -48,23 +48,27 @@ public class BoxComponent implements Renderer {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         boxRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        boxRenderer.rect(box.getX(), box.getY(), box.getWidth(), box.getHeight());
+        boxRenderer.rect(calculator.getBoxX(), calculator.getBoxY(), calculator.getBoxWidth(), calculator.getBoxHeight());
         boxRenderer.end();
 
-        if (!configuration.isUseBorder()) {
+        if (!style.isUseBorder()) {
             return;
         }
 
-        List<Color> borderGradient = GradientResource.gradients.get(configuration.getBorderGradient());
+        List<Color> borderGradient = GradientResource.gradients.get(style.getBorderGradient());
         Gdx.gl.glLineWidth(calculator.getBorderThickness());
         borderRenderer.begin(ShapeRenderer.ShapeType.Point);
         if (borderGradient != null) {
             borderRenderer.rect(
-                    border.getX(), border.getY(), border.getWidth(), border.getHeight(),
+                    calculator.getBorderX(), calculator.getBorderY(),
+                    calculator.getBorderWidth(), calculator.getBorderHeight(),
                     borderGradient.get(0), borderGradient.get(1), borderGradient.get(2), borderGradient.get(3)
             );
         } else {
-            borderRenderer.rect(border.getX(), border.getY(), border.getWidth(), border.getHeight());
+            borderRenderer.rect(
+                    calculator.getBorderX(), calculator.getBorderY(),
+                    calculator.getBorderWidth(), calculator.getBorderHeight()
+            );
         }
         borderRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -74,5 +78,9 @@ public class BoxComponent implements Renderer {
     public void destroy() {
         boxRenderer.dispose();
         borderRenderer.dispose();
+    }
+
+    public void setPosition(float x, float y) {
+        calculator.updatePosition(x, y);
     }
 }

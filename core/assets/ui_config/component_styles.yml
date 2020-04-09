@@ -1,12 +1,24 @@
-titleBox:
+titleDialog:
+  # Common
+  fadeInTime: 200  # ms
+  fadeOutTime: 200 # ms
+
+  # Box
   boxWidthPercentage: 95
   boxHeight: 30
-  hAlign: "CENTER"
-  vAlign: "TOP"
+  boxHAlign: "CENTER"
+  boxVAlign: "TOP"
   marginTop: 10
   marginBottom: 0
   marginRight: 0
   marginLeft: 0
+
+  # Border of box
   useBorder: true
   borderThickness: 2
+
+  # Text of box
+  textHAlign: "CENTER"
+  textVAlign: "CENTER"
+  textSize: 16
 
