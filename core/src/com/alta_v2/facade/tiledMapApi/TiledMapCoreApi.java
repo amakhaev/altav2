@@ -3,7 +3,7 @@ package com.alta_v2.facade.tiledMapApi;
 import com.alta_v2.physics.task.MovementDirection;
 import com.alta_v2.physics.task.resultObserver.TaskResultObserver;
 
-public interface TiledMapApi {
+public interface TiledMapCoreApi {
 
     /**
      * Tries to perform movement of player.

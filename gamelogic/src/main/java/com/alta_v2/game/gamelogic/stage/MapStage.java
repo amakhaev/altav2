@@ -1,5 +1,7 @@
 package com.alta_v2.game.gamelogic.stage;
 
+import com.alta_v2.facade.dialogApi.DialogCoreApi;
+import com.alta_v2.game.gamelogic.data.map.MapModel;
 import com.alta_v2.game.gamelogic.data.npc.NpcModel;
 import com.alta_v2.game.gamelogic.domain.npc.RepeatableActionProcessor;
 import com.alta_v2.game.gamelogic.domain.player.PlayerProcessor;
@@ -15,13 +17,20 @@ public class MapStage extends AbstractStage {
 
     private final PlayerProcessor playerProcessor;
     private final RepeatableActionProcessor npcProcessor;
+    private final DialogCoreApi dialogCoreApi;
+    private final MapModel mapModel;
 
     @AssistedInject
-    public MapStage(PlayerProcessor playerProcessor,
+    public MapStage(@Assisted MapModel mapModel,
+                    @Assisted List<NpcModel> npcList,
+                    PlayerProcessor playerProcessor,
                     RepeatableActionProcessor npcProcessor,
-                    @Assisted List<NpcModel> npcList) {
+                    DialogCoreApi dialogCoreApi) {
         this.playerProcessor = playerProcessor;
         this.npcProcessor = npcProcessor;
+        this.dialogCoreApi = dialogCoreApi;
+        this.mapModel = mapModel;
+
         npcList.forEach(this.npcProcessor::addToRandomMovement);
         this.npcProcessor.startAsync();
     }
@@ -42,8 +51,14 @@ public class MapStage extends AbstractStage {
         this.playerProcessor.actionFinish(action);
 
         if (action == ActionType.BACK) {
+            dialogCoreApi.hideTitleDialog();
             this.changeStage(new ChangeMapStageEvent());
         }
+    }
+
+    @Override
+    public void onStageLoaded() {
+        dialogCoreApi.showTitleDialog(mapModel.getDisplayName(), 3000);
     }
 
     /**

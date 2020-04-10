@@ -7,6 +7,7 @@ import com.alta_v2.mediator.serde.UpdaterFactory;
 import com.alta_v2.physics.TiledMapPhysicEngine;
 import com.alta_v2.rendering.ScreenFactory;
 import com.alta_v2.rendering.ScreenStateFactory;
+import com.alta_v2.rendering.common.dialog.DialogImpl;
 import com.alta_v2.rendering.tiledMapScreen.TiledMapMetadata;
 import com.badlogic.gdx.math.Vector2;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +21,14 @@ public class ContextFactoryImpl implements ContextFactory {
     private final ScreenFactory screenFactory;
     private final UpdaterFactory updaterFactory;
     private final ScreenStateFactory screenStateFactory;
+    private final DialogImpl dialog;
 
     @Override
     public ScreenContext createMenuContext(MenuDefinitionModel definition) {
         return new ScreenContext(
                 this.updaterFactory.createMenuScreenUpdater(),
                 this.screenFactory.createMenuScreen(),
+                dialog,
                 this.screenStateFactory.createMenuState(),
                 null
         );
@@ -48,6 +51,7 @@ public class ContextFactoryImpl implements ContextFactory {
         return new ScreenContext(
                 this.updaterFactory.createTiledMapScreenUpdater(physicEngine),
                 this.screenFactory.createTiledMapScreen(metadata),
+                dialog,
                 this.screenStateFactory.createTiledMapState(definition.getNpcList().stream().map(ActorDefinitionModel::getId).collect(Collectors.toList())),
                 physicEngine
         );

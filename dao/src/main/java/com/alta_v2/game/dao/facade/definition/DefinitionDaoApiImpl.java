@@ -12,7 +12,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class DefinitionApiImpl implements DefinitionApi {
+public class DefinitionDaoApiImpl implements DefinitionDaoApi {
 
     private final MapService mapService;
     private final PersonService personService;
@@ -32,6 +32,7 @@ public class DefinitionApiImpl implements DefinitionApi {
 
         return TiledMapDefinitionModel.builder()
                 .mapPath(mapEntity.getMapPath())
+                .displayName(mapEntity.getDisplayName())
                 .player(personMapper.entityToPlayerDefinition(personService.getPlayerForMap(mapId)))
                 .npcList(personMapper.entitiesToNpcDefinitions(personService.getNpcForMap(mapId)))
                 .build();

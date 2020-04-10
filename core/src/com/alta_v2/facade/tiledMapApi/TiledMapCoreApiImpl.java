@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 @Log4j2
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class TiledMapApiImpl implements TiledMapApi {
+public class TiledMapCoreApiImpl implements TiledMapCoreApi {
 
     private final ProcessMediator processMediator;
 

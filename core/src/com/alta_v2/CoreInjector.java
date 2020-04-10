@@ -1,9 +1,11 @@
 package com.alta_v2;
 
-import com.alta_v2.facade.coreApi.CoreApi;
-import com.alta_v2.facade.coreApi.CoreApiImpl;
-import com.alta_v2.facade.tiledMapApi.TiledMapApi;
-import com.alta_v2.facade.tiledMapApi.TiledMapApiImpl;
+import com.alta_v2.facade.coreApi.ScreenCoreApi;
+import com.alta_v2.facade.coreApi.ScreenCoreApiImpl;
+import com.alta_v2.facade.dialogApi.DialogCoreApi;
+import com.alta_v2.facade.dialogApi.DialogCoreApiImpl;
+import com.alta_v2.facade.tiledMapApi.TiledMapCoreApi;
+import com.alta_v2.facade.tiledMapApi.TiledMapCoreApiImpl;
 import com.alta_v2.game.ScreenManager;
 import com.alta_v2.game.inputProcessor.InputProcessorFactory;
 import com.alta_v2.game.screen.GameScreenFactory;
@@ -21,6 +23,8 @@ import com.alta_v2.rendering.common.component.ComponentFactory;
 import com.alta_v2.rendering.common.component.ComponentStyle;
 import com.alta_v2.rendering.common.component.animation.AnimationFactory;
 import com.alta_v2.rendering.common.component.dialog.TitleDialogStyleProvider;
+import com.alta_v2.rendering.common.dialog.DialogImpl;
+import com.alta_v2.rendering.common.dialog.TitleDialog;
 import com.alta_v2.rendering.config.AppConfig;
 import com.alta_v2.rendering.config.Theme;
 import com.alta_v2.rendering.tiledMapScreen.layout.LayoutFactory;
@@ -61,14 +65,18 @@ public class CoreInjector extends AbstractModule {
         install(new FactoryModuleBuilder().build(AnimationFactory.class));
 
         bind(TitleDialogStyleProvider.class).in(Singleton.class);
+        bind(DialogImpl.class).in(Singleton.class);
 
         bind(Theme.class).toProvider(ThemeProvider.class).in(Singleton.class);
         bind(AppConfig.class).toProvider(AppConfigProvider.class).in(Singleton.class);
         bind(ComponentStyle.class).toProvider(ComponentStyleProvider.class).in(Singleton.class);
+
+        bind(TitleDialog.class).to(DialogImpl.class).in(Singleton.class);
     }
 
     private void initFacade() {
-        bind(CoreApi.class).to(CoreApiImpl.class).in(Singleton.class);
-        bind(TiledMapApi.class).to(TiledMapApiImpl.class).in(Singleton.class);
+        bind(ScreenCoreApi.class).to(ScreenCoreApiImpl.class).in(Singleton.class);
+        bind(TiledMapCoreApi.class).to(TiledMapCoreApiImpl.class).in(Singleton.class);
+        bind(DialogCoreApi.class).to(DialogCoreApiImpl.class).in(Singleton.class);
     }
 }

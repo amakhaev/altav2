@@ -22,4 +22,9 @@ public interface Stage extends ActionListener {
      * @param handler - the handler of map changing.
      */
     void subscribeToChangeMap(ChangeMapEventHandler handler);
+
+    /**
+     * Handles complete event of stage loading.
+     */
+    void onStageLoaded();
 }

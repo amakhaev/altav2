@@ -24,7 +24,6 @@ public class TiledMapScreen implements Renderer {
     private final MapLayout mapLayout;
 
     private List<Layout> contentLayouts;
-    private List<Layout> messageLayouts;
 
     /**
      * Initialize new instance of {@link TiledMapScreen}
@@ -38,8 +37,6 @@ public class TiledMapScreen implements Renderer {
                 layoutFactory.createPlayerLayout(assetManager, metadata.getActorTexturePath()),
                 layoutFactory.createNpcLayout(assetManager, metadata.getNpcTextures())
         );
-
-        messageLayouts = Lists.newArrayList(layoutFactory.createMessageBoxLayout());
     }
 
     /**
@@ -49,7 +46,6 @@ public class TiledMapScreen implements Renderer {
     public void init(ScreenState state) {
         mapLayout.init(state);
         contentLayouts.forEach(layout -> layout.init(state));
-        messageLayouts.forEach(layout -> layout.init(state));
     }
 
     /**
@@ -61,14 +57,11 @@ public class TiledMapScreen implements Renderer {
         mapLayout.renderBottomPart();
         contentLayouts.forEach(layout -> layout.render(delta, state));
         mapLayout.renderTopPart();
-
-        messageLayouts.forEach(layout -> layout.render(delta, state));
     }
 
     @Override
     public void destroy() {
         contentLayouts.forEach(Renderer::destroy);
-        messageLayouts.forEach(Renderer::destroy);
         mapLayout.destroy();
         assetManager.dispose();
     }

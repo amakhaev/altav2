@@ -5,7 +5,7 @@ import com.alta_v2.model.TiledMapDefinitionModel;
 /**
  * Provides the facade API for working with definitions of map.
  */
-public interface DefinitionApi {
+public interface DefinitionDaoApi {
 
     /**
      * Gets the map definition with given map id.

@@ -1,6 +1,6 @@
 package com.alta_v2.game.gamelogic.domain.npc;
 
-import com.alta_v2.facade.tiledMapApi.TiledMapApi;
+import com.alta_v2.facade.tiledMapApi.TiledMapCoreApi;
 import com.alta_v2.game.gamelogic.data.npc.NpcModel;
 import com.alta_v2.game.gamelogic.utils.LogicThreadFactory;
 import com.alta_v2.physics.task.MovementDirection;
@@ -25,7 +25,7 @@ public class RepeatableActionProcessorImpl implements RepeatableActionProcessor 
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(
             1, new LogicThreadFactory(LISTENER_THREAD_NAME)
     );
-    private final TiledMapApi tiledMapApi;
+    private final TiledMapCoreApi tiledMapCoreApi;
 
     /**
      * {@inheritDoc}
@@ -67,7 +67,7 @@ public class RepeatableActionProcessorImpl implements RepeatableActionProcessor 
                 return;
             }
 
-            TaskResultObserver observer = tiledMapApi.performNpcMovement(npc.getId(), MovementDirection.randomDirection());
+            TaskResultObserver observer = tiledMapCoreApi.performNpcMovement(npc.getId(), MovementDirection.randomDirection());
             if (observer != null) {
                 npc.setMovementRunning(true);
                 observer.subscribeOnComplete(() -> {

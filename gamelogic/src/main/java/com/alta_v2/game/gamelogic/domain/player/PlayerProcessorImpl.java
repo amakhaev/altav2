@@ -1,6 +1,6 @@
 package com.alta_v2.game.gamelogic.domain.player;
 
-import com.alta_v2.facade.tiledMapApi.TiledMapApi;
+import com.alta_v2.facade.tiledMapApi.TiledMapCoreApi;
 import com.alta_v2.game.gamelogic.utils.LogicThreadFactory;
 import com.alta_v2.mediator.serde.ActionListener;
 import com.google.common.collect.Sets;
@@ -22,12 +22,12 @@ public class PlayerProcessorImpl implements PlayerProcessor {
             1, new LogicThreadFactory(LISTENER_THREAD_NAME)
     );
 
-    private final TiledMapApi tiledMapApi;
+    private final TiledMapCoreApi tiledMapCoreApi;
 
 
     @Inject
-    public PlayerProcessorImpl(TiledMapApi tiledMapApi) {
-        this.tiledMapApi = tiledMapApi;
+    public PlayerProcessorImpl(TiledMapCoreApi tiledMapCoreApi) {
+        this.tiledMapCoreApi = tiledMapCoreApi;
         this.executorService.scheduleWithFixedDelay(this::checkActions, 0L, 10L, TimeUnit.MILLISECONDS);
     }
 
@@ -58,7 +58,7 @@ public class PlayerProcessorImpl implements PlayerProcessor {
                     case MOVE_DOWN:
                     case MOVE_LEFT:
                     case MOVE_RIGHT:
-                        this.tiledMapApi.performPlayerMovement(ActionListener.ActionType.getMovementDirection(status));
+                        this.tiledMapCoreApi.performPlayerMovement(ActionListener.ActionType.getMovementDirection(status));
                         break;
                     case BACK:
                     case NEXT:

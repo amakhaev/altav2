@@ -1,5 +1,6 @@
 package com.alta_v2.facade.coreApi;
 
+import com.alta_v2.game.utils.ChangeScreenResult;
 import com.alta_v2.mediator.ProcessMediator;
 import com.alta_v2.model.MenuDefinitionModel;
 import com.alta_v2.model.TiledMapDefinitionModel;
@@ -8,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import javax.inject.Inject;
 
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class CoreApiImpl implements CoreApi {
+public class ScreenCoreApiImpl implements ScreenCoreApi {
 
     private final ProcessMediator processMediator;
 
@@ -16,15 +17,15 @@ public class CoreApiImpl implements CoreApi {
      * {@inheritDoc}
      */
     @Override
-    public void loadMenuScreen(MenuDefinitionModel definition) {
-        this.processMediator.loadMenuScreen(definition);
+    public ChangeScreenResult loadMenuScreen(MenuDefinitionModel definition) {
+        return this.processMediator.loadMenuScreen(definition);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void loadTiledMapScreen(TiledMapDefinitionModel definition) {
-        this.processMediator.loadTiledMapScreen(definition);
+    public ChangeScreenResult loadTiledMapScreen(TiledMapDefinitionModel definition) {
+        return this.processMediator.loadTiledMapScreen(definition);
     }
 }

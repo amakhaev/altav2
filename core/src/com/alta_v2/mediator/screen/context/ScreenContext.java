@@ -20,6 +20,9 @@ public final class ScreenContext {
     private final Renderer screenRender;
 
     @Getter
+    private final Renderer dialogRender;
+
+    @Getter
     private final ScreenState screenState;
 
     @Getter

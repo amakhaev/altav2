@@ -1,10 +1,12 @@
 package com.alta_v2.game.gamelogic.stage;
 
-import com.alta_v2.facade.coreApi.CoreApi;
+import com.alta_v2.facade.coreApi.ScreenCoreApi;
+import com.alta_v2.game.gamelogic.data.map.MapModel;
 import com.alta_v2.game.gamelogic.data.npc.NpcModel;
 import com.alta_v2.game.gamelogic.stage.event.ChangeMapStageEvent;
 import com.alta_v2.game.gamelogic.stage.event.ChangeMenuStageEvent;
 import com.alta_v2.game.gamelogic.stage.event.ChangeStageEvent;
+import com.alta_v2.game.utils.ChangeScreenResult;
 import com.alta_v2.mediator.serde.ActionListener;
 import com.alta_v2.model.NpcDefinitionModel;
 import com.google.inject.Inject;
@@ -17,14 +19,14 @@ import java.util.stream.Collectors;
 public class StageManagerImpl implements StageManager {
 
     private final StageFactory stageFactory;
-    private final CoreApi coreApi;
+    private final ScreenCoreApi screenCoreApi;
 
     private Stage currentStage;
 
     @Inject
-    public StageManagerImpl(StageFactory stageFactory, CoreApi coreApi) {
+    public StageManagerImpl(StageFactory stageFactory, ScreenCoreApi screenCoreApi) {
         this.stageFactory = stageFactory;
-        this.coreApi = coreApi;
+        this.screenCoreApi = screenCoreApi;
         this.currentStage = this.createMenuStage();
     }
 
@@ -39,10 +41,12 @@ public class StageManagerImpl implements StageManager {
     private void onMapScreenChange(ChangeStageEvent data) {
         try {
             ChangeMapStageEvent event = ChangeStageEvent.resolve(data, ChangeMapStageEvent.class);
-            this.currentStage.destroy();
-            this.currentStage = null;
-            this.coreApi.loadMenuScreen(event.getMapDefinition());
-            this.currentStage = createMenuStage();
+            currentStage.destroy();
+            currentStage = createMenuStage();
+            ChangeScreenResult loadResult = screenCoreApi.loadMenuScreen(event.getMapDefinition());
+            if (loadResult != null) {
+                loadResult.thenRun(currentStage::onStageLoaded);
+            }
         } catch (NullPointerException | ClassCastException e) {
             log.error("Failed to change map screen", e);
         }
@@ -51,10 +55,14 @@ public class StageManagerImpl implements StageManager {
     private void onMenuScreenChange(ChangeStageEvent data) {
         try {
             ChangeMenuStageEvent event = ChangeStageEvent.resolve(data, ChangeMenuStageEvent.class);
-            this.currentStage.destroy();
-            this.currentStage = null;
-            this.coreApi.loadTiledMapScreen(event.getMapDefinition());
-            this.currentStage = createMapStage(event.getMapDefinition().getNpcList());
+            currentStage.destroy();
+            currentStage = createMapStage(
+                    event.getMapDefinition().getDisplayName(), event.getMapDefinition().getNpcList()
+            );
+            ChangeScreenResult loadResult = screenCoreApi.loadTiledMapScreen(event.getMapDefinition());
+            if (loadResult != null) {
+                loadResult.thenRun(currentStage::onStageLoaded);
+            }
         } catch (NullPointerException | ClassCastException e) {
             log.error("Failed to change menu screen", e);
         }
@@ -71,7 +79,7 @@ public class StageManagerImpl implements StageManager {
         return stage;
     }
 
-    private Stage createMapStage(List<NpcDefinitionModel> definitionNpcList) {
+    private Stage createMapStage(String mapDisplayName, List<NpcDefinitionModel> definitionNpcList) {
         List<NpcModel> npcModels = definitionNpcList.stream()
                 .map(npcDefinition ->
                         NpcModel.builder()
@@ -83,7 +91,9 @@ public class StageManagerImpl implements StageManager {
                 )
                 .collect(Collectors.toList());
 
-        Stage stage = this.stageFactory.createMapStage(npcModels);
+        MapModel mapModel = MapModel.builder().displayName(mapDisplayName).build();
+
+        Stage stage = this.stageFactory.createMapStage(mapModel, npcModels);
         stage.subscribeToChangeScreen(this::onMapScreenChange);
         stage.subscribeToChangeMap(this::onMapChange);
         return stage;

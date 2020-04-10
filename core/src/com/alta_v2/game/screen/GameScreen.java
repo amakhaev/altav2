@@ -43,6 +43,7 @@ public class GameScreen extends ScreenAdapter {
         this.overlayComponent.show(FADE_DURATION);
         this.context.getScreenUpdater().init(this.context.getScreenState());
         this.context.getScreenRender().init(this.context.getScreenState());
+        this.context.getDialogRender().init(this.context.getScreenState());
     }
 
     @Override
@@ -60,6 +61,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.context.getScreenUpdater().update(delta, this.context.getScreenState());
         this.context.getScreenRender().render(delta, this.context.getScreenState());
+        this.context.getDialogRender().render(delta, null);
 
         this.overlayComponent.act(delta);
         this.overlayComponent.render(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

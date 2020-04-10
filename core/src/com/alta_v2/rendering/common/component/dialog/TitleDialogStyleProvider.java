@@ -7,9 +7,9 @@ import com.alta_v2.rendering.common.component.animation.TranslationAnimation;
 import com.alta_v2.rendering.common.component.box.BoxStyle;
 import com.alta_v2.rendering.common.component.style.TitleDialogStyle;
 import com.alta_v2.rendering.common.component.text.TextStyle;
+import com.alta_v2.rendering.common.utils.GradientResource;
 import com.alta_v2.rendering.config.AppConfig;
 import com.alta_v2.rendering.config.Theme;
-import com.alta_v2.rendering.common.utils.GradientResource;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import lombok.RequiredArgsConstructor;
@@ -24,76 +24,60 @@ public class TitleDialogStyleProvider {
     private final ComponentStyle componentStyle;
     private final AnimationFactory animationFactory;
 
-    private BoxStyle boxStyle;
-    private TextStyle titleStyle;
-    private TranslationAnimation boxInAnimation;
-    private FadeAnimation textFadeInAnimation;
+    public BoxStyle createBoxStyle() {
+        TitleDialogStyle titleDialog = componentStyle.getTitleDialog();
 
-    public BoxStyle getBoxStyle() {
-        if (boxStyle == null) {
-            TitleDialogStyle titleDialog = componentStyle.getTitleDialog();
+        int boxWidth = appConfig.getWidth() * titleDialog.getBoxWidthPercentage() / 100;
+        int boxX = getTitleDialogBoxX(boxWidth);
+        int boxY = getTitleDialogBoxY(titleDialog.getBoxHeight());
 
-            int boxWidth = appConfig.getWidth() * titleDialog.getBoxWidthPercentage() / 100;
-            int boxX = getTitleDialogBoxX(boxWidth);
-            int boxY = getTitleDialogBoxY(titleDialog.getBoxHeight());
-
-            boxStyle = BoxStyle.builder()
-                    .boxWidth(boxWidth)
-                    .boxHeight(titleDialog.getBoxHeight())
-                    .boxX(boxX)
-                    .boxY(boxY)
-                    .boxColor(Color.valueOf(theme.getBox().getColor()))
-                    .useBorder(titleDialog.isUseBorder())
-                    .borderThickness(titleDialog.getBorderThickness())
-                    .borderColor(Color.valueOf(theme.getBox().getBorderColor()))
-                    .borderGradient(GradientResource.Gradient.ORANGE)
-                    .build();
-        }
-
-        return boxStyle;
+        return BoxStyle.builder()
+                .boxWidth(boxWidth)
+                .boxHeight(titleDialog.getBoxHeight())
+                .boxX(boxX)
+                .boxY(boxY)
+                .boxColor(Color.valueOf(theme.getBox().getColor()))
+                .useBorder(titleDialog.isUseBorder())
+                .borderThickness(titleDialog.getBorderThickness())
+                .borderColor(Color.valueOf(theme.getBox().getBorderColor()))
+                .borderGradient(GradientResource.Gradient.ORANGE)
+                .build();
     }
 
-    public TextStyle getTextStyle() {
-        if (titleStyle == null) {
-            TitleDialogStyle titleDialog = componentStyle.getTitleDialog();
-            BoxStyle boxStyle = getBoxStyle();
+    public TextStyle createTextStyle() {
+        TitleDialogStyle titleDialog = componentStyle.getTitleDialog();
+        BoxStyle boxStyle = createBoxStyle();
 
-            titleStyle = TextStyle.builder()
-                    .color(Color.valueOf(theme.getBox().getTextColor()))
-                    .hAlign(titleDialog.textHAlign)
-                    .vAlign(titleDialog.textVAlign)
-                    .renderAreaStart(new Vector2(boxStyle.getBoxX(), boxStyle.getBoxY()))
-                    .renderAreaSize(new Vector2(boxStyle.getBoxWidth(), boxStyle.getBoxHeight()))
-                    .textSize(componentStyle.getTitleDialog().getTextSize())
-                    .build();
-        }
-
-        return titleStyle;
+        return TextStyle.builder()
+                .color(Color.valueOf(theme.getBox().getTextColor()))
+                .hAlign(titleDialog.textHAlign)
+                .vAlign(titleDialog.textVAlign)
+                .renderAreaStart(new Vector2(boxStyle.getBoxX(), boxStyle.getBoxY()))
+                .renderAreaSize(new Vector2(boxStyle.getBoxWidth(), boxStyle.getBoxHeight()))
+                .textSize(componentStyle.getTitleDialog().getTextSize())
+                .build();
     }
 
-    public TranslationAnimation getBoxInAnimation() {
-        if (boxInAnimation == null) {
-            BoxStyle boxStyle = getBoxStyle();
-            boxInAnimation = animationFactory.createFadeInAnimation(
-                    new Vector2(boxStyle.getBoxX(), boxStyle.getBoxY() + 50),
-                    new Vector2(boxStyle.getBoxX(), boxStyle.getBoxY()),
-                    componentStyle.getTitleDialog().getFadeInTime() / 1000
-            );
-        } else {
-            boxInAnimation.reset();
-        }
-
-        return boxInAnimation;
+    public TranslationAnimation createBoxInAnimation() {
+        BoxStyle boxStyle = createBoxStyle();
+        return animationFactory.createFadeInAnimation(
+                new Vector2(boxStyle.getBoxX(), boxStyle.getBoxY() + 50),
+                new Vector2(boxStyle.getBoxX(), boxStyle.getBoxY()),
+                componentStyle.getTitleDialog().getFadeInTime() / 1000
+        );
     }
 
-    public FadeAnimation getTextFadeInAnimation() {
-        if (textFadeInAnimation == null) {
-            textFadeInAnimation = animationFactory.creteFadeAnimation(0, 1, componentStyle.getTitleDialog().getFadeInTime() / 1000);
-        } else {
-            textFadeInAnimation.reset();
-        }
+    public FadeAnimation createTextFadeInAnimation() {
+        return animationFactory.creteFadeAnimation(0, 1, componentStyle.getTitleDialog().getFadeInTime() / 1000);
+    }
 
-        return textFadeInAnimation;
+    public TranslationAnimation createBoxOutAnimation() {
+        BoxStyle boxStyle = createBoxStyle();
+        return animationFactory.createFadeInAnimation(
+                new Vector2(boxStyle.getBoxX(), boxStyle.getBoxY()),
+                new Vector2(boxStyle.getBoxX(), boxStyle.getBoxY() + 50),
+                componentStyle.getTitleDialog().getFadeInTime() / 1000
+        );
     }
 
     private int getTitleDialogBoxX(int boxWidth) {
@@ -120,5 +104,4 @@ public class TitleDialogStyleProvider {
                 return componentStyle.getTitleDialog().getMarginBottom();
         }
     }
-
 }

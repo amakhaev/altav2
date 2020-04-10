@@ -8,28 +8,39 @@ import com.alta_v2.rendering.common.component.animation.TranslationAnimation;
 import com.alta_v2.rendering.common.component.box.BoxComponent;
 import com.alta_v2.rendering.common.component.box.BoxStyle;
 import com.alta_v2.rendering.common.component.text.TextComponent;
+import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
+import lombok.Getter;
 
 public class DialogComponent implements Renderer {
 
     private final BoxComponent boxComponent;
     private final TextComponent textComponent;
     private final TranslationAnimation boxFadeIn;
+    private final TranslationAnimation boxFadeOut;
     private final FadeAnimation textFadeIn;
 
     private TranslationAnimation currentBoxAnimation;
     private FadeAnimation currentTextFade;
 
-    private String text = "мой супер длинный длинный длинный длинный текст";
+    private String text;
+
+    @Getter
+    private boolean visible;
 
     @AssistedInject
-    public DialogComponent(TitleDialogStyleProvider styleProvider, ComponentFactory componentFactory) {
-        BoxStyle boxStyle = styleProvider.getBoxStyle();
-        boxComponent = componentFactory.createWindowComponent(boxStyle);
-        textComponent = componentFactory.createTextComponent(styleProvider.getTextStyle());
+    public DialogComponent(@Assisted("fadeIn") TranslationAnimation fadeIn,
+                           @Assisted("fadeOut") TranslationAnimation fadeOut,
+                           TitleDialogStyleProvider styleProvider,
+                           ComponentFactory componentFactory) {
+        BoxStyle boxStyle = styleProvider.createBoxStyle();
+        boxComponent = componentFactory.createBoxComponent(boxStyle);
+        textComponent = componentFactory.createTextComponent(styleProvider.createTextStyle());
 
-        textFadeIn = styleProvider.getTextFadeInAnimation();
-        boxFadeIn = styleProvider.getBoxInAnimation();
+        textFadeIn = styleProvider.createTextFadeInAnimation();
+
+        boxFadeOut = fadeOut;
+        boxFadeIn = fadeIn;
         boxFadeIn.setCompleteListener(this::onBoxFadeInComplete);
     }
 
@@ -37,7 +48,6 @@ public class DialogComponent implements Renderer {
     public void init(ScreenState state) {
         boxComponent.init(state);
         textComponent.init(state);
-        show();
     }
 
     @Override
@@ -45,15 +55,14 @@ public class DialogComponent implements Renderer {
         if (currentBoxAnimation != null) {
             currentBoxAnimation.act(delta);
             boxComponent.setPosition(currentBoxAnimation.getX(), currentBoxAnimation.getY());
+            boxComponent.render(delta, state);
         }
 
         if (currentTextFade != null) {
             currentTextFade.act(delta);
             textComponent.setAlpha(currentTextFade.getAlpha());
+            textComponent.render(delta, state);
         }
-
-        boxComponent.render(delta, state);
-        textComponent.render(delta, state);
     }
 
     @Override
@@ -62,18 +71,28 @@ public class DialogComponent implements Renderer {
         textComponent.destroy();
 
         boxFadeIn.destroy();
-        boxFadeIn.setCompleteListener(null);
-
+        boxFadeOut.destroy();
         textFadeIn.destroy();
 
         currentBoxAnimation = null;
         currentTextFade = null;
     }
 
-    public void show() {
+    public void show(String message) {
         // runs box animation
         currentBoxAnimation = boxFadeIn;
         currentBoxAnimation.reset();
+
+        textComponent.setText("");
+        text = message;
+        visible = true;
+    }
+
+    public void hide() {
+        textComponent.setText("");
+        currentBoxAnimation = boxFadeOut;
+        currentBoxAnimation.reset();
+        visible = false;
     }
 
     private void onBoxFadeInComplete() {

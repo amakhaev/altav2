@@ -2,12 +2,14 @@ package com.alta_v2.game;
 
 import com.alta_v2.game.screen.GameScreen;
 import com.alta_v2.game.screen.GameScreenFactory;
+import com.alta_v2.game.utils.ChangeScreenResult;
 import com.alta_v2.mediator.screen.context.ScreenContext;
 import com.badlogic.gdx.Screen;
 import com.google.inject.Inject;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -38,18 +40,19 @@ public class ScreenManager {
      *
      * @param screenContext - the {@link ScreenContext} instance.
      */
-    public void changeScreen(ScreenContext screenContext) {
+    public ChangeScreenResult changeScreen(ScreenContext screenContext) {
         if (this.game == null) {
             throw new NullPointerException("AltaV2 must not be null");
         }
 
         if (this.screenChangeIsLocked.get()) {
             log.warn("Screen changing is not available because another change operation in progress.");
-            return;
+            return null;
         }
 
+        ChangeScreenResult changeScreenResult = new ChangeScreenResult();
         try {
-            this.screenChangeIsLocked.set(true);;
+            this.screenChangeIsLocked.set(true);
             GameScreen oldScreen = this.getScreenAsType(GameScreen.class);
             GameScreen newGameScreen = this.screenFactory.createGameScreen(screenContext);
 
@@ -61,12 +64,15 @@ public class ScreenManager {
                     this.game.setScreen(newGameScreen);
                     oldScreen.dispose();
                     this.screenChangeIsLocked.set(false);
+                    changeScreenResult.complete();
                 });
             }
         } catch (Exception e) {
             log.error(e);
             this.screenChangeIsLocked.set(false);
         }
+
+        return changeScreenResult;
     }
 
     /**

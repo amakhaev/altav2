@@ -1,7 +1,6 @@
 package com.alta_v2.rendering.tiledMapScreen.layout;
 
 import com.alta_v2.rendering.tiledMapScreen.layout.map.MapLayoutImpl;
-import com.alta_v2.rendering.tiledMapScreen.layout.messageBox.MessageBoxLayout;
 import com.alta_v2.rendering.tiledMapScreen.layout.person.NpcLayout;
 import com.alta_v2.rendering.tiledMapScreen.layout.person.PlayerLayout;
 import com.badlogic.gdx.assets.AssetManager;
@@ -15,6 +14,4 @@ public interface LayoutFactory {
     NpcLayout createNpcLayout(AssetManager assetManager, Map<Integer, String> npcTextures);
 
     MapLayoutImpl createMapLayout(AssetManager assetManager, String mapPath);
-
-    MessageBoxLayout createMessageBoxLayout();
 }

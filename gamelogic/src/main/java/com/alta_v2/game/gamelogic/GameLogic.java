@@ -13,7 +13,6 @@ public class GameLogic {
 
     @Inject
     public GameLogic(ActionListener actionListener, AltaV2 altaV2) {
-
         this.altaV2 = altaV2;
         this.altaV2.setInputListener(actionListener);
     }

@@ -1,6 +1,7 @@
 package com.alta_v2.mediator;
 
 import com.alta_v2.game.ScreenManager;
+import com.alta_v2.game.utils.ChangeScreenResult;
 import com.alta_v2.mediator.screen.context.ContextFactory;
 import com.alta_v2.mediator.screen.context.ScreenContext;
 import com.alta_v2.model.MenuDefinitionModel;
@@ -26,17 +27,17 @@ public class ProcessMediatorImpl implements ProcessMediator {
      * {@inheritDoc}
      */
     @Override
-    public void loadMenuScreen(MenuDefinitionModel definition) {
+    public ChangeScreenResult loadMenuScreen(MenuDefinitionModel definition) {
         this.currentContext = this.contextFactory.createMenuContext(definition);
-        this.screenManager.changeScreen(this.currentContext);
+        return this.screenManager.changeScreen(this.currentContext);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void loadTiledMapScreen(TiledMapDefinitionModel definition) {
+    public ChangeScreenResult loadTiledMapScreen(TiledMapDefinitionModel definition) {
         this.currentContext = this.contextFactory.createTiledMapContext(definition);
-        this.screenManager.changeScreen(this.currentContext);
+        return this.screenManager.changeScreen(this.currentContext);
     }
 }

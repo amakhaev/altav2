@@ -10,6 +10,7 @@ import java.util.List;
 public class TiledMapDefinitionModel {
 
     private final String mapPath;
+    private final String displayName;
     private final PlayerDefinitionModel player;
     private final List<NpcDefinitionModel> npcList;
 

@@ -31,6 +31,12 @@ public abstract class AbstractStage implements Stage {
      * {@inheritDoc}
      */
     @Override
+    public void onStageLoaded() {}
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void destroy() {
         this.changeMapHandler = null;
         this.changeScreenHandler = null;
