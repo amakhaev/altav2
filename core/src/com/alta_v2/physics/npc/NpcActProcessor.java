@@ -7,6 +7,8 @@ import com.alta_v2.physics.executionContext.reserveData.ReservableActor;
 import com.alta_v2.physics.utils.NpcMovementCalculator;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.Map;
+
 @Log4j2
 public class NpcActProcessor {
 
@@ -32,11 +34,11 @@ public class NpcActProcessor {
      * Acts the tasks that currently active.
      */
     public void processAct(TiledMapEngineContext context) {
-        context.getNpcMap().values().forEach(npc -> {
-            if (!npc.isReserved()) {
-                this.updateGlobalCoordinates(context, npc);
+        for (Map.Entry<Integer, ReservableActor> entry : context.getNpcMap().entrySet()) {
+            if (!entry.getValue().isReserved()) {
+                this.updateGlobalCoordinates(context, entry.getValue());
             }
-        });
+        }
     }
 
     private void updateGlobalCoordinates(TiledMapEngineContext context, ReservableActor npc) {
@@ -49,6 +51,5 @@ public class NpcActProcessor {
         );
         npc.getGlobalPoint().reserve(this.tenant).setValue(globalX, globalY, this.tenant).release(this.tenant);
     }
-
 
 }

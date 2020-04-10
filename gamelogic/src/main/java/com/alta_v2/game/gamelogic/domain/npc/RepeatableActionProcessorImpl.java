@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 @Log4j2
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
@@ -22,6 +23,8 @@ public class RepeatableActionProcessorImpl implements RepeatableActionProcessor 
     private static final String LISTENER_THREAD_NAME = "repeatable-action-processing";
 
     private final List<NpcModel> npcList = Lists.newCopyOnWriteArrayList();
+    private final Consumer<NpcModel> npcMovementConsumer = this::performNpcMovement;
+
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(
             1, new LogicThreadFactory(LISTENER_THREAD_NAME)
     );
@@ -41,7 +44,7 @@ public class RepeatableActionProcessorImpl implements RepeatableActionProcessor 
      */
     @Override
     public void startAsync() {
-        this.executorService.scheduleWithFixedDelay(this::doNpcMovement, 0L, 100L, TimeUnit.MILLISECONDS);
+        this.executorService.scheduleWithFixedDelay(this::performNpcMovementForAll, 0L, 100L, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -57,24 +60,26 @@ public class RepeatableActionProcessorImpl implements RepeatableActionProcessor 
         this.npcList.clear();
     }
 
-    private void doNpcMovement() {
-        this.npcList.forEach(npc -> {
-            if (npc.isMovementRunning()) {
-                return;
-            }
+    private void performNpcMovementForAll() {
+        this.npcList.forEach(npcMovementConsumer);
+    }
 
-            if (System.currentTimeMillis() - npc.getLastMovementMills() < npc.getRepeatMovementInterval()) {
-                return;
-            }
+    private void performNpcMovement(NpcModel npc) {
+        if (npc.isMovementRunning()) {
+            return;
+        }
 
-            TaskResultObserver observer = tiledMapCoreApi.performNpcMovement(npc.getId(), MovementDirection.randomDirection());
-            if (observer != null) {
-                npc.setMovementRunning(true);
-                observer.subscribeOnComplete(() -> {
-                    npc.setMovementRunning(false);
-                    npc.setLastMovementMills(System.currentTimeMillis());
-                });
-            }
-        });
+        if (System.currentTimeMillis() - npc.getLastMovementMills() < npc.getRepeatMovementInterval()) {
+            return;
+        }
+
+        TaskResultObserver observer = tiledMapCoreApi.performNpcMovement(npc.getId(), MovementDirection.randomDirection());
+        if (observer != null) {
+            npc.setMovementRunning(true);
+            observer.subscribeOnComplete(() -> {
+                npc.setMovementRunning(false);
+                npc.setLastMovementMills(System.currentTimeMillis());
+            });
+        }
     }
 }

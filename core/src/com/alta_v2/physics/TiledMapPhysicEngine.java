@@ -84,12 +84,12 @@ public class TiledMapPhysicEngine implements PhysicEngine {
         this.tasks.removeIf(TiledMapTask::isCompleted);
 
         // execute one act of task
-        this.tasks.forEach(task -> {
+        for (TiledMapTask task : tasks) {
             task.act(delta);
             if (task.isCompleted()) {
                 task.destroy();
             }
-        });
+        }
 
         this.npcProcessor.processAct(this.context);
     }

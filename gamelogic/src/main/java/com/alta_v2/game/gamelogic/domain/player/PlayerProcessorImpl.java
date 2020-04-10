@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 @Log4j2
 public class PlayerProcessorImpl implements PlayerProcessor {
@@ -18,6 +19,8 @@ public class PlayerProcessorImpl implements PlayerProcessor {
     private static final String LISTENER_THREAD_NAME = "map-stage-listener";
 
     private final Set<ActionListener.ActionType> actionStatus = Sets.newConcurrentHashSet();
+    private final Consumer<ActionListener.ActionType> statusConsumer = this::resolveAction;
+
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(
             1, new LogicThreadFactory(LISTENER_THREAD_NAME)
     );
@@ -52,21 +55,27 @@ public class PlayerProcessorImpl implements PlayerProcessor {
 
     private void checkActions() {
         try {
-            this.actionStatus.forEach(status -> {
-                switch (status) {
-                    case MOVE_UP:
-                    case MOVE_DOWN:
-                    case MOVE_LEFT:
-                    case MOVE_RIGHT:
-                        this.tiledMapCoreApi.performPlayerMovement(ActionListener.ActionType.getMovementDirection(status));
-                        break;
-                    case BACK:
-                    case NEXT:
-                        break;
-                }
-            });
+            if (actionStatus.isEmpty()) {
+                return;
+            }
+
+            actionStatus.forEach(statusConsumer);
         } catch (Exception e) {
             log.error(e);
+        }
+    }
+
+    private void resolveAction(ActionListener.ActionType actionType) {
+        switch (actionType) {
+            case MOVE_UP:
+            case MOVE_DOWN:
+            case MOVE_LEFT:
+            case MOVE_RIGHT:
+                this.tiledMapCoreApi.performPlayerMovement(ActionListener.ActionType.getMovementDirection(actionType));
+                break;
+            case BACK:
+            case NEXT:
+                break;
         }
     }
 }

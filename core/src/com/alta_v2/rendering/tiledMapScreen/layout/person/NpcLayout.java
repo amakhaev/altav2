@@ -4,6 +4,7 @@ import com.alta_v2.rendering.ScreenState;
 import com.alta_v2.rendering.tiledMapScreen.actors.npc.NpcActor;
 import com.alta_v2.rendering.tiledMapScreen.TiledMapState;
 import com.alta_v2.rendering.tiledMapScreen.layout.Layout;
+import com.alta_v2.rendering.tiledMapScreen.state.NpcState;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -68,7 +69,7 @@ public class NpcLayout implements Layout {
             return;
         }
 
-        s.getNpcStateList().forEach(npcState -> {
+        for (NpcState npcState : s.getNpcStateList()) {
             if (this.npcActorMap.containsKey(npcState.getId())) {
                 this.batch.begin();
                 this.npcActorMap.get(npcState.getId()).draw(this.batch, delta, npcState);
@@ -76,7 +77,7 @@ public class NpcLayout implements Layout {
             } else {
                 log.debug("Npc with given Id {} not found", npcState.getId());
             }
-        });
+        }
     }
 
     @Override

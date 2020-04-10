@@ -1,10 +1,14 @@
 package com.alta_v2.physics;
 
 import com.alta_v2.physics.executionContext.TiledMapEngineContext;
+import com.alta_v2.physics.executionContext.reserveData.ReservableActor;
 import com.alta_v2.rendering.tiledMapScreen.TiledMapState;
 import com.alta_v2.rendering.tiledMapScreen.state.NpcState;
 import com.alta_v2.rendering.tiledMapScreen.state.PlayerState;
 import lombok.experimental.UtilityClass;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Updates given state for new values from context.
@@ -15,7 +19,9 @@ public class StateUpdater {
     public void updateAll(TiledMapState state, TiledMapEngineContext context) {
         updateTiledMapState(state, context);
         updatePlayerState(state.getPlayer(), context);
-        state.getNpcStateList().forEach(npcState -> updateNpcState(npcState, context));
+        for (NpcState npcState  : state.getNpcStateList()) {
+            updateNpcState(npcState, context);
+        }
     }
 
     private void updateTiledMapState(TiledMapState state, TiledMapEngineContext context) {

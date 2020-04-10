@@ -55,7 +55,9 @@ public class TiledMapScreen implements Renderer {
     public void render(float delta, ScreenState state) {
         mapLayout.applyState(state);
         mapLayout.renderBottomPart();
-        contentLayouts.forEach(layout -> layout.render(delta, state));
+        for (Layout layout: contentLayouts) {
+            layout.render(delta, state);
+        }
         mapLayout.renderTopPart();
     }
 
