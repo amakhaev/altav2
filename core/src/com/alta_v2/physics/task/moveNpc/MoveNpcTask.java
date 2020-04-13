@@ -1,6 +1,6 @@
 package com.alta_v2.physics.task.moveNpc;
 
-import com.alta_v2.physics.executionContext.AltitudeMap;
+import com.alta_v2.physics.executionContext.altitude.AltitudeMap;
 import com.alta_v2.physics.executionContext.Tenant;
 import com.alta_v2.physics.executionContext.reserveData.ReservableActor;
 import com.alta_v2.physics.executionContext.reserveData.ReservablePoint;
@@ -104,27 +104,20 @@ public class MoveNpcTask implements ResultTiledMapTask {
     }
 
     private void postAct() {
-        if (this.npc.getGlobalPoint().getX() != this.targetPointGlobal.x ||
-                this.npc.getGlobalPoint().getY() != this.targetPointGlobal.y) {
+        if (npc.getGlobalPoint().getX() != this.targetPointGlobal.x ||
+                npc.getGlobalPoint().getY() != this.targetPointGlobal.y) {
             return;
         }
 
-        this.altitudeMap.setPointStatus(
-                (int) this.npc.getLocalPoint().getX(),
-                (int) this.npc.getLocalPoint().getY(),
-                AltitudeMap.PointAvailability.FREE
-        );
+        altitudeMap.markAsFree((int) npc.getLocalPoint().getX(), (int) npc.getLocalPoint().getY());
+        altitudeMap.markAsObject((int) targetPointLocal.x, (int) targetPointLocal.y, npc.getId());
 
-        this.altitudeMap.setPointStatus(
-                (int) this.targetPointLocal.x, (int) this.targetPointLocal.y, AltitudeMap.PointAvailability.NPC
-        );
-
-        this.npc.getLocalPoint().setValue(this.targetPointLocal, this.tenant).release(this.tenant);
-        this.npc.getGlobalPoint().release(this.tenant);
-        this.npc.getView().release(this.tenant);
-        this.npc.release(this.tenant);
-        this.isCompleted = true;
-        this.result.submitComplete();
+        npc.getLocalPoint().setValue(targetPointLocal, tenant).release(tenant);
+        npc.getGlobalPoint().release(tenant);
+        npc.getView().release(tenant);
+        npc.release(tenant);
+        isCompleted = true;
+        result.submitComplete();
     }
 
     @Override

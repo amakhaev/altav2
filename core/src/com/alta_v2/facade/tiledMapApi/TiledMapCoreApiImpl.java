@@ -15,6 +15,17 @@ public class TiledMapCoreApiImpl implements TiledMapCoreApi {
 
     private final ProcessMediator processMediator;
 
+    @Override
+    public Integer getPlayerPurpose() {
+        TiledMapPhysicEngine physicEngine = this.getEngineFromContext();
+        if (physicEngine == null) {
+            log.error("Current screen is null or has invalid type, required TiledMapScreen");
+            return null;
+        }
+
+        return physicEngine.getPlayerPurpose();
+    }
+
     /**
      * {@inheritDoc}
      */

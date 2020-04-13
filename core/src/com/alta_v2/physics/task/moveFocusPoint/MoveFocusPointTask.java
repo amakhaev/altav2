@@ -1,6 +1,6 @@
 package com.alta_v2.physics.task.moveFocusPoint;
 
-import com.alta_v2.physics.executionContext.AltitudeMap;
+import com.alta_v2.physics.executionContext.altitude.AltitudeMap;
 import com.alta_v2.physics.executionContext.Tenant;
 import com.alta_v2.physics.executionContext.reserveData.ReservablePoint;
 import com.alta_v2.physics.task.TiledMapTask;

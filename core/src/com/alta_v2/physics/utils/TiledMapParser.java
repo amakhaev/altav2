@@ -1,6 +1,8 @@
 package com.alta_v2.physics.utils;
 
-import com.alta_v2.physics.executionContext.AltitudeMap;
+import com.alta_v2.physics.executionContext.altitude.AltitudeMap;
+import com.alta_v2.physics.executionContext.altitude.AltitudeMapPoint;
+import com.alta_v2.physics.executionContext.altitude.PointAvailability;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -43,16 +45,16 @@ public class TiledMapParser {
         return tiledMap;
     }
 
-    private AltitudeMap.PointAvailability[][] getAltitudes(TiledMap tiledMap, int countX, int countY) {
+    private AltitudeMapPoint[][] getAltitudes(TiledMap tiledMap, int countX, int countY) {
         TiledMapTileLayer barrierLayer = (TiledMapTileLayer) tiledMap.getLayers().get("over_barrier");
-        AltitudeMap.PointAvailability[][] altitudes = new AltitudeMap.PointAvailability[countX][countY];
+        AltitudeMapPoint[][] altitudes = new AltitudeMapPoint[countX][countY];
 
         for (int i = 0; i < countX; i++) {
             for (int j = 0; j < countY; j++) {
                 if (barrierLayer.getCell(i, j) == null) {
-                    altitudes[i][j] = AltitudeMap.PointAvailability.FREE;
+                    altitudes[i][j] = new AltitudeMapPoint(PointAvailability.FREE);
                 } else {
-                    altitudes[i][j] = AltitudeMap.PointAvailability.BARRIER;
+                    altitudes[i][j] = new AltitudeMapPoint(PointAvailability.BARRIER);
                 }
             }
         }

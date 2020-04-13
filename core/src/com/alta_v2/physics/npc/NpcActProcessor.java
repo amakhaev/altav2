@@ -1,6 +1,5 @@
 package com.alta_v2.physics.npc;
 
-import com.alta_v2.physics.executionContext.AltitudeMap;
 import com.alta_v2.physics.executionContext.Tenant;
 import com.alta_v2.physics.executionContext.TiledMapEngineContext;
 import com.alta_v2.physics.executionContext.reserveData.ReservableActor;
@@ -24,9 +23,7 @@ public class NpcActProcessor {
             int localX = (int) npc.getLocalPoint().getX();
             int localY = (int) npc.getLocalPoint().getY();
 
-            if (context.getAltitudeMap().getPointStatus(localX, localY) != AltitudeMap.PointAvailability.NPC) {
-                context.getAltitudeMap().setPointStatus(localX, localY, AltitudeMap.PointAvailability.NPC);
-            }
+            context.getAltitudeMap().markAsObject(localX, localY, npc.getId());
         });
     }
 

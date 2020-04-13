@@ -46,6 +46,7 @@ public final class TaskCreationManager {
         }
 
         return MovePlayerTask.builder()
+                .playerId(context.getPlayer().getId())
                 .altitudeMap(context.getAltitudeMap())
                 .direction(direction)
                 .focusPointGlobal(context.getFocusPointGlobal())

@@ -1,6 +1,7 @@
 package com.alta_v2.physics.utils;
 
-import com.alta_v2.physics.executionContext.AltitudeMap;
+import com.alta_v2.physics.executionContext.altitude.AltitudeMap;
+import com.alta_v2.physics.executionContext.altitude.PointAvailability;
 import com.alta_v2.physics.task.MovementDirection;
 import com.badlogic.gdx.math.Vector2;
 import lombok.experimental.UtilityClass;
@@ -44,6 +45,6 @@ public class MovementCalculator {
      * @return true if movement is available, false otherwise.
      */
     public boolean canMoveTo(float localX, float localY, AltitudeMap altitudeMap) {
-        return altitudeMap.getPointStatus((int)localX, (int)localY) == AltitudeMap.PointAvailability.FREE;
+        return altitudeMap.getPointStatus((int)localX, (int)localY) == PointAvailability.FREE;
     }
 }

@@ -1,6 +1,7 @@
 package com.alta_v2.physics;
 
 import com.alta_v2.physics.executionContext.TiledMapEngineContext;
+import com.alta_v2.physics.executionContext.reserveData.ReservableActor;
 import com.alta_v2.physics.npc.NpcActProcessor;
 import com.alta_v2.physics.task.MovementDirection;
 import com.alta_v2.physics.task.ResultTiledMapTask;
@@ -101,6 +102,36 @@ public class TiledMapPhysicEngine implements PhysicEngine {
      */
     public void updateState(TiledMapState state) {
         StateUpdater.updateAll(state, this.context);
+    }
+
+    /**
+     * Gets the ID of object which is target of player.
+     */
+    public Integer getPlayerPurpose() {
+        if (context.getPlayer().isReserved()) {
+            log.warn("Player currently performing movement. No target at this time.");
+            return null;
+        }
+
+        ReservableActor player = context.getPlayer();
+        int targetX = (int) player.getLocalPoint().getX();
+        int targetY = (int) player.getLocalPoint().getY();
+        switch (player.getView().getValue()) {
+            case BACK_VIEW:
+                targetY += 1;
+                break;
+            case FULL_FACE:
+                targetY -= 1;
+                break;
+            case SIDE_VIEW_LEFT:
+                targetX -= 1;
+                break;
+            case SIDE_VIEW_RIGHT:
+                targetX += 1;
+                break;
+        }
+
+        return context.getAltitudeMap().getObjectId(targetX, targetY);
     }
 
     public synchronized TaskResultObserver performPlayerMovement(MovementDirection direction) {

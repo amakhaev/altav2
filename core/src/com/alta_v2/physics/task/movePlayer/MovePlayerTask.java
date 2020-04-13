@@ -1,13 +1,13 @@
 package com.alta_v2.physics.task.movePlayer;
 
-import com.alta_v2.physics.executionContext.AltitudeMap;
+import com.alta_v2.physics.executionContext.altitude.AltitudeMap;
 import com.alta_v2.physics.executionContext.Tenant;
+import com.alta_v2.physics.executionContext.altitude.PointAvailability;
 import com.alta_v2.physics.executionContext.reserveData.ReservableBoolean;
 import com.alta_v2.physics.executionContext.reserveData.ReservablePersonView;
 import com.alta_v2.physics.executionContext.reserveData.ReservablePoint;
 import com.alta_v2.physics.task.MovementDirection;
 import com.alta_v2.physics.task.ResultTiledMapTask;
-import com.alta_v2.physics.task.TiledMapTask;
 import com.alta_v2.physics.task.moveFocusPoint.MoveFocusPointTask;
 import com.alta_v2.physics.task.resultObserver.BaseTaskResultObserver;
 import com.badlogic.gdx.math.Vector2;
@@ -20,7 +20,8 @@ import lombok.Getter;
 public class MovePlayerTask implements ResultTiledMapTask {
 
     @Builder
-    private static MovePlayerTask create(MovementDirection direction,
+    private static MovePlayerTask create(int playerId,
+                                         MovementDirection direction,
                                          ReservablePoint focusPointLocal,
                                          ReservablePoint focusPointGlobal,
                                          ReservablePoint playerPointLocal,
@@ -29,7 +30,7 @@ public class MovePlayerTask implements ResultTiledMapTask {
                                          ReservablePersonView playerView,
                                          ReservableBoolean isPlayerMoving) {
         return new MovePlayerTask(
-                direction, focusPointLocal, focusPointGlobal, playerPointLocal, targetPointLocal,
+                playerId, direction, focusPointLocal, focusPointGlobal, playerPointLocal, targetPointLocal,
                 altitudeMap, playerView, isPlayerMoving
         );
     }
@@ -50,7 +51,8 @@ public class MovePlayerTask implements ResultTiledMapTask {
     @Getter
     private final BaseTaskResultObserver result = new BaseTaskResultObserver();
 
-    private MovePlayerTask(MovementDirection direction,
+    private MovePlayerTask(int playerId,
+                           MovementDirection direction,
                            ReservablePoint focusPointLocal,
                            ReservablePoint focusPointGlobal,
                            ReservablePoint playerPointLocal,
@@ -67,7 +69,7 @@ public class MovePlayerTask implements ResultTiledMapTask {
         this.localStartX = (int)focusPointLocal.getX();
         this.localStartY = (int)focusPointLocal.getY();
 
-        this.altitudeMap.setPointStatus((int)targetPointLocal.x, (int)targetPointLocal.y, AltitudeMap.PointAvailability.BARRIER);
+        this.altitudeMap.markAsObject((int)targetPointLocal.x, (int)targetPointLocal.y, playerId);
         this.playerView.reserve(this.tenant).setValue(MovementDirection.getPersonView(direction), this.tenant);
 
         this.playerPointLocal.reserve(this.tenant);
@@ -92,7 +94,7 @@ public class MovePlayerTask implements ResultTiledMapTask {
                     .setValue(this.focusPointLocal.getX(), this.focusPointLocal.getY(), this.tenant)
                     .release(this.tenant);
 
-            this.altitudeMap.setPointStatus(this.localStartX, this.localStartY, AltitudeMap.PointAvailability.FREE);
+            this.altitudeMap.markAsFree(this.localStartX, this.localStartY);
             this.isCompleted = true;
             this.result.submitComplete();
         }
