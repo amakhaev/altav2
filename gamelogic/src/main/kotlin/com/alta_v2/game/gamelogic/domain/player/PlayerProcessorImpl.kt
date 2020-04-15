@@ -58,10 +58,13 @@ class PlayerProcessorImpl @Inject constructor(private val tiledMapCoreApi: Tiled
             ActionType.MOVE_UP,
             ActionType.MOVE_DOWN,
             ActionType.MOVE_LEFT,
-            ActionType.MOVE_RIGHT -> tiledMapCoreApi.performPlayerMovement(ActionType.getMovementDirection(actionType))
-            ActionType.BACK,
-            ActionType.NEXT -> {
+            ActionType.MOVE_RIGHT -> {
+                val type = ActionType.getMovementDirection(actionType)
+                if (type != null) {
+                    tiledMapCoreApi.performPlayerMovement(type)
+                }
             }
+            else -> {}
         }
     }
 }

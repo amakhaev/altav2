@@ -7,10 +7,10 @@ import com.google.inject.Inject
 
 class MenuStage @Inject constructor(private val definitionDaoApi: DefinitionDaoApi) : AbstractStage() {
 
-    override fun onActionBegin(action: ActionType?) {
+    override fun onActionBegin(action: ActionType) {
     }
 
-    override fun onActionFinish(action: ActionType?) {
+    override fun onActionFinish(action: ActionType) {
         if (action != ActionType.BACK) {
             return
         }

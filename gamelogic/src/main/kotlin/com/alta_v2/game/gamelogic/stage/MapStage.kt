@@ -23,12 +23,12 @@ class MapStage @AssistedInject constructor(@Assisted npcList: List<NpcModel>,
         npcProcessor.startAsync()
     }
 
-    override fun onActionBegin(action: ActionListener.ActionType?) {
-        playerProcessor.actionBegin(action!!)
+    override fun onActionBegin(action: ActionType) {
+        playerProcessor.actionBegin(action)
     }
 
-    override fun onActionFinish(action: ActionListener.ActionType?) {
-        playerProcessor.actionFinish(action!!)
+    override fun onActionFinish(action: ActionType) {
+        playerProcessor.actionFinish(action)
 
         if (action == ActionType.BACK) {
             dialogCoreApi.hideTitleDialog()

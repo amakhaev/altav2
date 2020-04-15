@@ -1,9 +1,11 @@
 package com.alta_v2.game.gamelogic.stage
 
+import com.alta_v2.exception.ChangeScreenException
 import com.alta_v2.facade.coreApi.ScreenCoreApi
 import com.alta_v2.game.gamelogic.data.map.MapModel
 import com.alta_v2.game.gamelogic.data.npc.NpcModel
 import com.alta_v2.game.gamelogic.stage.event.*
+import com.alta_v2.game.utils.ChangeScreenResult
 import com.alta_v2.mediator.serde.ActionListener
 import com.alta_v2.model.NpcDefinitionModel
 import com.google.inject.Inject
@@ -16,6 +18,7 @@ class StageManagerImpl @Inject constructor(private val stageFactory: StageFactor
                                            private val screenCoreApi: ScreenCoreApi) : StageManager {
 
     private var currentStage: Stage
+    private var currentResult: ChangeScreenResult? = null
 
     init {
         currentStage = createMenuStage()
@@ -26,31 +29,38 @@ class StageManagerImpl @Inject constructor(private val stageFactory: StageFactor
     private fun onMapChange(data: Void) = log.info("Not implemented yet")
 
     private fun onMapScreenChange(data: ChangeStageEvent) {
+        if (currentResult != null && !currentResult?.isDone!!) {
+            log.warn("Failed to change map screen since another changing in progress")
+            return
+        }
+
         try {
             val event = data as ChangeMapStageEvent
             currentStage.destroy()
             currentStage = createMenuStage()
-            val loadResult = screenCoreApi.loadMenuScreen(event.mapDefinition)
-            loadResult?.thenRun { currentStage.onStageLoaded() }
-        } catch (e: NullPointerException) {
-            log.error("Failed to change map screen", e)
-        } catch (e: ClassCastException) {
+
+            currentResult = screenCoreApi.loadMenuScreen(event.mapDefinition)
+            currentResult?.thenRun { currentStage.onStageLoaded() }
+        } catch (e: ChangeScreenException) {
             log.error("Failed to change map screen", e)
         }
     }
 
     private fun onMenuScreenChange(data: ChangeStageEvent) {
+        if (currentResult != null && !currentResult?.isDone!!) {
+            log.warn("Failed to change map screen since another changing in progress")
+            return
+        }
+
         try {
             val event = data as ChangeMenuStageEvent
             currentStage.destroy()
             currentStage = createMapStage(
                     event.mapDefinition.displayName, event.mapDefinition.npcList
             )
-            val loadResult = screenCoreApi.loadTiledMapScreen(event.mapDefinition)
-            loadResult.thenRun { currentStage.onStageLoaded() }
-        } catch (e: NullPointerException) {
-            log.error("Failed to change menu screen", e)
-        } catch (e: ClassCastException) {
+            currentResult = screenCoreApi.loadTiledMapScreen(event.mapDefinition)
+            currentResult?.thenRun { currentStage.onStageLoaded() }
+        } catch (e: ChangeScreenException) {
             log.error("Failed to change menu screen", e)
         }
     }

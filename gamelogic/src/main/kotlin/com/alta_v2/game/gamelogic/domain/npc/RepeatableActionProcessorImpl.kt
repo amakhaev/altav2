@@ -52,10 +52,10 @@ class RepeatableActionProcessorImpl @Inject constructor(val tiledMapCoreApi: Til
         if (System.currentTimeMillis() - npc.lastMovementMills < npc.repeatMovementInterval) {
             return
         }
-        val observer = tiledMapCoreApi.performNpcMovement(npc.id, MovementDirection.randomDirection())
-        if (observer != null) {
+        val taskResult = tiledMapCoreApi.performNpcMovement(npc.id, MovementDirection.randomDirection())
+        taskResult?.run {
             npc.isMovementRunning = true
-            observer.subscribeOnComplete {
+            thenRun {
                 npc.isMovementRunning = false
                 npc.lastMovementMills = System.currentTimeMillis()
             }
