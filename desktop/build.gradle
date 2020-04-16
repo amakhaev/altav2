@@ -4,7 +4,7 @@ sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.resources.srcDirs = ["../core/assets"]
 
-project.ext.mainClassName = "com.alta_v2.game.desktop.DesktopLauncher"
+project.ext.mainClassName = "com.alta_v2.game.desktop.DesktopLauncherKt"
 project.ext.assetsDir = new File("../core/assets")
 
 task run(dependsOn: classes, type: JavaExec) {
@@ -13,6 +13,10 @@ task run(dependsOn: classes, type: JavaExec) {
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
+
+    if ( project.hasProperty("appArgs") ) {
+        args Eval.me(appArgs)
+    }
 }
 
 task debug(dependsOn: classes, type: JavaExec) {
@@ -22,6 +26,10 @@ task debug(dependsOn: classes, type: JavaExec) {
     workingDir = project.assetsDir
     ignoreExitValue = true
     debug = true
+
+    if ( project.hasProperty("appArgs") ) {
+        args Eval.me(appArgs)
+    }
 }
 
 task dist(type: Jar) {

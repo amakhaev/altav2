@@ -1,5 +1,6 @@
 package com.alta_v2.game.dao.provider
 
+import com.alta_v2.DB_PATH
 import com.google.inject.Provider
 import com.j256.ormlite.jdbc.JdbcConnectionSource
 import com.j256.ormlite.support.ConnectionSource
@@ -13,7 +14,13 @@ class ConnectionSourceProvider : Provider<ConnectionSource?> {
 
     override fun get(): ConnectionSource? {
         return try {
-            JdbcConnectionSource("jdbc:sqlite:data.db3")
+            val dbPath = System.getProperty(DB_PATH)
+
+            return if (dbPath != null) {
+                JdbcConnectionSource("jdbc:sqlite:$dbPath")
+            } else {
+                JdbcConnectionSource("jdbc:sqlite:data.db3")
+            }
         } catch (e: SQLException) {
             log.error("Failed to create jdbc connection source", e)
             null

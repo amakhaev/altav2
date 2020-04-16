@@ -46,7 +46,7 @@ class GameScreen @AssistedInject constructor(@param:Assisted private val context
         context.dialogRender.render(delta, context.dialogState)
 
         overlayComponent.act(delta)
-        overlayComponent?.render(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        overlayComponent.render(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
     }
 
     /**
