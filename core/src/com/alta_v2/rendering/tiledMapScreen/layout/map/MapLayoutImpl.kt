@@ -12,13 +12,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.google.inject.assistedinject.Assisted
 import com.google.inject.assistedinject.AssistedInject
-import lombok.extern.log4j.Log4j2
 import mu.KotlinLogging
 
 /**
  * Provides the implementation of map layout.
  */
-@Log4j2
 class MapLayoutImpl @AssistedInject constructor(@param:Assisted private val assetManager: AssetManager,
                                                 @param:Assisted private val mapPath: String) : MapLayout {
 

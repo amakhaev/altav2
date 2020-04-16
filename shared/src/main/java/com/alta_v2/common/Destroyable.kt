@@ -1,10 +1,8 @@
-package com.alta_v2.common;
+package com.alta_v2.common
 
-public interface Destroyable {
-
+interface Destroyable {
     /**
      * Destroys the object. After calling of this method the object can't be used since it's invalid.
      */
-    void destroy();
-
+    fun destroy()
 }
