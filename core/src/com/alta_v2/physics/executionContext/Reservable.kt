@@ -28,7 +28,7 @@ abstract class Reservable<T> {
     @Synchronized
     open fun reserve(tenant: Tenant): Reservable<T> {
         if (this.tenant != null) {
-            log.warn("It already reserved by tenant with ID '{}'", this.tenant!!.id)
+            log.debug("It already reserved by tenant with ID '{}'", this.tenant?.id)
             return this
         }
 
