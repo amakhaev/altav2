@@ -5,10 +5,8 @@ import com.alta_v2.rendering.ScreenState
 import com.alta_v2.rendering.common.component.ComponentFactory
 import com.alta_v2.rendering.common.component.dialog.TitleDialogStyleProvider
 import com.google.inject.Inject
-import lombok.extern.log4j.Log4j2
 import mu.KotlinLogging
 
-@Log4j2
 class DialogImpl @Inject constructor(componentFactory: ComponentFactory, styleProvider: TitleDialogStyleProvider) : Renderer, TitleDialog {
 
     private val log = KotlinLogging.logger {  }

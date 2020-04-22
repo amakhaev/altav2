@@ -1,5 +1,7 @@
 package com.alta_v2.game.dao
 
+import com.alta_v2.game.dao.domain.interaction.InteractionGroupService
+import com.alta_v2.game.dao.domain.interaction.InteractionGroupServiceImpl
 import com.alta_v2.game.dao.domain.map.MapService
 import com.alta_v2.game.dao.domain.map.MapServiceImpl
 import com.alta_v2.game.dao.domain.person.PersonService
@@ -14,8 +16,11 @@ import com.j256.ormlite.support.ConnectionSource
 class DaoInjector : AbstractModule() {
     override fun configure() {
         bind(ConnectionSource::class.java).toProvider(ConnectionSourceProvider::class.java).`in`(Singleton::class.java)
+
         bind(MapService::class.java).to(MapServiceImpl::class.java).`in`(Singleton::class.java)
         bind(PersonService::class.java).to(PersonServiceImpl::class.java).`in`(Singleton::class.java)
+        bind(InteractionGroupService::class.java).to(InteractionGroupServiceImpl::class.java).`in`(Singleton::class.java)
+
         bind(DefinitionDaoApi::class.java).to(DefinitionDaoApiImpl::class.java).`in`(Singleton::class.java)
     }
 }

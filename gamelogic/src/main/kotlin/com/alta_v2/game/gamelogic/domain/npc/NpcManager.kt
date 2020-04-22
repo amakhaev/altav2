@@ -3,10 +3,7 @@ package com.alta_v2.game.gamelogic.domain.npc
 import com.alta_v2.common.Destroyable
 import com.alta_v2.game.gamelogic.data.npc.NpcModel
 
-/**
- * Describes the processor of repeatable action of NPC.
- */
-interface RepeatableActionProcessor : Destroyable {
+interface NpcManager : Destroyable {
 
     /**
      * Adds given NPC into list. Each item of list tried to perform movement to random direction time to time.
@@ -18,6 +15,6 @@ interface RepeatableActionProcessor : Destroyable {
     /**
      * Starts processing of random movement.
      */
-    fun startAsync()
+    fun startMovementProcessing()
 
 }

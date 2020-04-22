@@ -4,8 +4,6 @@ import com.alta_v2.mediator.serde.Updater
 import com.alta_v2.physics.PhysicEngine
 import com.alta_v2.rendering.Renderer
 import com.alta_v2.rendering.ScreenState
-import lombok.Getter
-import lombok.RequiredArgsConstructor
 
 /**
  * Provides the context for screen. It's required object for rendering of any screen.

@@ -1,6 +1,7 @@
 package com.alta_v2.game.inputProcessor
 
 import com.alta_v2.mediator.serde.ActionListener
+import com.alta_v2.mediator.serde.ActionType
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputAdapter
 import com.google.inject.assistedinject.Assisted
@@ -19,7 +20,7 @@ class DefaultInputProcessor @AssistedInject constructor(@param:Assisted private 
      */
     override fun keyDown(keycode: Int): Boolean {
         val actionType = ActionListener.resolveAction(keycode)
-        if (actionType == ActionListener.ActionType.UNKNOWN) {
+        if (actionType == ActionType.UNKNOWN) {
             log.debug("Unknown type of action by key code {}", keycode)
             return false
         }
@@ -36,7 +37,7 @@ class DefaultInputProcessor @AssistedInject constructor(@param:Assisted private 
             log.info("Native heap size: " + Gdx.app.nativeHeap / 1024 / 1024 + " MB")
         }
         val actionType = ActionListener.resolveAction(keycode)
-        if (actionType == ActionListener.ActionType.UNKNOWN) {
+        if (actionType == ActionType.UNKNOWN) {
             log.debug("Unknown type of action by key code {}", keycode)
             return false
         }

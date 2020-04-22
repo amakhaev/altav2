@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.google.common.base.Strings
-import lombok.experimental.UtilityClass
-import lombok.extern.log4j.Log4j2
 import mu.KotlinLogging
 import java.time.Duration
 import java.time.Instant

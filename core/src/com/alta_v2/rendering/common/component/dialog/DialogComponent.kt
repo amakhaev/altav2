@@ -9,7 +9,6 @@ import com.alta_v2.rendering.common.component.box.BoxComponent
 import com.alta_v2.rendering.common.component.text.TextComponent
 import com.google.inject.assistedinject.Assisted
 import com.google.inject.assistedinject.AssistedInject
-import lombok.Getter
 
 class DialogComponent @AssistedInject constructor(@Assisted("fadeIn") fadeIn: TranslationAnimation,
                                                   @Assisted("fadeOut") fadeOut: TranslationAnimation,

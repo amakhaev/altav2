@@ -7,10 +7,10 @@ import java.util.*
  * Provides available directions for movement.
  */
 enum class MovementDirection {
-    HIGHER, LOWER, RIGHT, LEFT;
+    HIGHER, LOWER, RIGHT, LEFT, UNKNOWN;
 
     companion object {
-        private val VALUES = Collections.unmodifiableList(listOf(*values()))
+        private val VALUES = listOf<MovementDirection>(HIGHER, LOWER, RIGHT, LEFT)
         private val SIZE = VALUES.size
         private val RANDOM = Random()
         fun randomDirection(): MovementDirection {
@@ -20,9 +20,10 @@ enum class MovementDirection {
         fun getPersonView(direction: MovementDirection): PersonView {
             return when (direction) {
                 HIGHER -> PersonView.BACK_VIEW
-                LOWER -> PersonView.FULL_FACE
                 RIGHT -> PersonView.SIDE_VIEW_RIGHT
                 LEFT -> PersonView.SIDE_VIEW_LEFT
+                LOWER,
+                UNKNOWN -> PersonView.FULL_FACE
             }
         }
     }

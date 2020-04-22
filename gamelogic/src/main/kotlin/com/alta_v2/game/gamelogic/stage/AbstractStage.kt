@@ -29,7 +29,7 @@ abstract class AbstractStage : Stage {
     /**
      * {@inheritDoc}
      */
-    open override fun onStageLoaded() {}
+    override fun onStageLoaded() {}
 
     /**
      * {@inheritDoc}

@@ -6,11 +6,9 @@ import com.google.inject.Inject
 import com.j256.ormlite.dao.Dao
 import com.j256.ormlite.dao.DaoManager
 import com.j256.ormlite.support.ConnectionSource
-import lombok.extern.log4j.Log4j2
 import mu.KotlinLogging
 import java.sql.SQLException
 
-@Log4j2
 class PersonServiceImpl @Inject constructor(connection: ConnectionSource) : PersonService {
 
     private val log = KotlinLogging.logger {  }

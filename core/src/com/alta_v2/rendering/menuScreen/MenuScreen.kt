@@ -10,14 +10,13 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.google.inject.assistedinject.AssistedInject
-import lombok.extern.log4j.Log4j2
 
 /**
  * Provides the menu screen.
  */
 class MenuScreen @AssistedInject constructor() : Renderer {
 
-    private val assetManager = load(Resources.TEXTURE_MENU_BACKGROUND)
+    private lateinit var assetManager: AssetManager
     private lateinit var batch: Batch
     private lateinit var backgroundTexture: Texture
 
@@ -25,6 +24,7 @@ class MenuScreen @AssistedInject constructor() : Renderer {
      * {@inheritDoc}
      */
     override fun init(state: ScreenState) {
+        assetManager = load(Resources.TEXTURE_MENU_BACKGROUND)
         backgroundTexture = assetManager.get(Resources.TEXTURE_MENU_BACKGROUND, Texture::class.java)
         batch = SpriteBatch()
     }

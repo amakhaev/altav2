@@ -3,7 +3,6 @@ package com.alta_v2.game.dao.data.person
 import com.j256.ormlite.field.DataType
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
-import lombok.Getter
 
 @DatabaseTable(tableName = "actual_person_definitions")
 class PersonEntity {
@@ -36,6 +35,9 @@ class PersonEntity {
 
     @DatabaseField(columnName = "y")
     var y = 0
+
+    @DatabaseField(columnName = "interaction_group_id")
+    var interactionGroupId: Int? = null
 
     val texturePath: String
         get() = textureFolder + textureName

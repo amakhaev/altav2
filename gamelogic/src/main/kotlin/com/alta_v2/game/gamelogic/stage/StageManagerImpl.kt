@@ -1,21 +1,20 @@
 package com.alta_v2.game.gamelogic.stage
 
 import com.alta_v2.exception.ChangeScreenException
-import com.alta_v2.facade.coreApi.ScreenCoreApi
 import com.alta_v2.game.gamelogic.data.map.MapModel
-import com.alta_v2.game.gamelogic.data.npc.NpcModel
+import com.alta_v2.game.gamelogic.data.npc.toNpcModels
+import com.alta_v2.game.gamelogic.domain.screen.ScreenProcessor
 import com.alta_v2.game.gamelogic.stage.event.*
 import com.alta_v2.game.utils.ChangeScreenResult
 import com.alta_v2.mediator.serde.ActionListener
 import com.alta_v2.model.NpcDefinitionModel
 import com.google.inject.Inject
 import mu.KotlinLogging
-import java.util.stream.Collectors
-
-private val log = KotlinLogging.logger {  }
 
 class StageManagerImpl @Inject constructor(private val stageFactory: StageFactory,
-                                           private val screenCoreApi: ScreenCoreApi) : StageManager {
+                                           private val screenProcessor: ScreenProcessor) : StageManager {
+
+    private val log = KotlinLogging.logger {  }
 
     private var currentStage: Stage
     private var currentResult: ChangeScreenResult? = null
@@ -39,7 +38,7 @@ class StageManagerImpl @Inject constructor(private val stageFactory: StageFactor
             currentStage.destroy()
             currentStage = createMenuStage()
 
-            currentResult = screenCoreApi.loadMenuScreen(event.mapDefinition)
+            currentResult = screenProcessor.showMenuScreen(event.mapDefinition)
             currentResult?.thenRun { currentStage.onStageLoaded() }
         } catch (e: ChangeScreenException) {
             log.error("Failed to change map screen", e)
@@ -58,7 +57,7 @@ class StageManagerImpl @Inject constructor(private val stageFactory: StageFactor
             currentStage = createMapStage(
                     event.mapDefinition.displayName, event.mapDefinition.npcList
             )
-            currentResult = screenCoreApi.loadTiledMapScreen(event.mapDefinition)
+            currentResult = screenProcessor.showMapScreen(event.mapDefinition)
             currentResult?.thenRun { currentStage.onStageLoaded() }
         } catch (e: ChangeScreenException) {
             log.error("Failed to change menu screen", e)
@@ -66,16 +65,7 @@ class StageManagerImpl @Inject constructor(private val stageFactory: StageFactor
     }
 
     private fun createMapStage(mapDisplayName: String, definitionNpcList: List<NpcDefinitionModel>): Stage {
-        val npcModels = definitionNpcList.stream()
-                .map { npcDefinition: NpcDefinitionModel ->
-                    NpcModel(
-                            npcDefinition.id, npcDefinition.x, npcDefinition.y, npcDefinition.repeatMovementInterval
-                    )
-                }
-                .collect(Collectors.toList())
-        val mapModel = MapModel(mapDisplayName)
-        val stage: Stage = stageFactory.createMapStage(mapModel, npcModels)
-
+        val stage: Stage = stageFactory.createMapStage(MapModel(mapDisplayName), definitionNpcList.toNpcModels())
         stage.subscribeToChangeScreen(createChangeScreenHandler(::onMapScreenChange))
         stage.subscribeToChangeMap(createChangeMapEventHandler(::onMapChange))
         return stage

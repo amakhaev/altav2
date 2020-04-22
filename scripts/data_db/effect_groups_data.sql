@@ -1,0 +1,1 @@
+INSERT INTO effect_groups (id, group_id, ui_effect_id, effect_order) VALUES (14001, 1, 8001, 0);

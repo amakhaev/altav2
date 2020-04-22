@@ -60,7 +60,8 @@ CREATE TABLE dialogs (
     id INTEGER PRIMARY KEY NOT NULL CHECK(id>6000 AND id<=7000),
     group_id INTEGER NOT NULL,
     part_id INTEGER NOT NULL,
-    internal_description TEXT NOT NULL,
+    part_order INTEGER NOT NULL,
+    UNIQUE (group_id, part_id, part_order),
     FOREIGN KEY(part_id) REFERENCES dialog_parts(id)
 );
 
@@ -80,10 +81,10 @@ CREATE TABLE movements (
 
 CREATE TABLE ui_effects (
     id INTEGER PRIMARY KEY NOT NULL CHECK(id>8000 AND id<=10000),
-    change_textures_id INTEGER NOT NULL,
-    dialog_group_id INTEGER NOT NULL,
-    movement_id INTEGER NOT NULL,
-    target_object_id INTEGER NOT NULL,
+    change_textures_id INTEGER,
+    dialog_group_id INTEGER,
+    movement_id INTEGER,
+    target_object_id INTEGER,
     internal_description TEXT NOT NULL,
     FOREIGN KEY(change_textures_id) REFERENCES change_textures(id),
     FOREIGN KEY(dialog_group_id) REFERENCES dialogs(group_id),
@@ -163,10 +164,10 @@ CREATE TABLE interactions (
 );
 
 CREATE TABLE interaction_groups (
-    id INTEGER PRIMARY KEY NOT NULL CHECK(id>17500 AND id<=18000),
+    id INTEGER NOT NULL CHECK(id>17500 AND id<=18000),
     interaction_id INTEGER NOT NULL,
-    group_id INTEGER NOT NULL,
     interaction_order INTEGER NOT NULL,
+    PRIMARY KEY (id, interaction_id),
     FOREIGN KEY(interaction_id) REFERENCES interactions(id)
 );
 
@@ -211,7 +212,7 @@ CREATE TABLE map_to_object_rules (
     FOREIGN KEY(active_checkpoint_id) REFERENCES checkpoints(id),
     FOREIGN KEY(completed_checkpoint_id) REFERENCES checkpoints(id),
     FOREIGN KEY(map_to_object_id) REFERENCES map_to_objects(id),
-    FOREIGN KEY(interaction_group_id) REFERENCES interaction_groups(group_id)
+    FOREIGN KEY(interaction_group_id) REFERENCES interaction_groups(id)
 );
 
 CREATE TABLE users (

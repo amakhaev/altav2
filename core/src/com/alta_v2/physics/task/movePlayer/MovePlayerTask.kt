@@ -10,16 +10,14 @@ import com.alta_v2.physics.task.ResultTiledMapTask
 import com.alta_v2.physics.task.moveFocusPoint.MoveFocusPointTask
 import com.alta_v2.physics.task.resultObserver.TaskResult
 import com.badlogic.gdx.math.Vector2
-import lombok.Builder
-import lombok.Getter
 
 /**
  * Provides the logic related to movement of player.
  */
-class MovePlayerTask(playerId: Int,
-                     direction: MovementDirection,
+class MovePlayerTask(direction: MovementDirection,
                      focusPointGlobal: ReservablePoint,
-                     targetPointLocal: Vector2,
+                     private val playerId: Int,
+                     private val targetPointLocal: Vector2,
                      private val focusPointLocal: ReservablePoint,
                      private val playerPointLocal: ReservablePoint,
                      private val altitudeMap: AltitudeMap,
@@ -35,7 +33,7 @@ class MovePlayerTask(playerId: Int,
     private val taskResult = TaskResult()
 
     init {
-        this.altitudeMap.markAsObject(targetPointLocal.x.toInt(), targetPointLocal.y.toInt(), playerId)
+        this.altitudeMap.markAsBarrier(targetPointLocal.x.toInt(), targetPointLocal.y.toInt())
         this.playerView.reserve(tenant).setValue(MovementDirection.getPersonView(direction), tenant)
         this.playerPointLocal.reserve(tenant)
         this.isPlayerMoving.reserve(tenant).setValue(true, tenant)
@@ -56,6 +54,7 @@ class MovePlayerTask(playerId: Int,
                     .setValue(focusPointLocal.x, focusPointLocal.y, tenant)
                     .release(tenant)
             altitudeMap.markAsFree(localStartX, localStartY)
+            this.altitudeMap.markAsObject(targetPointLocal.x.toInt(), targetPointLocal.y.toInt(), playerId)
             completed = true
             taskResult.complete(null)
         }

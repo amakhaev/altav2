@@ -10,13 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.google.common.collect.Maps
 import com.google.inject.assistedinject.Assisted
 import com.google.inject.assistedinject.AssistedInject
-import lombok.extern.log4j.Log4j2
 import mu.KotlinLogging
 
 /**
  * Provides the layout that responsible to render NPC layer.
  */
-@Log4j2
 class NpcLayout @AssistedInject constructor(@param:Assisted private val assetManager: AssetManager,
                                             @param:Assisted private val npcTextures: MutableMap<Int, String>) : ObjectLayout {
 

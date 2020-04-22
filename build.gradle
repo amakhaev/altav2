@@ -36,6 +36,7 @@ allprojects {
         loggingVersion = "1.7.9"
         slf4jVersion = "1.7.29"
         argParserVersion = "2.0.7"
+        coroutinesVersion = "1.3.5"
     }
 
     repositories {
@@ -50,6 +51,9 @@ allprojects {
     dependencies {
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
         implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutinesVersion"
+        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutinesVersion"
         implementation "com.xenomachina:kotlin-argparser:$argParserVersion"
 
         implementation "com.google.inject:guice:$googleGuiceVersion"

@@ -7,8 +7,6 @@ import com.alta_v2.physics.task.TiledMapTask
 import com.alta_v2.physics.utils.TiledMapPhysicCalculator.Companion.centerTileCoordinate
 import com.alta_v2.physics.utils.TiledMapPhysicCalculator.Companion.percentByValue
 import com.badlogic.gdx.math.Vector2
-import lombok.Getter
-import lombok.extern.log4j.Log4j2
 
 /**
  * Provides physics logic to move focus point on tiled map.

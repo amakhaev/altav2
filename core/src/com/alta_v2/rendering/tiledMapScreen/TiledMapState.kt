@@ -6,7 +6,6 @@ import com.alta_v2.rendering.tiledMapScreen.state.PlayerState
 import com.badlogic.gdx.math.Vector2
 import com.google.inject.assistedinject.Assisted
 import com.google.inject.assistedinject.AssistedInject
-import lombok.Getter
 import java.util.*
 import java.util.function.Consumer
 

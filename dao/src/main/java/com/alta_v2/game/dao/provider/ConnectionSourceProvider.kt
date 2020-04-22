@@ -4,7 +4,6 @@ import com.alta_v2.DB_PATH
 import com.google.inject.Provider
 import com.j256.ormlite.jdbc.JdbcConnectionSource
 import com.j256.ormlite.support.ConnectionSource
-import lombok.extern.log4j.Log4j2
 import mu.KotlinLogging
 import java.sql.SQLException
 

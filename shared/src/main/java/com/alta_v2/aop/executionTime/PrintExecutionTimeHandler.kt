@@ -1,7 +1,6 @@
 package com.alta_v2.aop.executionTime
 
 import com.google.common.base.Strings
-import lombok.extern.log4j.Log4j2
 import mu.KotlinLogging
 import org.aopalliance.intercept.MethodInterceptor
 import org.aopalliance.intercept.MethodInvocation
@@ -22,15 +21,9 @@ class PrintExecutionTimeHandler : MethodInterceptor {
         val operation: String = method.getAnnotation(PrintExecutionTime::class.java).operationName
         val message: String
         message = if (Strings.isNullOrEmpty(operation)) {
-            String.format(
-                    "Method %s for class %s took %d ms",
-                    method.name, method.declaringClass.simpleName, executionTime
-            )
+            "Method ${method.name} for class ${method.declaringClass.simpleName} took $executionTime ms"
         } else {
-            String.format(
-                    "Operation '%s' in method %s for class %s took %d ms",
-                    operation, method.name, method.declaringClass.simpleName, executionTime
-            )
+            "Operation '$operation' took $executionTime ms"
         }
         log.info(message)
         return result

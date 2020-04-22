@@ -7,13 +7,11 @@ import com.alta_v2.rendering.tiledMapScreen.layout.ObjectLayout
 import com.alta_v2.utils.AssetLoader.Companion.load
 import com.google.inject.assistedinject.Assisted
 import com.google.inject.assistedinject.AssistedInject
-import lombok.extern.log4j.Log4j2
 import java.util.function.Consumer
 
 /**
  * Provides the screen that shows a tiled map.
  */
-@Log4j2
 class TiledMapScreen @AssistedInject constructor(@Assisted metadata: TiledMapMetadata, layoutFactory: LayoutFactory) : Renderer {
 
     private val assetManager = load(metadata.mapPath, metadata.getActorTextures())

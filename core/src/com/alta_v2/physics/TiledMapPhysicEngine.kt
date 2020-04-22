@@ -103,8 +103,8 @@ class TiledMapPhysicEngine constructor(focusPointCoordinates: Vector2,
 
     @Synchronized
     fun performPlayerMovement(direction: MovementDirection?): TaskResult? {
-        if (direction == null) {
-            log.warn("Given direction is null")
+        if (direction == null || direction == MovementDirection.UNKNOWN) {
+            log.warn("Given direction is null or has UNKNOWN value")
             return null
         }
         var task = TaskCreationManager.createPlayerMoveTask(direction, context)
@@ -121,7 +121,7 @@ class TiledMapPhysicEngine constructor(focusPointCoordinates: Vector2,
 
     @Synchronized
     fun performNpcMovement(npcId: Int, direction: MovementDirection?): TaskResult? {
-        if (direction == null) {
+        if (direction == null || direction == MovementDirection.UNKNOWN) {
             log.warn("Given params are invalid, npcId: {}, direction: {}", npcId, direction)
             return null
         }

@@ -1,5 +1,6 @@
 package com.alta_v2.game.dao.facade.definition
 
+import com.alta_v2.model.InteractionDefinitionModel
 import com.alta_v2.model.TiledMapDefinitionModel
 
 /**
@@ -14,4 +15,9 @@ interface DefinitionDaoApi {
      * @return the [TiledMapDefinitionModel] instance.
      */
     fun getMapDefinition(mapId: Int): TiledMapDefinitionModel?
+
+    /**
+     * Gets the list of interaction definitions by given ID of group.
+     */
+    fun getInteractionDefinitions(interactionGroupId: Int): List<InteractionDefinitionModel>
 }
