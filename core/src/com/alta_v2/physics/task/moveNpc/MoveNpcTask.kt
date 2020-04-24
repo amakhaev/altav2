@@ -35,6 +35,7 @@ class MoveNpcTask(direction: MovementDirection,
     private val taskResult = TaskResult()
 
     init {
+        altitudeMap.markAsBarrier(targetPointLocal.x.toInt(), targetPointLocal.y.toInt())
         npc.reserve(tenant)
         npc.localPoint.reserve(tenant)
         npc.globalPoint.reserve(tenant)

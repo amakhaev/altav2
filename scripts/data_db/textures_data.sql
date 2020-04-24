@@ -4,4 +4,5 @@ VALUES
     (2, 'actors/tile_sets/', 'child1.png', 'Текстура child1'),
     (3, 'actors/tile_sets/', 'child2.png', 'Текстура child2'),
     (4, 'textures/', 'menu_background.png', 'Фоновая текстура меню'),
-    (5, 'textures/', 'black_square.png', 'Текстура чёрный квадрат');
+    (5, 'textures/', 'black_square.png', 'Текстура чёрный квадрат'),
+    (6, 'textures/', 'animal1.png', 'Текстура animal1');

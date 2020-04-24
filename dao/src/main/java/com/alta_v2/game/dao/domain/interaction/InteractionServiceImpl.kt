@@ -10,7 +10,7 @@ import com.j256.ormlite.support.ConnectionSource
 import mu.KotlinLogging
 import java.sql.SQLException
 
-class InteractionGroupServiceImpl @Inject constructor(connection: ConnectionSource) : InteractionGroupService {
+class InteractionServiceImpl @Inject constructor(connection: ConnectionSource) : InteractionService {
 
     private val log = KotlinLogging.logger {  }
     private lateinit var interactionGroupDao: Dao<InteractionGroupEntity, Int>

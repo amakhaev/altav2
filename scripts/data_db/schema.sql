@@ -51,26 +51,24 @@ CREATE TABLE map_to_objects (
     FOREIGN KEY(coordinate_id) REFERENCES coordinates(id)
 );
 
-CREATE TABLE dialog_parts (
-    id INTEGER PRIMARY KEY NOT NULL CHECK(id>3500 AND id<=6000),
-    text TEXT NOT NULL
+CREATE TABLE dialog_sections (
+    id INTEGER NOT NULL CHECK(id>3500 AND id<=6000),
+    text TEXT NOT NULL,
+    sections_order INTEGER NOT NULL,
+    PRIMARY KEY (id, sections_order)
 );
 
 CREATE TABLE dialogs (
     id INTEGER PRIMARY KEY NOT NULL CHECK(id>6000 AND id<=7000),
-    group_id INTEGER NOT NULL,
-    part_id INTEGER NOT NULL,
-    part_order INTEGER NOT NULL,
-    UNIQUE (group_id, part_id, part_order),
-    FOREIGN KEY(part_id) REFERENCES dialog_parts(id)
+    section_id INTEGER NOT NULL,
+    UNIQUE (id, section_id),
+    FOREIGN KEY(section_id) REFERENCES dialog_sections(id)
 );
 
 CREATE TABLE change_textures (
     id INTEGER PRIMARY KEY NOT NULL CHECK(id>7000 AND id<=7500),
-    map_object_id INTEGER NOT NULL,
-    map_id INTEGER NOT NULL,
-    FOREIGN KEY(map_object_id) REFERENCES map_objects(id),
-    FOREIGN KEY(map_id) REFERENCES maps(id)
+    texture_to_id INTEGER NOT NULL,
+    FOREIGN KEY(texture_to_id) REFERENCES textures(id)
 );
 
 CREATE TABLE movements (
@@ -82,12 +80,12 @@ CREATE TABLE movements (
 CREATE TABLE ui_effects (
     id INTEGER PRIMARY KEY NOT NULL CHECK(id>8000 AND id<=10000),
     change_textures_id INTEGER,
-    dialog_group_id INTEGER,
+    dialog_id INTEGER,
     movement_id INTEGER,
     target_object_id INTEGER,
     internal_description TEXT NOT NULL,
     FOREIGN KEY(change_textures_id) REFERENCES change_textures(id),
-    FOREIGN KEY(dialog_group_id) REFERENCES dialogs(group_id),
+    FOREIGN KEY(dialog_id) REFERENCES dialogs(id),
     FOREIGN KEY(movement_id) REFERENCES movements(id),
     FOREIGN KEY(target_object_id) REFERENCES map_objects(id)
 );
@@ -134,10 +132,11 @@ CREATE TABLE results (
 );
 
 CREATE TABLE effect_groups (
-    id INTEGER PRIMARY KEY NOT NULL CHECK(id>14000 AND id<=14500),
-    group_id INTEGER NOT NULL,
+    id INTEGER NOT NULL CHECK(id>14000 AND id<=14500),
     ui_effect_id INTEGER NOT NULL,
     effect_order INTEGER NOT NULL,
+    PRIMARY KEY (id, ui_effect_id),
+    UNIQUE (id, ui_effect_id, effect_order),
     FOREIGN KEY(ui_effect_id) REFERENCES ui_effects(id)
 );
 
@@ -267,3 +266,23 @@ FROM map_to_object_rules mtor
     INNER JOIN persons p ON mto.map_object_id=p.id
     INNER JOIN coordinates c ON mto.coordinate_id=c.id
     INNER JOIN textures t ON mo.texture_id=t.id;
+
+CREATE VIEW ui_effect_aggregations AS
+SELECT
+    eg.id AS group_id,
+    uief.id AS effect_id,
+    eg.effect_order AS group_order,
+    uief.target_object_id AS target_id,
+    uief.dialog_id AS dialog_id,
+    t.folder AS change_texture_folder,
+    t.name AS change_texture_name,
+    crd.x AS movement_x,
+    crd.y AS movement_y,
+    dlg.section_id AS dialog_section_group_id
+FROM effect_groups eg
+    JOIN ui_effects uief ON eg.ui_effect_id=uief.id
+    LEFT JOIN change_textures ct ON uief.change_textures_id=ct.id
+    LEFT JOIN textures t ON ct.texture_to_id=t.id
+    LEFT JOIN movements mov ON uief.movement_id=mov.id
+    LEFT JOIN coordinates crd ON mov.target_coordinate_id=crd.id
+    LEFT JOIN dialogs dlg ON uief.dialog_id=dlg.id

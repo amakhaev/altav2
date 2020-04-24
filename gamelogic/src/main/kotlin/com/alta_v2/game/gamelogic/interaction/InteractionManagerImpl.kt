@@ -60,8 +60,7 @@ class InteractionManagerImpl @AssistedInject constructor(@Assisted private val m
         val targetId = mapProcessor.findPurposeTargetedByPlayer() ?: return
         val interactionGroupId = npcList.find { it.id == targetId }?.interactionGroupId ?: return
 
-        val interactions = interactionDaoService.getInteractions(interactionGroupId)
-        log.info("Interaction count ${interactions.size}")
+        interactionDaoService.getInteractions(interactionGroupId)
     }
 
     private fun handleBackButtonPressed() {
