@@ -7,16 +7,16 @@ import mu.KotlinLogging
 
 private val log = KotlinLogging.logger {  }
 
-internal fun EffectAggregationEntity.toUiEffectDefinition() = UiEffectDefinition(
+internal fun EffectAggregationEntity.toUiEffectDefinition() = UiEffectDefinitionModel(
         id = effectId,
-        changeTextureEffect = createTextureDefinition(this),
-        dialogEffect = createDialogDefinition(this),
-        movementEffect = createMovementDefinition(this)
+        changeTextureEffectModel = createTextureDefinition(this),
+        dialogEffectModel = createDialogDefinition(this),
+        movementEffectModel = createMovementDefinition(this)
 )
 
 private fun createTextureDefinition(aggregate: EffectAggregationEntity) =
         if (aggregate.hasRequiredDataForChangeTexture()) {
-            ChangeTextureDefinition(objectId = aggregate.targetId!!, texturePath = aggregate.texturePath!!)
+            ChangeTextureDefinitionModel(objectId = aggregate.targetId!!, texturePath = aggregate.texturePath!!)
         } else {
             log.trace("Required data to create change texture effect not found")
             null
@@ -24,7 +24,7 @@ private fun createTextureDefinition(aggregate: EffectAggregationEntity) =
 
 private fun createMovementDefinition(aggregate: EffectAggregationEntity) =
         if (aggregate.hasRequiredDataForMovement()) {
-            MovementDefinition(
+            MovementDefinitionModel(
                     objectId = aggregate.targetId!!, targetX = aggregate.movementX!!, targetY = aggregate.movementY!!
             )
         } else {
@@ -34,13 +34,13 @@ private fun createMovementDefinition(aggregate: EffectAggregationEntity) =
 
 private fun createDialogDefinition(aggregate: EffectAggregationEntity) =
         if (aggregate.hasRequiredDataForDialog()) {
-            DialogDefinition(id = aggregate.dialogId!!, sections = aggregate.dialogSections.map { it.toDefinition() })
+            DialogDefinitionModel(id = aggregate.dialogId!!, sectionModels = aggregate.dialogSections.map { it.toDefinition() })
         } else {
             log.trace("Required data to create dialog effect not found")
             null
         }
 
-private fun DialogSectionEntity.toDefinition() = DialogSectionDefinition(text = text)
+private fun DialogSectionEntity.toDefinition() = DialogSectionDefinitionModel(text = text)
 
 private fun EffectAggregationEntity.hasRequiredDataForChangeTexture() =
         targetId != null && changeTextureFolder != null && changeTextureName != null

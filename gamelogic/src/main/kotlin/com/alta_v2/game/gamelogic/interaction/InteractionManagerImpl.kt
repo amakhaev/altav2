@@ -18,7 +18,6 @@ class InteractionManagerImpl @AssistedInject constructor(@Assisted private val m
                                                          private val npcManager: NpcManager,
                                                          private val mapProcessor: MapProcessor) : InteractionManager {
 
-    private val log = KotlinLogging.logger {  }
     private val changeMapFuture = CompletableFuture<ChangeMapStageEvent>()
 
     init {
@@ -56,15 +55,22 @@ class InteractionManagerImpl @AssistedInject constructor(@Assisted private val m
         npcManager.destroy()
     }
 
+    private var temp = false
     private fun handleNextButtonPressed() {
-        val targetId = mapProcessor.findPurposeTargetedByPlayer() ?: return
-        val interactionGroupId = npcList.find { it.id == targetId }?.interactionGroupId ?: return
+        if (temp) {
+            mapProcessor.hideDialog()
+        } else {
+            mapProcessor.showDialog("мой длинный длинный длинный длинный длинный длинный длинный длинный. длинный длинный длинный длинный длинный длинный длинный длинный супер текст")
+        }
+        temp = !temp
+//        val targetId = mapProcessor.findPurposeTargetedByPlayer() ?: return
+//        val interactionGroupId = npcList.find { it.id == targetId }?.interactionGroupId ?: return
 
-        interactionDaoService.getInteractions(interactionGroupId)
+        // interactionDaoService.getInteractions(interactionGroupId)
     }
 
     private fun handleBackButtonPressed() {
-        mapProcessor.hideTitle()
+        mapProcessor.hideAll()
         changeMapFuture.complete(ChangeMapStageEvent())
     }
 }

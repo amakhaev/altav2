@@ -10,4 +10,5 @@ data class TextStyle(val color: Color,
                      val renderAreaSize: Vector2,
                      val hAlign: HorizontalAlign,
                      val vAlign: VerticalAlign,
-                     val textSize: Int)
+                     val textSize: Int,
+                     val textMargin: Float = 0f)

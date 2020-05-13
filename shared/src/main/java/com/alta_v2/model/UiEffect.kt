@@ -1,13 +1,13 @@
 package com.alta_v2.model
 
-data class UiEffectDefinition(val id: Int,
-                              val changeTextureEffect: ChangeTextureDefinition? = null,
-                              val movementEffect: MovementDefinition? = null,
-                              val dialogEffect: DialogDefinition? = null)
+data class UiEffectDefinitionModel(val id: Int,
+                                   val changeTextureEffectModel: ChangeTextureDefinitionModel? = null,
+                                   val movementEffectModel: MovementDefinitionModel? = null,
+                                   val dialogEffectModel: DialogDefinitionModel? = null)
 
-data class ChangeTextureDefinition(val objectId: Int, val texturePath: String)
+data class ChangeTextureDefinitionModel(val objectId: Int, val texturePath: String)
 
-data class MovementDefinition(val objectId: Int, val targetX: Int, val targetY: Int)
+data class MovementDefinitionModel(val objectId: Int, val targetX: Int, val targetY: Int)
 
-data class DialogDefinition(val id: Int, val sections: List<DialogSectionDefinition>)
-data class DialogSectionDefinition(val text: String)
+data class DialogDefinitionModel(val id: Int, val sectionModels: List<DialogSectionDefinitionModel>)
+data class DialogSectionDefinitionModel(val text: String)

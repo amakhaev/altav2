@@ -20,5 +20,30 @@ titleDialog:
   # Text of box
   textHAlign: "CENTER"
   textVAlign: "CENTER"
-  textSize: 16
+  textSize: 18
+
+dialog:
+  # Common
+  fadeInTime: 100  # ms
+  fadeOutTime: 100 # ms
+
+  # Box
+  boxWidthPercentage: 99
+  boxHeight: 130
+  boxHAlign: "CENTER"
+  boxVAlign: "BOTTOM"
+  marginTop: 0
+  marginBottom: 2
+  marginRight: 0
+  marginLeft: 0
+
+  # Border of box
+  useBorder: true
+  borderThickness: 2
+
+  # Text of box
+  textHAlign: "LEFT"
+  textVAlign: "TOP"
+  textSize: 15
+  textMargin: 7
 

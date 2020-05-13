@@ -2,7 +2,7 @@ package com.alta_v2.rendering.common.component.style
 
 import kotlin.properties.Delegates
 
-class TitleDialogStyle {
+class DialogStyle {
     
     var fadeInTime by Delegates.notNull<Float>()    
     var fadeOutTime by Delegates.notNull<Float>()
@@ -19,4 +19,5 @@ class TitleDialogStyle {
     var textHAlign: HorizontalAlign = HorizontalAlign.LEFT
     var textVAlign: VerticalAlign = VerticalAlign.BOTTOM
     var textSize: Int = 12
+    var textMargin: Float = 0f
 }

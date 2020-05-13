@@ -24,7 +24,7 @@ import com.alta_v2.rendering.common.component.ComponentStyle
 import com.alta_v2.rendering.common.component.animation.AnimationFactory
 import com.alta_v2.rendering.common.component.dialog.TitleDialogStyleProvider
 import com.alta_v2.rendering.dialog.DialogImpl
-import com.alta_v2.rendering.dialog.TitleDialog
+import com.alta_v2.rendering.dialog.Dialog
 import com.alta_v2.rendering.config.AppConfig
 import com.alta_v2.rendering.config.Theme
 import com.alta_v2.rendering.tiledMapScreen.layout.LayoutFactory
@@ -65,7 +65,7 @@ class CoreInjector : AbstractModule() {
         install(FactoryModuleBuilder().build(AnimationFactory::class.java))
         bind(TitleDialogStyleProvider::class.java).`in`(Singleton::class.java)
         bind(DialogImpl::class.java).`in`(Singleton::class.java)
-        bind(TitleDialog::class.java).to(DialogImpl::class.java).`in`(Singleton::class.java)
+        bind(Dialog::class.java).to(DialogImpl::class.java).`in`(Singleton::class.java)
     }
 
     private fun initFacade() {

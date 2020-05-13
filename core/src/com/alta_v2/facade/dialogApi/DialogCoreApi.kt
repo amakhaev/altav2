@@ -15,4 +15,14 @@ interface DialogCoreApi {
      * Hides the title dialog.
      */
     fun hideTitleDialog()
+
+    /**
+     * Shows the common dialog with given text.
+     */
+    fun showDialog(text: String)
+
+    /**
+     * Hides the common dialog.
+     */
+    fun hideDialog()
 }

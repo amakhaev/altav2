@@ -13,6 +13,15 @@ class MapProcessorImpl @Inject constructor(private val dialogCoreApi: DialogCore
 
     override fun hideTitle() = dialogCoreApi.hideTitleDialog()
 
+    override fun showDialog(text: String) = dialogCoreApi.showDialog(text)
+
+    override fun hideDialog() = dialogCoreApi.hideDialog()
+
+    override fun hideAll() {
+        dialogCoreApi.hideTitleDialog()
+        dialogCoreApi.hideDialog()
+    }
+
     override fun movePlayer(direction: MovementDirection) = tiledMapCoreApi.performPlayerMovement(direction)
 
     override fun moveNpc(npcId: Int, direction: MovementDirection) = tiledMapCoreApi.performNpcMovement(npcId, direction)

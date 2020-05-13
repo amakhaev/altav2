@@ -24,6 +24,7 @@ class MovementCalculator {
                 MovementDirection.RIGHT -> newStartX++
                 MovementDirection.HIGHER -> newStartY++
                 MovementDirection.LOWER -> newStartY--
+                else -> {}
             }
             return Vector2(newStartX, newStartY)
         }

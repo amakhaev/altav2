@@ -1,5 +1,6 @@
 package com.alta_v2.rendering.common.component
 
+import com.alta_v2.rendering.common.component.animation.FadeAnimation
 import com.alta_v2.rendering.common.component.animation.TranslationAnimation
 import com.alta_v2.rendering.common.component.box.BoxComponent
 import com.alta_v2.rendering.common.component.box.BoxStyle
@@ -15,5 +16,8 @@ interface ComponentFactory {
     fun createTextComponent(textStyle: TextStyle): TextComponent
 
     fun createDialogComponent(@Assisted("fadeIn") fadeIn: TranslationAnimation,
-                              @Assisted("fadeOut") fadeOut: TranslationAnimation): DialogComponent
+                              @Assisted("fadeOut") fadeOut: TranslationAnimation,
+                              textFadeAnimation: FadeAnimation,
+                              boxStyle: BoxStyle,
+                              textStyle: TextStyle): DialogComponent
 }

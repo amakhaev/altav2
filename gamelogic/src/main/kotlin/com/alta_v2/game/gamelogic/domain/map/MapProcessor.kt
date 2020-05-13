@@ -32,4 +32,19 @@ interface MapProcessor {
      * Finds the object on map that is currently target for player.
      */
     fun findPurposeTargetedByPlayer(): Int?
+
+    /**
+     * Shows the common dialog with given text.
+     */
+    fun showDialog(text: String)
+
+    /**
+     * Hides the common dialog.
+     */
+    fun hideDialog()
+
+    /**
+     * Hides all dialogs.
+     */
+    fun hideAll()
 }

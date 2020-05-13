@@ -1,6 +1,9 @@
 package com.alta_v2.rendering.dialog
 
-interface TitleDialog {
+interface Dialog {
     fun showTitle(text: String, durationMs: Float)
     fun hideTitle()
+
+    fun showDialog(text: String)
+    fun hideDialog()
 }

@@ -8,15 +8,18 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter
+import com.badlogic.gdx.utils.Align
 import com.google.inject.assistedinject.Assisted
 import com.google.inject.assistedinject.AssistedInject
 
 class TextComponent @AssistedInject constructor(@param:Assisted private val textStyle: TextStyle) : Renderer {
 
     private val calculator = TextRenderCalculator(textStyle)
-    private var ruFont: BitmapFont? = null
-    private var batch: SpriteBatch? = null
+    private lateinit var ruFont: BitmapFont
+    private lateinit  var batch: SpriteBatch
+
     private var currentText = ""
+    private var signsToBeShown = 0
 
     override fun init(state: ScreenState) {
         batch = SpriteBatch()
@@ -24,24 +27,29 @@ class TextComponent @AssistedInject constructor(@param:Assisted private val text
     }
 
     override fun render(delta: Float, state: ScreenState) {
-        batch!!.begin()
-        ruFont!!.draw(batch, currentText, calculator.x, calculator.y)
-        batch!!.end()
+        if (signsToBeShown < currentText.length) {
+            signsToBeShown++
+        }
+
+        batch.begin()
+        ruFont.draw(batch, currentText.substring(0, signsToBeShown), calculator.x, calculator.y)
+        batch.end()
     }
 
     override fun destroy() {
-        batch!!.dispose()
-        ruFont!!.dispose()
+        batch.dispose()
+        ruFont.dispose()
     }
 
-    fun setText(currentText: String) {
-        this.currentText = currentText
+    fun setText(text: String, isAnimated: Boolean) {
+        currentText = calculator.formatText(text, ruFont)
+        signsToBeShown = if (isAnimated) { 0 } else { this.currentText.length }
         calculator.updateCoordinates(currentText, ruFont)
     }
 
     fun setAlpha(alpha: Float) {
-        if (ruFont!!.color.a != alpha) {
-            ruFont!!.color.a = alpha
+        if (ruFont.color.a != alpha) {
+            ruFont.color.a = alpha
         }
     }
 
