@@ -11,6 +11,7 @@ import com.alta_v2.rendering.common.component.text.TextComponent
 import com.alta_v2.rendering.common.component.text.TextStyle
 import com.google.inject.assistedinject.Assisted
 import com.google.inject.assistedinject.AssistedInject
+import mu.KotlinLogging
 
 class DialogComponent @AssistedInject constructor(@Assisted("fadeIn") fadeIn: TranslationAnimation,
                                                   @Assisted("fadeOut") fadeOut: TranslationAnimation,
@@ -18,6 +19,8 @@ class DialogComponent @AssistedInject constructor(@Assisted("fadeIn") fadeIn: Tr
                                                   @Assisted boxStyle: BoxStyle,
                                                   @Assisted textStyle: TextStyle,
                                                   componentFactory: ComponentFactory) : Renderer {
+
+    private val log = KotlinLogging.logger {  }
 
     private val boxComponent: BoxComponent = componentFactory.createBoxComponent(boxStyle)
     private val textComponent: TextComponent = componentFactory.createTextComponent(textStyle)
@@ -32,6 +35,9 @@ class DialogComponent @AssistedInject constructor(@Assisted("fadeIn") fadeIn: Tr
 
     var visible = false
         private set
+
+    val isTextAnimationCompleted: Boolean
+        get() = textComponent.isAnimationCompleted
 
     init {
         boxFadeIn.setCompleteListener(Runnable { onBoxFadeInComplete() })
@@ -67,12 +73,21 @@ class DialogComponent @AssistedInject constructor(@Assisted("fadeIn") fadeIn: Tr
 
     fun show(message: String?, isAnimated: Boolean) {
         // runs box animation
-        this.isAnimated = isAnimated
         currentBoxAnimation = boxFadeIn
         currentBoxAnimation!!.reset()
-        textComponent.setText("", false)
-        text = message ?: ""
         visible = true
+        setText(message, isAnimated)
+    }
+
+    fun setText(message: String?, isAnimated: Boolean) {
+        if (!visible) {
+            log.warn("Dialog is invisible. Text '$message' won't be shown")
+            return
+        }
+
+        this.isAnimated = isAnimated
+        text = message ?: ""
+        textComponent.setText(text, isAnimated)
     }
 
     fun hide() {
@@ -81,6 +96,8 @@ class DialogComponent @AssistedInject constructor(@Assisted("fadeIn") fadeIn: Tr
         currentBoxAnimation!!.reset()
         visible = false
     }
+
+    fun completeTextAnimationImmediately() = textComponent.completeAnimationImmediately()
 
     private fun onBoxFadeInComplete() {
         textComponent.setText(text, isAnimated)

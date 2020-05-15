@@ -25,4 +25,24 @@ interface DialogCoreApi {
      * Hides the common dialog.
      */
     fun hideDialog()
+
+    /**
+     * Indicates when text animation of dialog has been completed.
+     */
+    fun isDialogTextAnimationCompleted(): Boolean
+
+    /**
+     * Completes text animation in the dialog immediately.
+     */
+    fun completeDialogTextAnimationImmediately()
+
+    /**
+     * Sets the current text of dialog.
+     */
+    fun setDialogText(text: String)
+
+    /**
+     * Indicates if dialog has been shown or no.
+     */
+    fun isDialogVisible(): Boolean
 }

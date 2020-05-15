@@ -1,5 +1,7 @@
 package com.alta_v2.game.gamelogic
 
+import com.alta_v2.game.gamelogic.domain.dialog.DialogProcessor
+import com.alta_v2.game.gamelogic.domain.dialog.DialogProcessorImpl
 import com.alta_v2.game.gamelogic.domain.interaction.InteractionDaoService
 import com.alta_v2.game.gamelogic.domain.interaction.InteractionDaoServiceImpl
 import com.alta_v2.game.gamelogic.domain.map.MapDaoService
@@ -41,6 +43,7 @@ class GameLogicInjector : AbstractModule() {
         bind(PlayerProcessor::class.java).to(PlayerProcessorImpl::class.java).`in`(Singleton::class.java)
         bind(MapProcessor::class.java).to(MapProcessorImpl::class.java).`in`(Singleton::class.java)
         bind(ScreenProcessor::class.java).to(ScreenProcessorImpl::class.java).`in`(Singleton::class.java)
+        bind(DialogProcessor::class.java).to(DialogProcessorImpl::class.java).`in`(Singleton::class.java)
 
         bind(MapDaoService::class.java).to(MapDaoServiceImpl::class.java).`in`(Singleton::class.java)
         bind(InteractionDaoService::class.java).to(InteractionDaoServiceImpl::class.java).`in`(Singleton::class.java)

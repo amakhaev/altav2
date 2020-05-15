@@ -21,6 +21,9 @@ class TextComponent @AssistedInject constructor(@param:Assisted private val text
     private var currentText = ""
     private var signsToBeShown = 0
 
+    val isAnimationCompleted: Boolean
+        get() = signsToBeShown >= currentText.length
+
     override fun init(state: ScreenState) {
         batch = SpriteBatch()
         ruFont = generateFont()
@@ -51,6 +54,10 @@ class TextComponent @AssistedInject constructor(@param:Assisted private val text
         if (ruFont.color.a != alpha) {
             ruFont.color.a = alpha
         }
+    }
+
+    fun completeAnimationImmediately() {
+        signsToBeShown = currentText.length
     }
 
     private fun generateFont(): BitmapFont {

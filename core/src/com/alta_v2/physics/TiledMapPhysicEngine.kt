@@ -48,6 +48,7 @@ class TiledMapPhysicEngine constructor(focusPointCoordinates: Vector2,
                 TiledMapPhysicCalculator.playerCoordinate(context.altitudeMap.tileWidth.toFloat(), Gdx.graphics.width.toFloat()),
                 TiledMapPhysicCalculator.playerCoordinate(context.altitudeMap.tileHeight.toFloat(), Gdx.graphics.height.toFloat())
         )
+        context.altitudeMap.markAsObject(context.focusPointLocal.x.toInt(), context.focusPointLocal.y.toInt(), context.player.id)
         npcProcessor.processInit(context)
     }
 

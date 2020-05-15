@@ -5,6 +5,4 @@ import java.util.concurrent.CompletableFuture
 class ExecutionResult : CompletableFuture<Void>() {
 
     fun complete() = super.complete(null)
-
-
 }

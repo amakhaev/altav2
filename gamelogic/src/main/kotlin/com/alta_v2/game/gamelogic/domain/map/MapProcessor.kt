@@ -9,16 +9,6 @@ import com.alta_v2.physics.task.resultObserver.TaskResult
 interface MapProcessor {
 
     /**
-     * Shows the title message box with given text.
-     */
-    fun showTitle(text: String)
-
-    /**
-     * Hides title message box.
-     */
-    fun hideTitle();
-
-    /**
      * Moves the player person to given direction.
      */
     fun movePlayer(direction: MovementDirection): TaskResult?
@@ -33,18 +23,4 @@ interface MapProcessor {
      */
     fun findPurposeTargetedByPlayer(): Int?
 
-    /**
-     * Shows the common dialog with given text.
-     */
-    fun showDialog(text: String)
-
-    /**
-     * Hides the common dialog.
-     */
-    fun hideDialog()
-
-    /**
-     * Hides all dialogs.
-     */
-    fun hideAll()
 }

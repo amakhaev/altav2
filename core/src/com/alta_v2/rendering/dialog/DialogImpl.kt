@@ -52,17 +52,17 @@ class DialogImpl @Inject constructor(dialogFactory: DialogComponentFactory) : Re
         hide(titleDialog)
     }
 
-    override fun showDialog(text: String) {
-        if (dialog.visible) {
-            log.warn("Dialog already shown. Message '{}' won't be shown", text)
-            return
-        }
-        dialog.show(text, true)
-    }
+    override fun showDialog(text: String) = dialog.show(text, true)
 
-    override fun hideDialog() {
-        hide(dialog)
-    }
+    override fun hideDialog() = hide(dialog)
+
+    override fun setDialogText(text: String) = dialog.setText(text, true)
+
+    override fun isDialogVisible(): Boolean = dialog.visible
+
+    override fun isDialogTextAnimationCompleted(): Boolean = dialog.isTextAnimationCompleted
+
+    override fun completeDialogTextAnimationImmediately() = dialog.completeTextAnimationImmediately()
 
     private fun hide(d: DialogComponent) {
         if (d.visible) {

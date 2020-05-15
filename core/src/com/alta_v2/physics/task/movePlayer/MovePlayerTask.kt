@@ -33,10 +33,10 @@ class MovePlayerTask(direction: MovementDirection,
     private val taskResult = TaskResult()
 
     init {
-        this.altitudeMap.markAsBarrier(targetPointLocal.x.toInt(), targetPointLocal.y.toInt())
-        this.playerView.reserve(tenant).setValue(MovementDirection.getPersonView(direction), tenant)
-        this.playerPointLocal.reserve(tenant)
-        this.isPlayerMoving.reserve(tenant).setValue(true, tenant)
+        altitudeMap.markAsObject(targetPointLocal.x.toInt(), targetPointLocal.y.toInt(), playerId)
+        playerView.reserve(tenant).setValue(MovementDirection.getPersonView(direction), tenant)
+        playerPointLocal.reserve(tenant)
+        isPlayerMoving.reserve(tenant).setValue(true, tenant)
     }
 
     /**

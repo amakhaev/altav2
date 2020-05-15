@@ -12,4 +12,8 @@ interface Executor<T> {
      */
     fun execute()
 
+    /**
+     * Makes next step.
+     */
+    fun makeNextStep()
 }

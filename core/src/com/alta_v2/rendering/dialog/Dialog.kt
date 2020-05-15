@@ -6,4 +6,8 @@ interface Dialog {
 
     fun showDialog(text: String)
     fun hideDialog()
+    fun setDialogText(text: String)
+    fun isDialogVisible(): Boolean
+    fun isDialogTextAnimationCompleted(): Boolean
+    fun completeDialogTextAnimationImmediately()
 }

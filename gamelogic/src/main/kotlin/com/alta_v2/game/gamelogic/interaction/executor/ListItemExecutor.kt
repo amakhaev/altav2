@@ -8,7 +8,8 @@ abstract class ListItemExecutor<T> : Executor<List<T>> {
     private val items = ArrayList<T>()
 
     private lateinit var executionResult: ExecutionResult
-    private var currentItem: ExecutionItem<T>? = null
+
+    protected var currentItem: ExecutionItem<T>? = null
 
     final override fun prepare(data: List<T>): ExecutionResult {
         if (!canExecute()) {
@@ -22,7 +23,7 @@ abstract class ListItemExecutor<T> : Executor<List<T>> {
     }
 
     final override fun execute() {
-        scheduleItem()
+        scheduleItemAndRun()
     }
 
     /**
@@ -33,7 +34,7 @@ abstract class ListItemExecutor<T> : Executor<List<T>> {
     private fun canExecute() = items.isEmpty() && isCurrentItemDone()
     private fun isCurrentItemDone() = currentItem == null || currentItem?.isCompleted!!
 
-    private fun scheduleItem() {
+    private fun scheduleItemAndRun() {
         if (!isCurrentItemDone()) {
             log.warn("Attempt to schedule next item but previous still in progress")
             return
@@ -45,9 +46,10 @@ abstract class ListItemExecutor<T> : Executor<List<T>> {
         }
 
         val result = ExecutionResult()
-        result.thenAccept{ scheduleItem() }
+        result.thenAccept{ scheduleItemAndRun() }
 
         currentItem = ExecutionItem(items[0], result)
         items.removeAt(0)
+        currentItem?.run { executeItem(this) }
     }
 }

@@ -12,4 +12,12 @@ class DialogCoreApiImpl @Inject constructor(private val dialog: Dialog) : Dialog
     override fun showDialog(text: String) = dialog.showDialog(text)
 
     override fun hideDialog() = dialog.hideDialog()
+
+    override fun isDialogTextAnimationCompleted(): Boolean = dialog.isDialogTextAnimationCompleted()
+
+    override fun completeDialogTextAnimationImmediately() = dialog.completeDialogTextAnimationImmediately()
+
+    override fun setDialogText(text: String) = dialog.setDialogText(text)
+
+    override fun isDialogVisible(): Boolean = dialog.isDialogVisible()
 }
