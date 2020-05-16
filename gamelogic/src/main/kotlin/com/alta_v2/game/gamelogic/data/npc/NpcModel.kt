@@ -8,4 +8,5 @@ data class NpcModel(val id: Int,
 
     var lastMovementMills: Long = 0
     var isMovementRunning: Boolean = false
+    var isMovementFrozen: Boolean = false
 }

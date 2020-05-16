@@ -12,9 +12,6 @@ class TiledMapCoreApiImpl @Inject constructor(private val processMediator: Proce
 
     private val log = KotlinLogging.logger {  }
 
-    /**
-     * {@inheritDoc}
-     */
     override val playerPurpose: Int?
         get() {
             return try {
@@ -26,9 +23,6 @@ class TiledMapCoreApiImpl @Inject constructor(private val processMediator: Proce
             }
         }
 
-    /**
-     * {@inheritDoc}
-     */
     override fun performPlayerMovement(direction: MovementDirection): TaskResult? =
             try {
                 val physicEngine = getEngineFromContext()
@@ -38,16 +32,21 @@ class TiledMapCoreApiImpl @Inject constructor(private val processMediator: Proce
                 null
             }
 
-
-    /**
-     * {@inheritDoc}
-     */
     override fun performNpcMovement(npcId: Int, direction: MovementDirection): TaskResult? =
             try {
                 val physicEngine = getEngineFromContext()
                 physicEngine.performNpcMovement(npcId, direction)
             } catch (e: Exception) {
                 log.error("Failed to perform NPC movement: ${e.message}")
+                null
+            }
+
+    override fun performFocusNpcOnPlayer(npcId: Int): TaskResult? =
+            try {
+                val physicEngine = getEngineFromContext()
+                physicEngine.performFocusNpcOnPlayer(npcId)
+            } catch (e: Exception) {
+                log.error("Failed to perform focusing of NPC to player: ${e.message}")
                 null
             }
 

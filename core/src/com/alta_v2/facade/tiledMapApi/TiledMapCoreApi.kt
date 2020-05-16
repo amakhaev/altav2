@@ -23,4 +23,9 @@ interface TiledMapCoreApi {
      * @param direction - the direction of movement to be perform.
      */
     fun performNpcMovement(npcId: Int, direction: MovementDirection): TaskResult?
+
+    /**
+     * Performs focusing of NPC with given id to player.
+     */
+    fun performFocusNpcOnPlayer(npcId: Int): TaskResult?
 }

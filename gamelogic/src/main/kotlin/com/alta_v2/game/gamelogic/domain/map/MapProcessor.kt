@@ -23,4 +23,9 @@ interface MapProcessor {
      */
     fun findPurposeTargetedByPlayer(): Int?
 
+    /**
+     * Performs focusing of NPC with given id to player.
+     */
+    fun performFocusNpcOnPlayer(npcId: Int): TaskResult?
+
 }

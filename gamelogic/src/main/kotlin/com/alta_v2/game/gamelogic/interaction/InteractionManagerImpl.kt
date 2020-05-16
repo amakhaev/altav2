@@ -12,7 +12,6 @@ import com.alta_v2.game.gamelogic.stage.event.ChangeMapStageEvent
 import com.alta_v2.mediator.serde.ActionType
 import com.google.inject.assistedinject.Assisted
 import com.google.inject.assistedinject.AssistedInject
-import com.google.inject.name.Named
 import mu.KotlinLogging
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.atomic.AtomicBoolean
@@ -46,7 +45,10 @@ class InteractionManagerImpl @AssistedInject constructor(@Assisted private val m
             ActionType.MOVE_DOWN,
             ActionType.MOVE_LEFT,
             ActionType.MOVE_RIGHT -> {
-                ActionType.getMovementDirection(action).run { mapProcessor.movePlayer(this) }
+                // Movement of player available only if no interactions that are running in current moment
+                if (!isAnyInteractionRun.get()) {
+                    ActionType.getMovementDirection(action).run { mapProcessor.movePlayer(this) }
+                }
             }
             else -> {}
         }
@@ -81,11 +83,15 @@ class InteractionManagerImpl @AssistedInject constructor(@Assisted private val m
         val targetId = mapProcessor.findPurposeTargetedByPlayer() ?: return
         val interactionGroupId = npcList.find { it.id == targetId }?.interactionGroupId ?: return
 
+        mapProcessor.performFocusNpcOnPlayer(targetId)
+        npcManager.freezeMovement(targetId)
+
         val definitionModels = interactionDaoService.getInteractions(interactionGroupId)
 
         val result = interactionExecutor.prepare(definitionModels.toModels())
         result.thenRun {
             isAnyInteractionRun.set(false)
+            npcManager.resumeMovement(targetId)
             log.debug("Interaction group $interactionGroupId has completed")
         }
         interactionExecutor.execute()

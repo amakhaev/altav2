@@ -14,6 +14,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector2
 import mu.KotlinLogging
 import java.util.concurrent.CopyOnWriteArrayList
+import kotlin.math.abs
 
 /**
  * Provides the engine for calculation on tiled map.
@@ -130,6 +131,33 @@ class TiledMapPhysicEngine constructor(focusPointCoordinates: Vector2,
         if (task == null) {
             task = TaskCreationManager.createRotateNpcTask(npcId, direction, context)
         }
+        return if (task != null) {
+            tasks.add(task)
+            task.getResult()
+        } else {
+            null
+        }
+    }
+
+    @Synchronized
+    fun performFocusNpcOnPlayer(npcId: Int): TaskResult? {
+        if (!context.npcMap.containsKey(npcId)) {
+            log.warn("Npc with give Id $npcId not found")
+            return null
+        }
+
+        val npc = context.npcMap[npcId] ?: return null
+        val distanceX = context.player.localPoint.x - npc.localPoint.x
+        val distanceY = context.player.localPoint.y - npc.localPoint.y
+
+        val direction = if (abs(distanceX) > abs(distanceY)) {
+            if (distanceX > 0) MovementDirection.RIGHT else MovementDirection.LEFT
+        } else {
+            if (distanceY > 0) MovementDirection.HIGHER else MovementDirection.LOWER
+        }
+
+        val task = TaskCreationManager.createRotateNpcTask(npcId, direction, context)
+
         return if (task != null) {
             tasks.add(task)
             task.getResult()

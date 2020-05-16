@@ -17,4 +17,14 @@ interface NpcManager : Destroyable {
      */
     fun startMovementProcessing()
 
+    /**
+     * Freezes movement of NPC with given ID.
+     */
+    fun freezeMovement(npcId: Int)
+
+    /**
+     * Resumes movement of NPC with given ID.
+     */
+    fun resumeMovement(npcId: Int)
+
 }

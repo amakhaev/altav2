@@ -31,6 +31,14 @@ class NpcManagerImpl @Inject constructor(private val mapProcessor: MapProcessor)
         executorService.scheduleWithFixedDelay({ npcList.forEach(npcMovementConsumer) }, 0L, 100L, TimeUnit.MILLISECONDS)
     }
 
+    override fun freezeMovement(npcId: Int) {
+        npcList.find { it.id == npcId }?.isMovementFrozen = true
+    }
+
+    override fun resumeMovement(npcId: Int) {
+        npcList.find { it.id == npcId }?.isMovementFrozen = false
+    }
+
     override fun destroy() {
         try {
             executorService.shutdown()
@@ -44,6 +52,11 @@ class NpcManagerImpl @Inject constructor(private val mapProcessor: MapProcessor)
         if (npc.isMovementRunning) {
             return
         }
+        if (npc.isMovementFrozen) {
+            npc.lastMovementMills = System.currentTimeMillis()
+            return
+        }
+
         if (System.currentTimeMillis() - npc.lastMovementMills < npc.repeatMovementInterval) {
             return
         }
